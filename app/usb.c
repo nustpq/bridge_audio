@@ -245,17 +245,17 @@ void UsbDataReceived(  unsigned int unused,
         return ;
     }
     if ( status == USBD_STATUS_SUCCESS ) {     
-        //while( received > kfifo_get_free_space( &bulkout_fifo ) ) ; //wait if buf is full   
-        kfifo_put(&bulkout_fifo, usbBufferBulkOut, received);      
-        if ( USBDATAEPSIZE <= kfifo_get_free_space( &bulkout_fifo ) ) { //enouth free buffer                      
+//        //while( received > kfifo_get_free_space( &bulkout_fifo ) ) ; //wait if buf is full   
+//        kfifo_put(&bulkout_fifo, usbBufferBulkOut, received);      
+//        if ( USBDATAEPSIZE <= kfifo_get_free_space( &bulkout_fifo ) ) { //enouth free buffer                      
             CDCDSerialDriver_Read(    usbBufferBulkOut,
                                       USBDATAEPSIZE,
                                       (TransferCallback) UsbDataReceived,
                                       0);        
-        } else { //usb out too fast                     
-            bulkout_enable  = true ; 
-            //printf("\r\n");                   
-        }     
+//        } else { //usb out too fast                     
+//            bulkout_enable  = true ; 
+//            //printf("\r\n");                   
+//        }     
         total_received += received ; 
      
     }  else {      
@@ -294,17 +294,17 @@ void UsbDataTransmit(  unsigned int unused,
     
     if ( status == USBD_STATUS_SUCCESS  ) {       
        
-        if ( USBDATAEPSIZE <= kfifo_get_data_size(  &bulkin_fifo )  ) { //enouth data to send to PC
-           
-            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE);              
+//        if ( USBDATAEPSIZE <= kfifo_get_data_size(  &bulkin_fifo )  ) { //enouth data to send to PC
+//           
+//            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE);              
             CDCDSerialDriver_Write( usbBufferBulkIn,
                                     USBDATAEPSIZE,
                                     (TransferCallback) UsbDataTransmit,
                                     0);       
-        } else {                    
-            bulkin_enable  = true ; 
-            
-        }              
+//        } else {                    
+//            bulkin_enable  = true ; 
+//            
+//        }              
         total_transmit += transmit ; 
      
     }  else {
@@ -370,7 +370,7 @@ void USB_Init(void)
                             0);    
     
     CDCDSerialDriver_Write( usbBufferBulkIn,
-                            504,//USBDATAEPSIZE,
+                            USBDATAEPSIZE,
                             (TransferCallback) UsbDataTransmit,
                             0);
     */

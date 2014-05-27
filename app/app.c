@@ -179,7 +179,17 @@ static void Audio_Start_Rec( void )
     Init_Rec_Setting();
     SSC_Record_Start();   
     bulkin_start  = true ;        
-    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN    
+    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN  
+      
+    CDCDSerialDriver_Read(  usbBufferBulkOut,
+                            USBDATAEPSIZE,
+                            (TransferCallback) UsbDataReceived,
+                            0);    
+    
+    CDCDSerialDriver_Write( usbBufferBulkIn,
+                            USBDATAEPSIZE,
+                            (TransferCallback) UsbDataTransmit,
+                            0);
 }
 
 
@@ -200,7 +210,17 @@ static void Audio_Start_Play( void )
     Init_Play_Setting();   
     SSC_Play_Start();
     bulkout_start  = true ;
-    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN       
+    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN
+    
+    CDCDSerialDriver_Read(  usbBufferBulkOut,
+                            USBDATAEPSIZE,
+                            (TransferCallback) UsbDataReceived,
+                            0);    
+    
+    CDCDSerialDriver_Write( usbBufferBulkIn,
+                            USBDATAEPSIZE,
+                            (TransferCallback) UsbDataTransmit,
+                            0);
 }
 
 
@@ -227,6 +247,15 @@ static void Audio_Start_Play_Rec( void )
     bulkout_start  = true ;
     SSC_EnableBoth(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN aAT91C_SSC_RXEN   
     
+    CDCDSerialDriver_Read(  usbBufferBulkOut,
+                            USBDATAEPSIZE,
+                            (TransferCallback) UsbDataReceived,
+                            0);    
+    
+    CDCDSerialDriver_Write( usbBufferBulkIn,
+                            USBDATAEPSIZE,
+                            (TransferCallback) UsbDataTransmit,
+                            0);
 }
 
 
@@ -395,19 +424,28 @@ void Debug_Info( void )
 {
   
     unsigned int BO_free_size ;
-    unsigned int BI_free_size ;     
+    unsigned int BI_free_size ;   
+    
     static unsigned int counter;
     
+    if( Check_SysTick_State() == 0 ){ 
+        return;
+    }     
+        
     if( !(bulkout_start || bulkin_start) ) { 
         printf("\rWaitting for USB trans start...[Miss Stop = %d]",Stop_CMD_Miss_Counter);
         return ; 
     }
     
     //start print debug_after USB trans started
-    if( (total_received < 2048) && (total_transmit < 2048) ){  
+    if( (total_received < 10240) && (total_transmit < 10240) ){  
         return;
     }  
-         
+    
+    if( counter++ % 20 == 0 ) { //20*100ms = 2s 
+        printf("\r\n");        
+    }
+    
     BO_free_size = kfifo_get_free_space(&bulkout_fifo) ;
     BO_free_size = BO_free_size * 100 / USB_OUT_BUFFER_SIZE;
     
@@ -416,17 +454,7 @@ void Debug_Info( void )
     
     BO_free_size_max = BO_free_size > BO_free_size_max ? BO_free_size : BO_free_size_max ;
     BI_free_size_min = BI_free_size < BI_free_size_min ? BI_free_size : BI_free_size_min ;
-    
-    if( Check_SysTick_State() == 0 ){ 
-        return;
-    }     
-
-    if( counter++ % 20 == 0 ) { //20*100ms = 1s 
-        printf("\r\n");        
-    } 
-    
-    
-    
+ 
 //    if( (total_received>>1) > total_transmit ) {
 //        printf( "\rbulkin_start = %d , bulkin_enable = %d, bulkin_fifo data size = %d ",                
 //                            bulkin_start,

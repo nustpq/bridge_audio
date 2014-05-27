@@ -205,13 +205,13 @@ void  delay_ms( unsigned int delay)
 
 
 
-#define DEBUG_INFO_FRESH_INTERVAL 100  //100ms
+#define DEBUG_INFO_FRESH_INTERVAL 100 //100ms
 
 void Timer1_Init( void )
 {
     unsigned int counter; 
     
-    counter =  MCK / 128 / 1000 * DEBUG_INFO_FRESH_INTERVAL;  
+    counter =  MCK / 128 / 1000 * DEBUG_INFO_FRESH_INTERVAL; //100ms time
     counter = (counter & 0xFFFF0000) == 0 ? counter : 0xFFFF ;
 
     AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC1);

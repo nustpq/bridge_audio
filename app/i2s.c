@@ -149,17 +149,15 @@ void HDMA_IrqHandler(void)
     unsigned int status;  
     unsigned int temp;
 
-    status = DMA_GetMaskedStatus();      
-//    status  = AT91C_BASE_HDMA->HDMA_EBCISR;
-//    status &=  AT91C_BASE_HDMA->HDMA_EBCIMR;
+    //status = DMA_GetMaskedStatus();      
+    status  = AT91C_BASE_HDMA->HDMA_EBCISR;
+    status &=  AT91C_BASE_HDMA->HDMA_EBCIMR;
    
     if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //play     
                     
         SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size);  
-//        AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-//        AT91C_BASE_HDMA->HDMA_CHER  |= DMA_ENA << BOARD_SSC_OUT_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);   
-        DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-        DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL); 
+        AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
+        AT91C_BASE_HDMA->HDMA_CHER  |= DMA_ENA << BOARD_SSC_OUT_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);   
         i2s_buffer_out_index ^= 1;   
         temp = kfifo_get_data_size(&bulkout_fifo);
         //printf("\n\r%d, %d",temp,error_bulkout_empt);
@@ -188,10 +186,8 @@ void HDMA_IrqHandler(void)
     if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
         
         SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);                      
-//        AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0);//DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
-//        AT91C_BASE_HDMA->HDMA_CHER  |= DMA_ENA << BOARD_SSC_IN_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);  
-        DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
-        DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
+        AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0);//DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
+        AT91C_BASE_HDMA->HDMA_CHER  |= DMA_ENA << BOARD_SSC_IN_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);  
         i2s_buffer_in_index ^= 1;    
         //counter_rec++; 
         //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);   //bulkin tes data for debug 
@@ -345,7 +341,7 @@ void I2S_Init( void )
     DMAD_Initialize(BOARD_SSC_OUT_DMA_CHANNEL);
     // Configure and enable the SSC interrupt
     IRQ_ConfigureIT(AT91C_ID_HDMA, HDMA_PRIORITY, HDMA_IrqHandler);
-    IRQ_EnableIT(AT91C_ID_HDMA);  
+    //IRQ_EnableIT(AT91C_ID_HDMA);  
     
     
 }

@@ -44,7 +44,7 @@ int main( void )
 
     TRACE_CONFIGURE( DBGU_STANDARD, 115200, BOARD_MCK );
     
-    printf("\r\n--------------------------------------------------\r\n");
+    printf("\r\n----------  USB Flood  --------------\r\n");
     printf("-- iSAM Audio Bridge Project  --\r\n");
     printf("-- HW version: %s --\r\n", BOARD_NAME);
     printf("-- SW version: %s --\r\n", fw_version);
