@@ -80,6 +80,8 @@
 //#define TRACE_USART_1 1
 //#define TRACE_USART_2 1
 
+
+
 #if defined(TRACE_DBGU)
 #include <dbgu/dbgu.h>
 #else
@@ -90,7 +92,7 @@
 //         Global Definitions
 //------------------------------------------------------------------------------
 
-
+#define DBGUART_FIFO_EN  //PQ
 
 #define TRACE_LEVEL_DEBUG      5
 #define TRACE_LEVEL_INFO       4
@@ -135,6 +137,7 @@
         const Pin pinsDbgu[] = {PINS_DBGU}; \
         PIO_Configure(pinsDbgu, PIO_LISTSIZE(pinsDbgu)); \
         DBGU_Configure(mode, baudrate, mck); \
+        Init_DBGUART_FIFO();\
     }
 #elif defined(TRACE_USART_0)
     #define TRACE_CONFIGURE(mode, baudrate, mck) { \
@@ -217,8 +220,12 @@
 //------------------------------------------------------------------------------
 /// Macros TRACE_PutChar & TRACE_GetChar & TRACE_IsRxReady
 //------------------------------------------------------------------------------
-#if defined(TRACE_DBGU)    
+#if defined(TRACE_DBGU)  
+#ifndef DBGUART_FIFO_EN
     #define TRACE_PutChar(c)  DBGU_PutChar(c)
+#else
+    #define TRACE_PutChar(c)  printc(c)
+#endif
     #define TRACE_GetChar()   DBGU_GetChar()
     #define TRACE_IsRxReady() DBGU_IsRxReady()
 #elif defined(TRACE_USART_0)
@@ -246,12 +253,14 @@
 // Empty macro
 #define TRACE_DEBUG(...)      { }
 #define TRACE_INFO(...)       { }
+#define TRACE_INFO_NEW(...)   { }
 #define TRACE_WARNING(...)    { }               
 #define TRACE_ERROR(...)      { }
 #define TRACE_FATAL(...)      { while(1); }
 
 #define TRACE_DEBUG_WP(...)   { }
 #define TRACE_INFO_WP(...)    { }
+#define TRACE_INFO_NEW_WP(...)    { }
 #define TRACE_WARNING_WP(...) { }
 #define TRACE_ERROR_WP(...)   { }
 #define TRACE_FATAL_WP(...)   { while(1); }
@@ -283,11 +292,15 @@
 #endif
 
 #if (TRACE_LEVEL >= TRACE_LEVEL_INFO)
-#define TRACE_INFO(...)       { printf("-I- " __VA_ARGS__); }
-#define TRACE_INFO_WP(...)    { printf(__VA_ARGS__); } //{}//PQ Disable INF in USB int() 
+#define TRACE_INFO(...)           {  }
+#define TRACE_INFO_NEW(...)       { printf("-I- " __VA_ARGS__); }
+#define TRACE_INFO_WP(...)        {  } //{}//PQ Disable INF in USB int() 
+#define TRACE_INFO_NEW_WP(...)    { printf(__VA_ARGS__); }
 #else
 #define TRACE_INFO(...)       { }
+#define TRACE_INFO_NEW(...)   { }
 #define TRACE_INFO_WP(...)    { }
+#define TRACE_INFO_NEW_WP(...) {}
 #endif
 
 #if (TRACE_LEVEL >= TRACE_LEVEL_WARNING)

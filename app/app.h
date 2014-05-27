@@ -15,7 +15,6 @@
 #define _APP_INC_
 
 //Softpack Version
-
 #define MCK                  BOARD_MCK
 #define I2S_BUFFER_SIZE      768   //audio data transfered per frame, Max 48kHz:   48*2*8=768
 #define USBDATAEPSIZE        BOARD_USB_ENDPOINTS_MAXPACKETSIZE( CDCDSerialDriverDescriptors_DATAIN ) //512
@@ -29,8 +28,8 @@
 #define PIO_PRIORITY        7
 #define TIMER_PRIORITY      6
 #define USB_PRIORITY        3
-#define HDMA_PRIORITY       2 
-#define UART_PRIORITY       1
+#define HDMA_PRIORITY       2
+#define UART_PRIORITY       4
 
 
 #define  AUDIO_CMD_IDLE                 0x00
@@ -84,7 +83,8 @@ extern volatile bool bulkout_enable;
 extern volatile bool bulkout_start;
 extern volatile bool bulkin_start;
 extern volatile bool bulkout_kk;
-
+extern volatile bool testf;
+extern volatile unsigned int testc;
 extern kfifo_t bulkout_fifo;
 extern kfifo_t bulkin_fifo;
 
@@ -97,15 +97,26 @@ extern void Audio_State_Control( void );
 void UART_Init( void );
 void USB_Init( void );
 void I2S_Init( void );
+void I2S_ReInit( void );
 void SSC_Play_Start(void);
 void SSC_Record_Start(void);
 void SSC_Play_Stop(void);
 void SSC_Record_Stop(void);
 void Init_I2S_Buffer( void );
 
-extern const char fw_version[];
+extern char fw_version[];
 
 extern unsigned int counter_play ;
 extern unsigned int counter_rec  ;
 
+
+
+
+extern volatile unsigned int debug_trans_counter1 ;
+extern volatile unsigned int debug_trans_counter2 ;  
+extern volatile unsigned int debug_trans_counter3 ;
+extern volatile unsigned int debug_trans_counter4 ;  
+extern volatile unsigned int debug_usb_dma_enterhandler;
+extern volatile unsigned int debug_usb_dma_IN ;
+extern volatile unsigned int debug_usb_dma_OUT;
 #endif //#ifndef APP_H

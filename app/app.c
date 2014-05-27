@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-const char fw_version[] = "[FW:A:V2.9]";
+char fw_version[] = "[FW:A:V3.01]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -86,17 +86,30 @@ volatile bool bulkin_start      = false ;
 volatile bool bulkin_enable     = true;
 volatile bool bulkout_enable    = true;
 volatile bool bulkout_kk        = false ;
+volatile bool testf             = false ;
+volatile unsigned int testc     = 0;
 
+volatile unsigned int debug_trans_counter1 = 0 ;
+volatile unsigned int debug_trans_counter2 = 0 ;  
+volatile unsigned int debug_trans_counter3 = 0 ;
+volatile unsigned int debug_trans_counter4 = 0 ;  
+volatile unsigned int debug_usb_dma_enterhandler = 0;
+volatile unsigned int debug_usb_dma_IN = 0;
+volatile unsigned int debug_usb_dma_OUT = 0;
 
 extern unsigned int debug_stall_counter;
-extern unsigned int debug_trans_counter1,debug_trans_counter2;
+//extern unsigned int debug_trans_counter1,debug_trans_counter2;
+extern kfifo_t dbguart_fifo;
 
 static unsigned int BO_free_size_max = 0;
 static unsigned int BI_free_size_min = 100; 
+static unsigned int DBGUART_free_size_min = 100; 
+
 static unsigned int Stop_CMD_Miss_Counter = 0;
 
 unsigned int counter_play = 0;
 unsigned int counter_rec  = 0;
+
 
 /*
 *********************************************************************************************************
@@ -135,7 +148,7 @@ static void Init_Play_Setting( void )
 {
     channels_play = Audio_Configure[1].channel_num ;
     sample_rate   = Audio_Configure[1].sample_rate ;
-    printf( "\r\nStart Play[%dCH - %dHz] ...\r\n",channels_play,sample_rate);  
+    printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...\r\n",counter_play++,channels_play,sample_rate);  
     i2s_play_buffer_size = sample_rate / 1000 * channels_play * 2;  
     SSC_Channel_Set( channels_play, 0 );  
   
@@ -157,7 +170,7 @@ static void Init_Rec_Setting( void )
 {
     channels_rec = Audio_Configure[0].channel_num ;
     sample_rate  = Audio_Configure[0].sample_rate ; 
-    printf( "\r\nStart Rec [%dCH - %dHz]...\r\n",channels_rec,sample_rate);     
+    printf( "\r\nStart [%dth]Rec [%dCH - %dHz]...\r\n",counter_rec++,channels_rec,sample_rate);     
     i2s_rec_buffer_size  = sample_rate / 1000 * channels_rec  * 2; 
     SSC_Channel_Set( 0, channels_rec ); 
 }
@@ -243,21 +256,29 @@ static void Audio_Start_Play_Rec( void )
 */
 static void Audio_Stop( void )
 {  
-#if( 1 )              
-    SSC_Record_Stop();
-    SSC_Play_Stop();          
+#if( 1 ) 
+    
     bulkin_start    = false ;
     bulkout_start   = false ;        
     bulkin_enable   = true ; 
     bulkout_enable  = true ;
     bulkout_kk      = false ; 
-    //delay_ms(100);  //???????????? useless
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;   
-    delay_ms(100);    
-    AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
+    testf           = false ;
+    
+    SSC_Record_Stop();
+    SSC_Play_Stop();  
+    
     delay_ms(100);
-    Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
-    I2S_Init();            
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
+    delay_ms(10);    
+    AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
+//    Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
+    //delay_ms(100);
+    
+    //I2S_Init2();  
+    SSC_Reset(); 
+    
     Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
     printf( "\r\nStop Play&Rec...\r\n"); 
@@ -276,7 +297,15 @@ static void Audio_Stop( void )
     error_bulkout_empt  = 0 ;
     error_bulkin_full   = 0 ;
     error_bulkin_empt   = 0 ;
-  
+       testc=0;
+               debug_trans_counter1 =0;
+               debug_trans_counter2=0;
+               debug_trans_counter3=0;
+               debug_trans_counter4=0;
+               
+            debug_usb_dma_enterhandler=0;
+            debug_usb_dma_IN=0;
+            debug_usb_dma_OUT =0;
 }
 
 
@@ -297,13 +326,15 @@ static unsigned char state_check  = 0; //avoid re-start issue in case of not sto
 void Audio_State_Control( void )
 {
     
-    unsigned char i, err = 0 ;
+    unsigned char err ;
     unsigned int  temp ;
+    
     
     if( audio_cmd_index == AUDIO_CMD_IDLE ) {
         return;
     }
     
+    err = 0 ;
     if( USBD_GetState() < USBD_STATE_CONFIGURED && 
         audio_cmd_index != AUDIO_CMD_VERSION ) {
         err = ERR_USB_STATE;
@@ -335,12 +366,14 @@ void Audio_State_Control( void )
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 3;        
-                Audio_Start_Play_Rec();
+                state_check = 3;  
+                //Audio_Start_Play_Rec();
+                Audio_Start_Play();
+                Audio_Start_Rec();
             break;
 
             case AUDIO_CMD_STOP :   
-                state_check = 0;  
+                state_check = 0;         
                 Audio_Stop();                
             break;   
         
@@ -351,7 +384,8 @@ void Audio_State_Control( void )
                 }
             break;
             
-            case AUDIO_CMD_VERSION:              
+            case AUDIO_CMD_VERSION: 
+                USART_WriteBuffer( AT91C_BASE_US0,(void *)fw_version, sizeof(fw_version) );   
             break;         
             
             default:         
@@ -362,14 +396,8 @@ void Audio_State_Control( void )
         
      }   
     
-     if( audio_cmd_index == AUDIO_CMD_VERSION ) {        
-            //USART_WriteBuffer( AT91C_BASE_US0, (void*)&fw_version[0], sizeof(fw_version) );         
-            for( i = 0; i< sizeof(fw_version) ; i++ ) {
-                USART_Write( AT91C_BASE_US0, fw_version[i], 0 );
-            }
-            
-     } else {          
-            USART_Write( AT91C_BASE_US0, err, 0 );
+     if( audio_cmd_index != AUDIO_CMD_VERSION ) {       
+         USART_Write( AT91C_BASE_US0, err, 0 );
             
      }
         
@@ -395,9 +423,16 @@ void Debug_Info( void )
 {
   
     unsigned int BO_free_size ;
-    unsigned int BI_free_size ;     
-    static unsigned int counter;
+    unsigned int BI_free_size ;
+    unsigned int DBGUART_free_size ;
     
+    static unsigned int counter;
+     
+     DBGUART_free_size = kfifo_get_free_space(&dbguart_fifo) ;
+     DBGUART_free_size = DBGUART_free_size * 100 / DBGUART_FIFO_SIZE;  
+     DBGUART_free_size_min = DBGUART_free_size < DBGUART_free_size_min ? DBGUART_free_size : DBGUART_free_size_min ;
+     printf( " [DBGUART:%3u%>%3u%]", DBGUART_free_size, DBGUART_free_size_min );                         
+   
     if( !(bulkout_start || bulkin_start) ) { 
         printf("\rWaitting for USB trans start...[Miss Stop = %d]",Stop_CMD_Miss_Counter);
         return ; 
@@ -438,7 +473,7 @@ void Debug_Info( void )
     //printf("\r\nPLAY %d, REC %d",counter_play++,counter_rec++); 
     
      
-      printf( "\rIN[Size:%6.6fMB,Full:%u,Empty:%u,FreeSize:%3u%>%3u%] OUT[Size:%6.6fMB,Full:%u,Empty:%u,FreeSize:%3u%<%3u%]",
+      printf( "\rBI[Size:%6.3fM,Ful:%u,Ety:%u,FreeSize:%3u%>%3u%] BO[Size:%6.3fM,Ful:%u,Ety:%u,FreeSize:%3u%<%3u%] INT[IN:%u,OUT:%u]",
                              
                total_transmit/1000000.0,               
                error_bulkin_full,
@@ -450,9 +485,44 @@ void Debug_Info( void )
                error_bulkout_full,
                error_bulkout_empt,
                BO_free_size,
-               BO_free_size_max   
+               BO_free_size_max,
+    
+               debug_usb_dma_IN,
+               debug_usb_dma_OUT   
                    
              ); 
+    
+     DBGUART_free_size = kfifo_get_free_space(&dbguart_fifo) ;
+     DBGUART_free_size = DBGUART_free_size * 100 / DBGUART_FIFO_SIZE;  
+     DBGUART_free_size_min = DBGUART_free_size < DBGUART_free_size_min ? DBGUART_free_size : DBGUART_free_size_min ;
+     printf( " [DBGUART:%3u%>%3u%]", DBGUART_free_size, DBGUART_free_size_min );                         
+   
+     
+     
+     
+    /*
+    printf( "\rIN[Size:%6.3fMB,Full:%u,Ety:%u]OUT[Size:%6.3fMB,Full:%u,Ety:%u][%u,%u,%u,%u][%u][IN:%u,OUT:%u]",
+                             
+               total_transmit/1000000.0,               
+               error_bulkin_full,
+               error_bulkin_empt,
+                          
+               
+               total_received/1000000.0,
+               error_bulkout_full,
+               error_bulkout_empt,
+               
+               debug_trans_counter1,
+               debug_trans_counter2,
+               debug_trans_counter3,
+               debug_trans_counter4,
+               
+            debug_usb_dma_enterhandler,
+            debug_usb_dma_IN,
+            debug_usb_dma_OUT                   
+             ); 
+      */    
+
       
 //            printf( "\rIN[Size:%uMB,Full:%u,Empty:%u,FreeSize:%3u%>%3u%] OUT[Size:%uMB,Full:%u,Empty:%u,FreeSize:%3u%<%3u%]",
 //                             

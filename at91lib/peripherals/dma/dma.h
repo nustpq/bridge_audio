@@ -88,7 +88,9 @@
 #define DMA_DIS                  (1 << 0)
 #define DMA_SUSP                 (1 << 8)
 #define DMA_KEEPON               (1 << 24)
-
+     
+#define DMA_EN                   (1 << 0)
+     
 #define DMA_BTC                  (1 << 0)
 #define DMA_CBTC                 (1 << 8)
 #define DMA_ERR                  (1 << 16)

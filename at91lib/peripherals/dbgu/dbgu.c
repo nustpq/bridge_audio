@@ -32,11 +32,79 @@
 //------------------------------------------------------------------------------
 
 #include "dbgu.h"
+#include <stdbool.h>
+#include <string.h>
 #include <board.h>
+#include "kfifo.h"
+#include "app.h"
+#include <trace.h>
+
+#ifdef DBGUART_FIFO_EN
+
+
+kfifo_t dbguart_fifo;
+
+
+unsigned char FIFO_DBGUART[DBGUART_FIFO_SIZE];
+unsigned char BUFF_DBGUART[DBGUART_BUFFER_SIZE];
+
+void Init_DBGUART_FIFO( void )
+{
+   kfifo_init_static(&dbguart_fifo, FIFO_DBGUART, DBGUART_FIFO_SIZE);
+}  
+
+
+void DBGUART_Service( void )
+{
+    
+    unsigned int len;
+    unsigned char *pChar;
+    unsigned char send_buf[DBGUART_SEND_LEN];
+    
+    pChar = send_buf;
+    len = kfifo_get(&dbguart_fifo, send_buf, DBGUART_SEND_LEN);
+    while( len > 0 ) {
+        DBGU_PutChar( *pChar++ );
+        len--;
+    }
+    
+    
+}
+
+unsigned char Print_Error_Info[] = "\r\n**Overflow**\r\n";
+static unsigned char buff_counter = 0;
+void printc( unsigned char data )
+{
+    unsigned int size;
+    unsigned int len;
+    
+//    BUFF_DBGUART[buff_counter++] = data;
+//    if( buff_counter == DBGUART_BUFFER_SIZE ) {
+//        buff_counter = 0;    
+//        size = kfifo_get_free_space( &dbguart_fifo );        
+//        if(size >= len ) {
+//           kfifo_put(&dbguart_fifo, pStr, len) ;
+//        } else {
+//           kfifo_put(&dbguart_fifo, Print_Error_Info, strlen(Print_Error_Info)) ;        
+//        }
+//        
+//    }
+    kfifo_put(&dbguart_fifo, &data, 1) ;
+    
+  
+}
+
+
+
+#endif
+
 
 //------------------------------------------------------------------------------
 //         Global functions
 //------------------------------------------------------------------------------
+
+
+
 //------------------------------------------------------------------------------
 /// Initializes the DBGU with the given parameters, and enables both the
 /// transmitter and the receiver. The mode parameter contains the value of the
@@ -72,6 +140,8 @@ void DBGU_Configure(
 
     // Enable receiver and transmitter
     AT91C_BASE_DBGU->DBGU_CR = AT91C_US_RXEN | AT91C_US_TXEN;
+    
+    Init_DBGUART_FIFO(); //PQ
 }
 
 //------------------------------------------------------------------------------
@@ -109,6 +179,8 @@ unsigned char DBGU_GetChar(void)
     while ((AT91C_BASE_DBGU->DBGU_CSR & AT91C_US_RXRDY) == 0);
     return AT91C_BASE_DBGU->DBGU_RHR;
 }
+
+
 
 
 

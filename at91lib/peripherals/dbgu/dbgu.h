@@ -63,6 +63,12 @@
 //------------------------------------------------------------------------------
 //         Global functions
 //------------------------------------------------------------------------------
+#define DBGUART_FIFO_SIZE     4096     
+#define DBGUART_BUFFER_SIZE   32
+#define DBGUART_SEND_LEN      32
+     
+     
+extern void Init_DBGUART_FIFO();
 
 extern void DBGU_Configure(
     unsigned int mode,
@@ -74,6 +80,10 @@ extern unsigned char DBGU_GetChar(void);
 extern void DBGU_PutChar(unsigned char c);
 
 extern unsigned int DBGU_IsRxReady(void);
+
+extern void DBGUART_Service( void );
+
+extern void printc( unsigned char data );
 
 #endif //#ifndef DBGU_H
 

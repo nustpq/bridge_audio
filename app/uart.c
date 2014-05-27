@@ -79,6 +79,8 @@ unsigned char state_mac      = CMD_STAT_SYNC1 ;
 unsigned char PcCmdCounter   = 0; 
 
 
+
+
 /*
 *********************************************************************************************************
 *                                    pcInt()
@@ -189,10 +191,11 @@ void USART0_IrqHandler( void )
     unsigned int    data_received;
   
     status        = AT91C_BASE_US0->US_CSR;
-    data_received = UART_BUFFER_SIZE - ( AT91C_BASE_US0->US_RCR );
+    
     
     // Buffer has been read successfully
-    if ( (status & AT91C_US_ENDRX) != 0 ) {         
+    if ( status & AT91C_US_ENDRX ) {  
+        data_received = UART_BUFFER_SIZE;
         usartCurrentBuffer = 1 - usartCurrentBuffer; //pingpong buffer index
         USART_ReadBuffer( AT91C_BASE_US0,(void *)usartBuffers[usartCurrentBuffer], UART_BUFFER_SIZE); // Restart read on buffer
         for( i = 0; i < data_received; i++)  { //analyze the data          
@@ -200,7 +203,8 @@ void USART0_IrqHandler( void )
         }         
     }
     
-    if ( (status & AT91C_US_TIMEOUT) != 0 ) {  
+    if ( status & AT91C_US_TIMEOUT ) {  
+        data_received = UART_BUFFER_SIZE - ( AT91C_BASE_US0->US_RCR );
         AT91C_BASE_US0->US_RCR = 0;   
         usartCurrentBuffer = 1 - usartCurrentBuffer;
         USART_ReadBuffer(AT91C_BASE_US0,(void *)usartBuffers[usartCurrentBuffer], UART_BUFFER_SIZE);    // Restart read on buffer
@@ -208,17 +212,15 @@ void USART0_IrqHandler( void )
         AT91C_BASE_US0->US_RTOR = UART_TIMEOUT_BIT;
         for( i = 0; i< data_received ; i++)  {          
             pcInt(usartBuffers[1-usartCurrentBuffer][i]) ;
-        } 
-     
+        }      
     }
     
-    /*
-    // Buffer has been sent
-    if ((status & AT91C_US_TXBUFE) != 0) {
-        AT91C_BASE_US0->US_IDR = AT91C_US_TXBUFE;
-    }
-    */
     
+    if ( status & AT91C_US_ENDTX  )   {  //Transmit INT        
+        AT91C_BASE_US0->US_IDR   =  AT91C_US_ENDTX  ; //disable PDC tx INT
+        AT91C_BASE_US0->US_PTCR  =   AT91C_PDC_TXTDIS; //stop PDC
+      
+    }
     
     
 }
@@ -237,27 +239,31 @@ void USART0_IrqHandler( void )
 */
 void UART_Init( void )
 {
-      
+    printf("Init UART ...");  
+    
     PIO_Configure(Uart_Pins, PIO_LISTSIZE(Uart_Pins));    
     usartCurrentBuffer = 0 ;
     
-    // Configure USART0　　//Comm between DP/DC and HOST mcu    
-    AT91C_BASE_PMC->PMC_PCER    = 1 << AT91C_ID_US0;
-    AT91C_BASE_US0->US_IDR      = 0xFFFFFFFF;
-    AT91C_BASE_US0->US_IER      =  AT91C_US_ENDRX | AT91C_US_TIMEOUT; 
+    // Configure USART0　　//Comm with PC  
+    AT91C_BASE_PMC->PMC_PCER   = 1 << AT91C_ID_US0;
     USART_Configure(AT91C_BASE_US0,USART_MODE_ASYNCHRONOUS,UART_BAUD, MCK);
-    USART_SetTransmitterEnabled(AT91C_BASE_US0, 1);
-    USART_SetReceiverEnabled(AT91C_BASE_US0, 1);
-    IRQ_ConfigureIT(AT91C_ID_US0, UART_PRIORITY, USART0_IrqHandler); //priority chaned to max?
-    
+   
     AT91C_BASE_US0->US_CR   = AT91C_US_STTTO; //restart timeout counter
     AT91C_BASE_US0->US_RTOR = UART_TIMEOUT_BIT;
+    AT91C_BASE_US0->US_TCR  = 0;
+    AT91C_BASE_US0->US_RCR  = 0;
     
-    USART_ReadBuffer(AT91C_BASE_US0,(void *)usartBuffers[usartCurrentBuffer],UART_BUFFER_SIZE);    
-    IRQ_EnableIT(AT91C_ID_US0);   
+    USART_ReadBuffer(AT91C_BASE_US0,(void *)usartBuffers[usartCurrentBuffer],UART_BUFFER_SIZE);   
+    IRQ_ConfigureIT(AT91C_ID_US0, UART_PRIORITY, USART0_IrqHandler); //priority chaned to max?
+    IRQ_EnableIT(AT91C_ID_US0);  
+    AT91C_BASE_US0->US_IDR      = 0xFFFFFFFF;
+    AT91C_BASE_US0->US_IER      =  AT91C_US_ENDRX | AT91C_US_TIMEOUT; 
+    
+    USART_SetTransmitterEnabled(AT91C_BASE_US0, 1);
+    USART_SetReceiverEnabled(AT91C_BASE_US0, 1);       
       
+    printf("Done\r\n");
     
 }
-
 
 

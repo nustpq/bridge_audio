@@ -1122,7 +1122,7 @@
           <name>CCDefines</name>
           <state>at91sam3u4</state>
           <state>flash</state>
-          <state>TRACE_LEVEL=3</state>
+          <state>TRACE_LEVEL=4</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1183,7 +1183,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>11111111</state>
+          <state>11111110</state>
         </option>
         <option>
           <name>CCDebugInfo</name>
@@ -1256,6 +1256,7 @@
           <state>$PROJ_DIR$\..\..\at91lib/usb</state>
           <state>$PROJ_DIR$\..\..\at91lib/drivers</state>
           <state>$PROJ_DIR$\..\..\at91lib</state>
+          <state>$PROJ_DIR$\..\..\at91lib/utility</state>
           <state>$PROJ_DIR$\..\..\app</state>
           <state>$PROJ_DIR$\..\..\external_libs</state>
           <state>$PROJ_DIR$\..\..\at91lib/boards/at91sam3u-ek</state>

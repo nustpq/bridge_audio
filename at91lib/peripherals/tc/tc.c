@@ -192,7 +192,6 @@ void Timer0_Init( void )
 }
 
 
-
 void  delay_ms( unsigned int delay)
 {
 
@@ -206,6 +205,44 @@ void  delay_ms( unsigned int delay)
 
 
 #define DEBUG_INFO_FRESH_INTERVAL 100  //100ms
+
+
+// Configure sys tick timer for debug_info()
+void SysTick_Init( void )
+{
+  
+   unsigned int value ;
+   unsigned int counter; 
+    
+   counter =  MCK / 8 / 1000 * DEBUG_INFO_FRESH_INTERVAL;  
+   counter = (counter & 0xFF000000) == 0 ? counter : 0x00FFFFFF ;
+   
+   value  = AT91C_NVIC_STICKENABLE ;
+   value &= ~(unsigned int)AT91C_NVIC_STICKCLKSOURCE ; 
+   AT91C_BASE_NVIC->NVIC_STICKRVR = counter ;
+   AT91C_BASE_NVIC->NVIC_STICKCSR = value ;   
+  
+}
+
+
+unsigned char Check_SysTick_State( void )
+{
+  
+    unsigned int status = AT91C_BASE_NVIC->NVIC_STICKCSR;
+
+    if ( status & AT91C_NVIC_STICKCOUNTFLAG ) {   
+        //LED_TOGGLE_DATA ;  
+        return 1;
+        
+    } else {
+        return 0;
+        
+    }
+    
+}
+
+
+
 
 void Timer1_Init( void )
 {
@@ -243,42 +280,6 @@ unsigned char Check_Timer1_State( void )
     }
     
 }
-
-// Configure timer 1 for debug_info()
-void SysTick_Init( void )
-{
-  
-   unsigned int value ;
-   unsigned int counter; 
-    
-   counter =  MCK / 8 / 1000 * DEBUG_INFO_FRESH_INTERVAL;  
-   counter = (counter & 0xFF000000) == 0 ? counter : 0x00FFFFFF ;
-   
-   value  = AT91C_NVIC_STICKENABLE ;
-   value &= ~(unsigned int)AT91C_NVIC_STICKCLKSOURCE ; 
-   AT91C_BASE_NVIC->NVIC_STICKRVR = counter ;
-   AT91C_BASE_NVIC->NVIC_STICKCSR = value ;   
-  
-}
-
-
-unsigned char Check_SysTick_State( void )
-{
-  
-    unsigned int status = AT91C_BASE_NVIC->NVIC_STICKCSR;
-
-    if ( status & AT91C_NVIC_STICKCOUNTFLAG ) {   
-        //LED_TOGGLE_DATA ;  
-        return 1;
-        
-    } else {
-        return 0;
-        
-    }
-    
-}
-
-
 
 
 

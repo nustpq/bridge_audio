@@ -239,14 +239,22 @@ void UsbDataReceived(  unsigned int unused,
                               unsigned int received,
                               unsigned int remaining )
 {
+    TRACE_INFO_NEW_WP("\r\n#BO:") ;
     //Play
     if ( ! bulkout_start ) {
-        TRACE_WARNING("status %d, bulkout_start %d\r\n",status, bulkout_start);
+        printf("\r\nstatus %d, bulkout_start %d\r\n",status, bulkout_start);
         return ;
     }
     if ( status == USBD_STATUS_SUCCESS ) {     
         //while( received > kfifo_get_free_space( &bulkout_fifo ) ) ; //wait if buf is full   
-        kfifo_put(&bulkout_fifo, usbBufferBulkOut, received);      
+        kfifo_put(&bulkout_fifo, usbBufferBulkOut, received);
+        
+        if( check_buf_debug(usbBufferBulkOut, received) ) {
+                printf("\r\n Check USB BI buf err : \r\n");
+                dump_buf_debug(usbBufferBulkOut, received );
+                while(1);
+            }
+        
         if ( USBDATAEPSIZE <= kfifo_get_free_space( &bulkout_fifo ) ) { //enouth free buffer                      
             CDCDSerialDriver_Read(    usbBufferBulkOut,
                                       USBDATAEPSIZE,
@@ -259,7 +267,8 @@ void UsbDataReceived(  unsigned int unused,
         total_received += received ; 
      
     }  else {      
-        TRACE_WARNING( "UsbDataReceived: Transfer error\r\n" );        
+        printf( "\r\nERROR : UsbDataReceived: Transfer error\r\n" ); 
+        
     }
     
     
@@ -286,9 +295,10 @@ void UsbDataTransmit(  unsigned int unused,
                               unsigned int transmit,
                               unsigned int remaining )
 {
+    TRACE_INFO_NEW_WP("\r\n#BI:") ;
     //Record    
     if ( ! bulkin_start ) {
-        TRACE_WARNING("status %d, bulkin_start %d\r\n",status, bulkin_start);
+        printf("\r\nstatus %d, bulkin_start %d\r\n",status, bulkin_start);
         return ;
     }
     
@@ -312,7 +322,7 @@ void UsbDataTransmit(  unsigned int unused,
                                 USBDATAEPSIZE,
                                 (TransferCallback) UsbDataTransmit,
                                 0);  
-        TRACE_WARNING( "\r\nERROR: UsbDataTransmit: Rr-transfer hit" );           
+        TRACE_WARNING( "\r\nERROR : UsbDataTransmit: Rr-transfer hit\r\n" );           
     }    
     
 }
@@ -363,6 +373,7 @@ void USB_Init(void)
     //while ( USBD_GetState() < USBD_STATE_CONFIGURED );
     
     // Start receiving data on the USB
+    
     /*
     CDCDSerialDriver_Read(  usbBufferBulkOut,
                             USBDATAEPSIZE,
@@ -376,7 +387,7 @@ void USB_Init(void)
     */
  
     LED_Clear(USBD_LEDUDATA); 
-    printf("Done");
+    printf("Done\r\n");
     
 }
 

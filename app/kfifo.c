@@ -37,7 +37,22 @@
 // Note: 
 // The fifo size must be 2^n length.
 
-#define min(a,b) ((a) < (b)? (a) : (b) )
+//#define min(a,b) ((a) < (b)? (a) : (b) )
+
+//#define min(x, y) ({ \
+//         typeof(x) _min1 = (x); \
+//         typeof(y) _min2 = (y); \
+//         (void) (&_min1 == &_min2); \
+//         _min1 < _min2 ? _min1 : _min2; })
+   
+inline unsigned int min( unsigned int min_var_a, unsigned int min_var_b )
+{ 
+
+  return ( min_var_a < min_var_b ? min_var_a : min_var_b );
+
+}
+
+
 
 void kfifo_init(kfifo_t *fifo, int size) {
 	fifo->buffer = (unsigned char *) malloc(size);

@@ -124,6 +124,7 @@ void DMAD_Initialize(unsigned char channel)
     unsigned int status;
     unsigned int flag;
     
+    DMA_Disable(); //disbale in case of it's enabled previously
     // Enable peripheral clock
 #if !defined(at91sam9rl64)    
     AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;    
@@ -142,10 +143,10 @@ void DMAD_Initialize(unsigned char channel)
     DMA_DisableIt(flag);
     // Enable DMA.
     DMA_Enable();
-#if !defined(cortexm3)
-    IRQ_ConfigureIT(AT91C_ID_HDMA, 0, DMAD_Handler);
-    IRQ_EnableIT(AT91C_ID_HDMA);
-#endif
+//#if !defined(cortexm3)
+//    IRQ_ConfigureIT(AT91C_ID_HDMA, 0, DMAD_Handler);
+//    IRQ_EnableIT(AT91C_ID_HDMA);
+//#endif
     // Initialize transfer instance.
     dmad.transfers[channel].transferSize = 0;
 }

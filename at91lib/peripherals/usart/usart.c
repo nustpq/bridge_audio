@@ -156,9 +156,11 @@ unsigned char USART_WriteBuffer(
     if ((usart->US_TCR == 0) && (usart->US_TNCR == 0)) {
 
         usart->US_TPR = (unsigned int) buffer;
-        usart->US_TCR = size;
+        usart->US_TCR  = size;
         usart->US_PTCR = AT91C_PDC_TXTEN;
-
+        
+        usart->US_IER  = AT91C_US_ENDTX; //PQ
+        
         return 1;
     }
     // Check if the second PDC bank is free

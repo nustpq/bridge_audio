@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-650168114
+Checksum=-1205317845
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -17,6 +17,8 @@ StopOnThrow=_ 0
 ShowArgs=0
 [Disassembly]
 MixedMode=1
+[JLinkDriver]
+CStepIntDis=_ 0
 [struct_types]
 Fmt0=AUDIO_CFG-sample_rate	4	0
 [watch_formats]
@@ -29,8 +31,6 @@ Fmt5={W}0:srcAddress	4	0
 Fmt6={W}0:status	4	0
 Fmt7={W}0:test	4	0
 Fmt8={W}0:value	4	0
-[JLinkDriver]
-CStepIntDis=_ 0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -49,8 +49,7 @@ Exclusions=
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c}.76.5" 0 0 1 "" 0 "" 0
-Count=1
+Count=0
 [Aliases]
 Count=0
 SuppressDialog=0

@@ -36,8 +36,9 @@
 #include "kfifo.h"
 #include <usb.h>
 #include <app.h>
-
+#include <dbgu/dbgu.h>
 #include <irq/irq.h>
+
 
 int main( void )
 {
@@ -48,27 +49,32 @@ int main( void )
     printf("-- iSAM Audio Bridge Project  --\r\n");
     printf("-- HW version: %s --\r\n", BOARD_NAME);
     printf("-- SW version: %s --\r\n", fw_version);
-    printf("   BOARD_MCK = %dMHz\r\n",BOARD_MCK/1000000);
-    printf("   USBEndpointSize = %d B, PlayPreBuffer = %d ms\r\n", USBDATAEPSIZE, 1<<PLAY_BUF_DLY_N);
+    printf("   BOARD_MCK = %dMHz\r\n", BOARD_MCK/1000000);
+    printf("   USBEPSize = %d B, PlayPreBuffer = %d ms\r\n", USBDATAEPSIZE, 1<<PLAY_BUF_DLY_N);
     printf("-- Compiled: %s %s by PQ--\r\n", __DATE__, __TIME__);
     printf("--------------------------------------------------\r\n");
     
-    Timer0_Init();     
-    SysTick_Init(); 
+    Timer0_Init();    
+    SysTick_Init();
     UART_Init();
-#if(1)    
+           
+#if( 1 )
 #else
     USART_Write( AT91C_BASE_US0, 0, 0 ); //Send ACK
+    delay_ms(1000);
 #endif
-    USB_Init();
-    I2S_Init();    
-    printf("\r\n");
     
-    while(1) {   
+    USB_Init();
+    I2S_Init();
+    
+    while(1) {  
       
-        Debug_Info();              
-        Audio_State_Control(); 
+        //Debug_Info();              
+        Audio_State_Control();
+        DBGUART_Service();
       
     }
+    
+    
     
 }

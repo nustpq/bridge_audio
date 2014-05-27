@@ -118,6 +118,7 @@ void SSC_Configure(AT91S_SSC *ssc,
     }
 }
 
+
 //------------------------------------------------------------------------------
 /// Configures the transmitter of a SSC peripheral. Several macros can be used
 /// to compute the values of the Transmit Clock Mode Register (TCMR) and the
@@ -289,6 +290,7 @@ unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
     return 0 ;
   
 }
+
 
 /*
 unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
@@ -668,10 +670,17 @@ void SSC_Init( unsigned int mclk )
     SSC_ConfigureTransmitter( BOARD_AT73C213_SSC,  tcmr.value,  tfmr.value   );
     SSC_ConfigureReceiver(  BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   );
     
-    SSC_DisableTransmitter( BOARD_AT73C213_SSC ) ; 
-    SSC_DisableReceiver(  BOARD_AT73C213_SSC ) ; 
-    
+    //SSC_DisableTransmitter( BOARD_AT73C213_SSC ) ; 
+    //SSC_DisableReceiver(  BOARD_AT73C213_SSC ) ; 
     //SSC_EnableTransmitter( BOARD_AT73C213_SSC ) ; 
     //SSC_EnableReceiver(  BOARD_AT73C213_SSC ) ; 
+    
+}
+
+
+void SSC_Reset( void )
+{
+  
+    BOARD_AT73C213_SSC->SSC_CR =  AT91C_SSC_SWRST;
     
 }

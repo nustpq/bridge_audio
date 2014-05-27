@@ -70,7 +70,7 @@
 //#define BOARD_MCKR ( AT91C_PMC_PRES_CLK_2 | AT91C_PMC_CSS_PLLA_CLK) //choose PLLA out 96M / 2 = 48M  //48000000
 #define BOARD_MCKR ( AT91C_PMC_PRES_CLK | AT91C_PMC_CSS_PLLA_CLK) //choose PLLA out 96M / 1 = 96M  //96000000
 // Define clock timeout
-#define CLOCK_TIMEOUT           0xFFFFFFFF
+#define CLOCK_TIMEOUT           0xFF
 
 //------------------------------------------------------------------------------
 //         Local variables
@@ -122,8 +122,8 @@ void LowLevelInit(void)
         while (!(AT91C_BASE_PMC->PMC_SR & AT91C_PMC_MOSCXTS) && (timeout++ < CLOCK_TIMEOUT));        
     }
     //fix AB01 power issue, wait a moment
-    timeout = 0;
-    while(timeout++ < CLOCK_TIMEOUT);  
+//    timeout = 0;
+//    while(timeout++ < CLOCK_TIMEOUT);  
     /* Switch to 3-20MHz Xtal oscillator */
     AT91C_BASE_PMC->PMC_MOR = (0x37 << 16) | BOARD_OSCOUNT | AT91C_CKGR_MOSCRCEN | AT91C_CKGR_MOSCXTEN | AT91C_CKGR_MOSCSEL;
     /* Switch to 12MHz inner RC oscillator */

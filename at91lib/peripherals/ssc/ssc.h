@@ -137,6 +137,7 @@ extern unsigned char SSC_ReadBuffer(AT91S_SSC *ssc,
                                            unsigned int length);
 
 extern void SSC_Init( unsigned int mclk );
+extern void SSC_Reset( void );
 extern void SSC_Channel_Set(unsigned char tx_ch_num, unsigned char rx_ch_num );
 
 typedef union __TCMR

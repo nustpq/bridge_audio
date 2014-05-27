@@ -161,13 +161,13 @@ void CDCDSerialDriver_Initialize()
     TRACE_INFO("CDCDSerialDriver_Initialize\n\r");
     
     // Initialize Abstract Control Model attributes
-    CDCLineCoding_Initialize(&(cdcdSerialDriver.lineCoding),
-                             115200,
-                             CDCLineCoding_ONESTOPBIT,
-                             CDCLineCoding_NOPARITY,
-                             8);
-    cdcdSerialDriver.isCarrierActivated = 0;
-    cdcdSerialDriver.serialState = 0;
+//    CDCLineCoding_Initialize(&(cdcdSerialDriver.lineCoding),
+//                             115200,
+//                             CDCLineCoding_ONESTOPBIT,
+//                             CDCLineCoding_NOPARITY,
+//                             8);
+//    cdcdSerialDriver.isCarrierActivated = 0;
+//    cdcdSerialDriver.serialState = 0;
 
     // Initialize the standard driver
     USBDDriver_Initialize(&(cdcdSerialDriver.usbdDriver),
