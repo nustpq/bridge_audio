@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-const char fw_version[] = "[FW:A:V2.8]";
+const char fw_version[] = "[FW:A:V2.9]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -404,7 +404,7 @@ void Debug_Info( void )
     }
     
     //start print debug_after USB trans started
-    if( (total_received < 2048) && (total_transmit < 2048) ){  
+    if( (total_received < 204800) && (total_transmit < 204800) ){  
         return;
     }  
          
@@ -424,8 +424,7 @@ void Debug_Info( void )
     if( counter++ % 20 == 0 ) { //20*100ms = 1s 
         printf("\r\n");        
     } 
-    
-    
+        
     
 //    if( (total_received>>1) > total_transmit ) {
 //        printf( "\rbulkin_start = %d , bulkin_enable = %d, bulkin_fifo data size = %d ",                
@@ -438,68 +437,38 @@ void Debug_Info( void )
     //if(total_transmit >5000000 ) {  error_bulkin_full++; } //simulate bulkin fifo full error 
     //printf("\r\nPLAY %d, REC %d",counter_play++,counter_rec++); 
     
-//    printf( "\rBO:[%4.6f]MB-BI:[%4.6f]MB. eBI_F[%u]-eBI_E[%u]-[%3u%](%3u%). eBO_F[%u]-eBO_E[%u]-[%3u%](%3u%)",
-//               total_received/1000000.0,               
-//               total_transmit/1000000.0,
-//               
-//               error_bulkin_full,
-//               error_bulkin_empt,
-//               BI_free_size,
-//               BI_free_size_min,
-//               
-//               error_bulkout_full,
-//               error_bulkout_empt,
-//               BO_free_size,
-//               BO_free_size_max            
-//               );
-   
-//      printf( "\rIN[Size:%10uB,Full:%u,Empty:%u,FreeSize:%3u%>%3u%] OUT[Size:%10uB,Full:%u,Empty:%u,FreeSize:%3u%<%3u%]",
-//                             
-//               total_transmit,               
-//               error_bulkin_full,
-//               error_bulkin_empt,
-//               BI_free_size,
-//               BI_free_size_min,               
-//               
-//               total_received,
-//               error_bulkout_full,
-//               error_bulkout_empt,
-//               BO_free_size,
-//               BO_free_size_max   
-//                   
-//               ); 
-      
-//      printf( "\rIN[Size:%6.6fMB,Full:%u,Empty:%u,FreeSize:%3u%>%3u%] OUT[Size:%6.6fMB,Full:%u,Empty:%u,FreeSize:%3u%<%3u%]",
-//                             
-//               total_transmit/1000000.0,               
-//               error_bulkin_full,
-//               error_bulkin_empt,
-//               BI_free_size,
-//               BI_free_size_min,               
-//               
-//               total_received/1000000.0,
-//               error_bulkout_full,
-//               error_bulkout_empt,
-//               BO_free_size,
-//               BO_free_size_max   
-//                   
-//               ); 
-      
-            printf( "\rIN[Size:%uMB,Full:%u,Empty:%u,FreeSize:%3u%>%3u%] OUT[Size:%uMB,Full:%u,Empty:%u,FreeSize:%3u%<%3u%]",
+     
+      printf( "\rIN[Size:%6.6fMB,Full:%u,Empty:%u,FreeSize:%3u%>%3u%] OUT[Size:%6.6fMB,Full:%u,Empty:%u,FreeSize:%3u%<%3u%]",
                              
-               (unsigned int)(total_transmit>>20),               
+               total_transmit/1000000.0,               
                error_bulkin_full,
                error_bulkin_empt,
                BI_free_size,
                BI_free_size_min,               
                
-               (unsigned int)(total_received>>20), 
+               total_received/1000000.0,
                error_bulkout_full,
                error_bulkout_empt,
                BO_free_size,
                BO_free_size_max   
                    
-               ); 
+             ); 
+      
+//            printf( "\rIN[Size:%uMB,Full:%u,Empty:%u,FreeSize:%3u%>%3u%] OUT[Size:%uMB,Full:%u,Empty:%u,FreeSize:%3u%<%3u%]",
+//                             
+//               (unsigned int)(total_transmit>>20),               
+//               error_bulkin_full,
+//               error_bulkin_empt,
+//               BI_free_size,
+//               BI_free_size_min,               
+//               
+//               (unsigned int)(total_received>>20), 
+//               error_bulkout_full,
+//               error_bulkout_empt,
+//               BO_free_size,
+//               BO_free_size_max   
+//                   
+//               ); 
 }
 
 

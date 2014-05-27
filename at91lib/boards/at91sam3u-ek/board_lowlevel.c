@@ -96,8 +96,8 @@ void LowLevelInit(void)
 
     /* Set 2 WS for Embedded Flash Access
      ************************************/
-    AT91C_BASE_EFC0->EFC_FMR = AT91C_EFC_FWS_2WS;
-    AT91C_BASE_EFC1->EFC_FMR = AT91C_EFC_FWS_2WS;
+    AT91C_BASE_EFC0->EFC_FMR = AT91C_EFC_FWS_3WS; //PQ
+    AT91C_BASE_EFC1->EFC_FMR = AT91C_EFC_FWS_3WS; 
 
     /* Watchdog initialization
      *************************/
