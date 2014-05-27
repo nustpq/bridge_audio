@@ -1,0 +1,55 @@
+[Stack]
+FillEnabled=1
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[DebugChecksum]
+Checksum=907480197
+[Exceptions]
+StopOnUncaught=_ 0
+StopOnThrow=_ 0
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[struct_types]
+Fmt0=AUDIO_CFG-sample_rate	4	0
+[watch_formats]
+Fmt0={W}0:address	4	0
+Fmt1={W}0:buffSize	4	0
+Fmt2={W}0:dd	4	0
+Fmt3={W}0:reg_A	4	0
+Fmt4={W}0:reg_B	4	0
+Fmt5={W}0:srcAddress	4	0
+Fmt6={W}0:status	4	0
+Fmt7={W}0:test	4	0
+Fmt8={W}0:value	4	0
+[JLinkDriver]
+CStepIntDis=_ 0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[CallStackLog]
+Enabled=0
+[DriverProfiling]
+Enabled=0
+Mode=0
+Graph=0
+Symbiont=0
+Exclusions=
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Count=0
+[Aliases]
+Count=0
+SuppressDialog=0
