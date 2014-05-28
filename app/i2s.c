@@ -127,7 +127,7 @@ void fill_buf_debug( unsigned char *pChar, unsigned int size)
        *(pInt+i++) =  0x4444 ;     
        *(pInt+i++) =  0x5555 ; 
        *(pInt+i++) =  0x6666 ;   
-    } 
+    }
 
   
 }

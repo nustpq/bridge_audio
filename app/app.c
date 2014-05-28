@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.01]";
+char fw_version[] = "[FW:A:V3.02]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -297,15 +297,16 @@ static void Audio_Stop( void )
     error_bulkout_empt  = 0 ;
     error_bulkin_full   = 0 ;
     error_bulkin_empt   = 0 ;
-       testc=0;
-               debug_trans_counter1 =0;
-               debug_trans_counter2=0;
-               debug_trans_counter3=0;
-               debug_trans_counter4=0;
+    
+    testc=0;
+    debug_trans_counter1 =0;
+    debug_trans_counter2=0;
+    debug_trans_counter3=0;
+    debug_trans_counter4=0;
                
-            debug_usb_dma_enterhandler=0;
-            debug_usb_dma_IN=0;
-            debug_usb_dma_OUT =0;
+    debug_usb_dma_enterhandler=0;
+    debug_usb_dma_IN=0;
+    debug_usb_dma_OUT =0;
 }
 
 
@@ -428,12 +429,10 @@ void Debug_Info( void )
     
     static unsigned int counter;
      
-     DBGUART_free_size = kfifo_get_free_space(&dbguart_fifo) ;
-     DBGUART_free_size = DBGUART_free_size * 100 / DBGUART_FIFO_SIZE;  
-     DBGUART_free_size_min = DBGUART_free_size < DBGUART_free_size_min ? DBGUART_free_size : DBGUART_free_size_min ;
-     printf( " [DBGUART:%3u%>%3u%]", DBGUART_free_size, DBGUART_free_size_min );                         
-   
     if( !(bulkout_start || bulkin_start) ) { 
+        if( Check_SysTick_State() == 0 ){ 
+              return;
+        }
         printf("\rWaitting for USB trans start...[Miss Stop = %d]",Stop_CMD_Miss_Counter);
         return ; 
     }

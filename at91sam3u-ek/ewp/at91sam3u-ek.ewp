@@ -1122,7 +1122,7 @@
           <name>CCDefines</name>
           <state>at91sam3u4</state>
           <state>flash</state>
-          <state>TRACE_LEVEL=4</state>
+          <state>TRACE_LEVEL=3</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
