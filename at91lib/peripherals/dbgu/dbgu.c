@@ -39,7 +39,7 @@
 #include "app.h"
 #include <trace.h>
 
-#ifdef DBGUART_FIFO_EN
+
 
 
 kfifo_t dbguart_fifo;
@@ -56,7 +56,7 @@ void Init_DBGUART_FIFO( void )
 
 void DBGUART_Service( void )
 {
-    
+#ifdef DBGUART_FIFO_EN    
     unsigned int len;
     unsigned char *pChar;
     unsigned char send_buf[DBGUART_SEND_LEN];
@@ -67,7 +67,7 @@ void DBGUART_Service( void )
         DBGU_PutChar( *pChar++ );
         len--;
     }
-    
+#endif    
     
 }
 
@@ -96,7 +96,7 @@ void printc( unsigned char data )
 
 
 
-#endif
+
 
 
 //------------------------------------------------------------------------------

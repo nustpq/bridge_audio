@@ -29,7 +29,7 @@
 #define TIMER_PRIORITY      6
 #define USB_PRIORITY        3
 #define HDMA_PRIORITY       2
-#define UART_PRIORITY       4
+#define UART_PRIORITY       1
 
 
 #define  AUDIO_CMD_IDLE                 0x00
@@ -88,6 +88,7 @@ extern volatile unsigned int testc;
 extern kfifo_t bulkout_fifo;
 extern kfifo_t bulkin_fifo;
 
+extern volatile unsigned int bulkout_empt;
 
 extern void Debug_Info( void );
 extern void Usb_Init(void);

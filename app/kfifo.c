@@ -91,6 +91,7 @@ unsigned int kfifo_put(kfifo_t *fifo, unsigned char *buffer, unsigned int len) {
 	return len;
 }
 
+extern kfifo_t bulkout_fifo;
 unsigned int kfifo_get(kfifo_t *fifo, unsigned char *buffer, unsigned int len) {
 	unsigned int l;       
         //__disable_interrupt(); //PQ
@@ -100,7 +101,10 @@ unsigned int kfifo_get(kfifo_t *fifo, unsigned char *buffer, unsigned int len) {
 	memcpy(buffer, fifo->buffer + (fifo->out & (fifo->size - 1)), l);
 	/* then get the rest (if any) from the beginning of the buffer */
 	memcpy(buffer + l, fifo->buffer, len - l);
-	fifo->out += len;
+	fifo->out += len; 
+//        if(fifo == &bulkout_fifo) {
+//            printf("\r\n::%d, %d ",fifo->out,len);
+//        }
         //__enable_interrupt(); //PQ
 	return len;
 }

@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.02]";
+char fw_version[] = "[FW:A:V3.03]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -88,7 +88,7 @@ volatile bool bulkout_enable    = true;
 volatile bool bulkout_kk        = false ;
 volatile bool testf             = false ;
 volatile unsigned int testc     = 0;
-
+volatile unsigned int bulkout_empt = 0;
 volatile unsigned int debug_trans_counter1 = 0 ;
 volatile unsigned int debug_trans_counter2 = 0 ;  
 volatile unsigned int debug_trans_counter3 = 0 ;
@@ -151,7 +151,8 @@ static void Init_Play_Setting( void )
     printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...\r\n",counter_play++,channels_play,sample_rate);  
     i2s_play_buffer_size = sample_rate / 1000 * channels_play * 2;  
     SSC_Channel_Set( channels_play, 0 );  
-  
+    printf( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out); 
+    if(bulkout_kk) printf("?????????");
 }
 
 
@@ -257,27 +258,21 @@ static void Audio_Start_Play_Rec( void )
 static void Audio_Stop( void )
 {  
 #if( 1 ) 
-    
-    bulkin_start    = false ;
-    bulkout_start   = false ;        
-    bulkin_enable   = true ; 
-    bulkout_enable  = true ;
-    bulkout_kk      = false ; 
-    testf           = false ;
-    
+        
     SSC_Record_Stop();
-    SSC_Play_Stop();  
+    SSC_Play_Stop();
     
-    delay_ms(100);
+    delay_ms(100);      
+    
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
-    delay_ms(10);    
+    delay_ms(100);    
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
-//    Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
-    //delay_ms(100);
+    Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
+    delay_ms(100);
     
-    //I2S_Init2();  
-    SSC_Reset(); 
+    I2S_Init();  
+    //SSC_Reset(); 
     
     Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
@@ -287,7 +282,16 @@ static void Audio_Stop( void )
     while(1) {
         AT91C_BASE_RSTC->RSTC_RCR = 0xa5000005 ; //reset MCU     
     }            
-#endif            
+#endif    
+    
+    bulkin_start    = false ;
+    bulkout_start   = false ;        
+    bulkin_enable   = true ; 
+    bulkout_enable  = true ;
+    bulkout_kk      = false ; 
+    testf           = false ;
+    bulkout_empt    = 0;  
+    
     //reset debug counters
     BO_free_size_max    = 0 ;
     BI_free_size_min    = 100 ; 
@@ -341,7 +345,7 @@ void Audio_State_Control( void )
         err = ERR_USB_STATE;
         
     } else {
-    
+   
         switch( audio_cmd_index ) {
             
             case AUDIO_CMD_START_REC :                
@@ -368,13 +372,13 @@ void Audio_State_Control( void )
                     Stop_CMD_Miss_Counter++;
                 } 
                 state_check = 3;  
-                //Audio_Start_Play_Rec();
-                Audio_Start_Play();
-                Audio_Start_Rec();
+                Audio_Start_Play_Rec();
+                //Audio_Start_Play();
+                //Audio_Start_Rec();
             break;
 
             case AUDIO_CMD_STOP :   
-                state_check = 0;         
+                state_check = 0;               
                 Audio_Stop();                
             break;   
         

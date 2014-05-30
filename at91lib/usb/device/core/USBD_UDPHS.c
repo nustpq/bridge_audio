@@ -1746,8 +1746,8 @@ void USBD_Init(void)
 
 void  Reset_USBHS_HDMA (unsigned char channel)
 {
-    //unsigned int i;
-    
+#ifdef DMA   
+    //unsigned int i;    
     
    // for( i=1; i<=((AT91C_BASE_UDPHS->UDPHS_IPFEATURES & AT91C_UDPHS_DMA_CHANNEL_NBR)>>4); i++ ) {
 
@@ -1800,7 +1800,7 @@ void  Reset_USBHS_HDMA (unsigned char channel)
         AT91C_BASE_UDPHS->UDPHS_DMA[channel].UDPHS_DMASTATUS = AT91C_BASE_UDPHS->UDPHS_DMA[channel].UDPHS_DMASTATUS;
 
     //}
-    
+#endif    
 }
 
 

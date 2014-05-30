@@ -34,6 +34,7 @@
 #include <dbgu/dbgu.h>
 #include <utility/trace.h>
 #include <irq/irq.h>
+#include <utility/led.h>
 #include <board.h>
 #include <stdbool.h>
 #include "kfifo.h"
@@ -124,7 +125,7 @@ void pcInt(  unsigned char ch )
                     break ;                
                 case RULER_CMD_STOP_AUDIO :
                     audio_cmd_index = AUDIO_CMD_STOP ; 
-                    state_mac = CMD_STAT_SYNC1; 
+                    state_mac = CMD_STAT_SYNC1;                     
                     break ;  
                 case RULER_CMD_GET_AUDIO_VERSION  :
                     audio_cmd_index = AUDIO_CMD_VERSION ; 
@@ -167,7 +168,7 @@ void pcInt(  unsigned char ch )
         break ;
         
     } 
-    
+
     
 }
 

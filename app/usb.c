@@ -252,7 +252,7 @@ void UsbDataReceived(  unsigned int unused,
         if( check_buf_debug(usbBufferBulkOut, received) ) {
                 printf("\r\n Check USB BI buf err : \r\n");
                 dump_buf_debug(usbBufferBulkOut, received );
-                while(1);
+                while(1){ DBGUART_Service();};
             }
         
         if ( USBDATAEPSIZE <= kfifo_get_free_space( &bulkout_fifo ) ) { //enouth free buffer                      

@@ -69,7 +69,7 @@ int main( void )
     
     while(1) {  
       
-        Debug_Info();              
+        //Debug_Info();              
         Audio_State_Control();
         DBGUART_Service();
       

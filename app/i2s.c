@@ -145,13 +145,14 @@ unsigned char check_buf_debug( unsigned char *pChar, unsigned int size)
 //           return 1 ;  
 //        } 
         i++;
-        if( *(pInt+i++) !=  0x55AA ) {
-           return 1 ;  
+        if( *(pInt+i++) !=  0x2211 ) {
+           return 2 ;  
         }        
-        if( *(pInt+i++) !=  0x55AA ) {
-           return 1 ;  
-        }       
-        if( *(pInt+i++) !=  0x55AA ) {
+//        if( *(pInt+i++) !=  0x55AA ) {
+//           return 1 ;  
+//        }   
+        i++;
+        if( *(pInt+i++) !=  0x4433 ) {
            return 1 ;  
         }       
     
@@ -188,7 +189,7 @@ void dump_buf_debug( unsigned char *pChar, unsigned int size)
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static unsigned int bulkout_empt;
+
 void HDMA_IrqHandler(void)
 {
     unsigned int status;  
@@ -210,12 +211,16 @@ void HDMA_IrqHandler(void)
 //        DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL); 
         i2s_buffer_out_index ^= 1;   
         temp = kfifo_get_data_size(&bulkout_fifo);
-        //printf("\n\r%d, %d",temp,error_bulkout_empt);
+        
+        printf("\n\r[%d, %d]",temp,error_bulkout_empt);
         if( (i2s_play_buffer_size<<PLAY_BUF_DLY_N) <= temp) { //play buffer delay (2^PLAY_BUF_DLY_N) ms
             bulkout_kk = true; //1st buffered enough data will trigger SSC Out
+            printf("@");
         }
+        if(bulkout_kk) printf("$");
         if ( (i2s_play_buffer_size <= temp) && bulkout_kk ) { //play until buf have enough data  
             if( bulkout_empt ) {
+                printf( "\r\n ##IN1: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
                 if( bulkout_empt > bulkout_fifo.size ) {
                     bulkout_empt -= bulkout_fifo.size;
                     kfifo_release(&bulkout_fifo, bulkout_fifo.size);
@@ -226,22 +231,27 @@ void HDMA_IrqHandler(void)
                     kfifo_release(&bulkout_fifo, bulkout_empt);
                     bulkout_empt = 0;
                 }
-            }                
+                printf( "\r\n ##IN2: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
+            }  
+             
             kfifo_get(&bulkout_fifo, (unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ;
+            ///printf( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
             //Demo_Sine_Gen((void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size, Audio_Configure[1].sample_rate); 
 
             testf = true;
             if( check_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ) {
                 printf("\n\r Check I2S buf err : \n\r");
                 dump_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size );
-                while(1);
+                while(1){ DBGUART_Service();};
             }
             
         } else {  //play buf empty error, send silence : 0x00
             memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
             error_bulkout_empt++; //bulkout fifo empty error
+            //printf("[");
             if( bulkout_kk ) {               
                 bulkout_empt++;
+                //printf("*");
             }
         }
         
@@ -257,6 +267,8 @@ void HDMA_IrqHandler(void)
 
         }
     }
+    
+    
     
     if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
         TRACE_INFO_NEW_WP("-SI-") ; 
@@ -406,10 +418,14 @@ void SSC_Record_Stop(void)
 */
 void I2S_Init( void )
 {  
+    
     printf("Init I2S ..."); 
 
     PIO_Configure(&SSC_Pins, 1); 
+    
     IRQ_DisableIT(BOARD_AT73C213_SSC_ID); 
+    IRQ_DisableIT(AT91C_ID_HDMA);
+    
     SSC_Init( MCK ); 
     // Initialize DMA controller.    
     DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
