@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.03]";
+char fw_version[] = "[FW:A:V3.04]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -151,8 +151,7 @@ static void Init_Play_Setting( void )
     printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...\r\n",counter_play++,channels_play,sample_rate);  
     i2s_play_buffer_size = sample_rate / 1000 * channels_play * 2;  
     SSC_Channel_Set( channels_play, 0 );  
-    printf( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out); 
-    if(bulkout_kk) printf("?????????");
+
 }
 
 
@@ -266,13 +265,14 @@ static void Audio_Stop( void )
     
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
-    delay_ms(100);    
+    delay_ms(50);    
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
+    delay_ms(50); 
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
-    delay_ms(100);
+    delay_ms(50);
     
-    I2S_Init();  
-    //SSC_Reset(); 
+    //I2S_Init();  
+    SSC_Reset(); 
     
     Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
@@ -373,8 +373,6 @@ void Audio_State_Control( void )
                 } 
                 state_check = 3;  
                 Audio_Start_Play_Rec();
-                //Audio_Start_Play();
-                //Audio_Start_Rec();
             break;
 
             case AUDIO_CMD_STOP :   

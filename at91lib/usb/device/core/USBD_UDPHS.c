@@ -65,7 +65,7 @@
 #define SHIFT_INTERUPT    8
 
 /// Compile option, use DMA. Remove this define for not use DMA.
-//#define DMA
+#define DMA
 
 /// Max size of the FMA FIFO
 #define DMA_MAX_FIFO_SIZE     65536
@@ -627,7 +627,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
     unsigned char result = USBD_STATUS_SUCCESS;
  
     
-    debug_usb_dma_enterhandler++;
+    //debug_usb_dma_enterhandler++;
     
     status = AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMASTATUS;
     //printf("<Dma.Ept%d>", bEndpoint);
@@ -883,12 +883,12 @@ void UDPD_IrqHandler(void)
                     // Check if endpoint has a pending interrupt
                     if ((status & (1 << SHIFT_DMA << numIT)) != 0) {
                         
-                        if( numIT == CDCDSerialDriverDescriptors_DATAOUT ) {
-                            debug_usb_dma_OUT++;
-                        }
-                          if( numIT == CDCDSerialDriverDescriptors_DATAIN ) {
-                            debug_usb_dma_IN++;
-                        }
+//                        if( numIT == CDCDSerialDriverDescriptors_DATAOUT ) {
+//                            debug_usb_dma_OUT++;
+//                        }
+//                          if( numIT == CDCDSerialDriverDescriptors_DATAIN ) {
+//                            debug_usb_dma_IN++;
+//                        }
                         
                         UDPHS_DmaHandler(numIT);
                         status &= ~(1 << SHIFT_DMA << numIT);
@@ -1758,22 +1758,22 @@ void  Reset_USBHS_HDMA (unsigned char channel)
         
         // Clear status endpoint
         // Disable endpoint
-        AT91C_BASE_UDPHS->UDPHS_EPT[channel].UDPHS_EPTCTLDIS = AT91C_UDPHS_SHRT_PCKT
-                                                       | AT91C_UDPHS_BUSY_BANK
-                                                       | AT91C_UDPHS_NAK_OUT
-                                                       | AT91C_UDPHS_NAK_IN
-                                                       | AT91C_UDPHS_STALL_SNT
-                                                       | AT91C_UDPHS_RX_SETUP
-                                                       | AT91C_UDPHS_TX_PK_RDY
-                                                       | AT91C_UDPHS_TX_COMPLT
-                                                       | AT91C_UDPHS_RX_BK_RDY
-                                                       | AT91C_UDPHS_ERR_OVFLW
-                                                       | AT91C_UDPHS_MDATA_RX
-                                                       | AT91C_UDPHS_DATAX_RX
-                                                       | AT91C_UDPHS_NYET_DIS
-                                                       | AT91C_UDPHS_INTDIS_DMA
-                                                       | AT91C_UDPHS_AUTO_VALID
-                                                       | AT91C_UDPHS_EPT_DISABL;
+//        AT91C_BASE_UDPHS->UDPHS_EPT[channel].UDPHS_EPTCTLDIS = AT91C_UDPHS_SHRT_PCKT
+//                                                       | AT91C_UDPHS_BUSY_BANK
+//                                                       | AT91C_UDPHS_NAK_OUT
+//                                                       | AT91C_UDPHS_NAK_IN
+//                                                       | AT91C_UDPHS_STALL_SNT
+//                                                       | AT91C_UDPHS_RX_SETUP
+//                                                       | AT91C_UDPHS_TX_PK_RDY
+//                                                       | AT91C_UDPHS_TX_COMPLT
+//                                                       | AT91C_UDPHS_RX_BK_RDY
+//                                                       | AT91C_UDPHS_ERR_OVFLW
+//                                                       | AT91C_UDPHS_MDATA_RX
+//                                                       | AT91C_UDPHS_DATAX_RX
+//                                                       | AT91C_UDPHS_NYET_DIS
+//                                                       | AT91C_UDPHS_INTDIS_DMA
+//                                                       | AT91C_UDPHS_AUTO_VALID
+//                                                       | AT91C_UDPHS_EPT_DISABL;
 
         // Clear status endpoint
         AT91C_BASE_UDPHS->UDPHS_EPT[channel].UDPHS_EPTCLRSTA = AT91C_UDPHS_TOGGLESQ
