@@ -96,6 +96,7 @@ extern void Init_Buffer( void );
 extern void Audio_State_Control( void );
 
 void UART_Init( void );
+void Check_UART_CMD( void );
 void USB_Init( void );
 void I2S_Init( void );
 void I2S_ReInit( void );

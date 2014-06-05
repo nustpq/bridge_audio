@@ -184,24 +184,19 @@ void pcInt(  unsigned char ch )
 * Note(s)     : None.
 *********************************************************************************************************
 */
+static unsigned int data_received = 0;
 void USART0_IrqHandler( void )
 {
   
-    unsigned int    i ;
-    unsigned int    status ;
-    unsigned int    data_received;
-  
-    status        = AT91C_BASE_US0->US_CSR;
-    
+    unsigned int    status ;  
+    status        = AT91C_BASE_US0->US_CSR;    
     
     // Buffer has been read successfully
     if ( status & AT91C_US_ENDRX ) {  
         data_received = UART_BUFFER_SIZE;
         usartCurrentBuffer = 1 - usartCurrentBuffer; //pingpong buffer index
         USART_ReadBuffer( AT91C_BASE_US0,(void *)usartBuffers[usartCurrentBuffer], UART_BUFFER_SIZE); // Restart read on buffer
-        for( i = 0; i < data_received; i++)  { //analyze the data          
-            pcInt( usartBuffers[1-usartCurrentBuffer][i] ) ;
-        }         
+
     }
     
     if ( status & AT91C_US_TIMEOUT ) {  
@@ -211,9 +206,7 @@ void USART0_IrqHandler( void )
         USART_ReadBuffer(AT91C_BASE_US0,(void *)usartBuffers[usartCurrentBuffer], UART_BUFFER_SIZE);    // Restart read on buffer
         AT91C_BASE_US0->US_CR   = AT91C_US_STTTO; //restart timeout counter
         AT91C_BASE_US0->US_RTOR = UART_TIMEOUT_BIT;
-        for( i = 0; i< data_received ; i++)  {          
-            pcInt(usartBuffers[1-usartCurrentBuffer][i]) ;
-        }      
+    
     }
     
     
@@ -267,4 +260,22 @@ void UART_Init( void )
     
 }
 
+
+void Check_UART_CMD( void )
+{
+    
+    unsigned int i ;
+    unsigned int counter ;    
+    
+    counter = data_received ;
+    if( counter == 0 ) {
+        return ;
+    }
+    data_received = 0;
+    for( i = 0; i < counter; i++)  { //analyze the data          
+            pcInt( usartBuffers[1-usartCurrentBuffer][i] ) ;
+    } 
+    
+    
+}
 
