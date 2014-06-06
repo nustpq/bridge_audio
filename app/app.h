@@ -83,7 +83,7 @@ extern volatile bool bulkout_enable;
 extern volatile bool bulkout_start;
 extern volatile bool bulkin_start;
 extern volatile bool bulkout_kk;
-extern volatile bool testf;
+extern volatile bool flag_stop;
 extern volatile unsigned int testc;
 extern kfifo_t bulkout_fifo;
 extern kfifo_t bulkin_fifo;

@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.05]";
+char fw_version[] = "[FW:A:V3.06]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -86,7 +86,7 @@ volatile bool bulkin_start      = false ;
 volatile bool bulkin_enable     = true;
 volatile bool bulkout_enable    = true;
 volatile bool bulkout_kk        = false ;
-volatile bool testf             = false ;
+volatile bool flag_stop         = false ;
 volatile unsigned int testc     = 0;
 volatile unsigned int bulkout_empt = 0;
 volatile unsigned int debug_trans_counter1 = 0 ;
@@ -209,6 +209,7 @@ static void Audio_Start_Rec( void )
 */
 static void Audio_Start_Play( void )
 {  
+     
     Init_I2S_Buffer();   
     Init_Play_Setting();   
     SSC_Play_Start();
@@ -230,7 +231,9 @@ static void Audio_Start_Play( void )
 */
 static void Audio_Start_Play_Rec( void )
 {  
-    Init_I2S_Buffer(); 
+      printf("\r\n SSC OUT DMA_CTRA: 0x%X, DMA_CTRB: 0x%X, DMA_CFG: 0x%X\r\n", AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG);
+
+      Init_I2S_Buffer(); 
     Init_Rec_Setting();
     Init_Play_Setting();
     SSC_Play_Start();
@@ -239,6 +242,7 @@ static void Audio_Start_Play_Rec( void )
     bulkin_start   = true ; 
     bulkout_start  = true ;
     SSC_EnableBoth(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN aAT91C_SSC_RXEN   
+    
     
 }
 
@@ -257,7 +261,10 @@ static void Audio_Start_Play_Rec( void )
 static void Audio_Stop( void )
 {  
 #if( 1 ) 
-        
+    
+    flag_stop = true ;
+    delay_ms(10); 
+    
     SSC_Record_Stop();
     SSC_Play_Stop();
     
@@ -271,9 +278,10 @@ static void Audio_Stop( void )
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
     delay_ms(50);
     
-    //I2S_Init();  
-    SSC_Reset(); 
-    
+    I2S_Init();  
+    //SSC_Reset(); 
+    printf("\r\n #SSC OUT DMA_CTRA: 0x%X, DMA_CTRB: 0x%X, DMA_CFG: 0x%X\r\n", AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG);
+
     Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
     printf( "\r\nStop Play&Rec...\r\n"); 
@@ -282,14 +290,15 @@ static void Audio_Stop( void )
     while(1) {
         AT91C_BASE_RSTC->RSTC_RCR = 0xa5000005 ; //reset MCU     
     }            
-#endif    
+#endif   
+    
     
     bulkin_start    = false ;
     bulkout_start   = false ;        
     bulkin_enable   = true ; 
     bulkout_enable  = true ;
     bulkout_kk      = false ; 
-    testf           = false ;
+    flag_stop       = false ;
     bulkout_empt    = 0;  
     
     //reset debug counters

@@ -198,13 +198,12 @@ void HDMA_IrqHandler(void)
 //    status = DMA_GetMaskedStatus();      
     status  = AT91C_BASE_HDMA->HDMA_EBCISR;
     status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
-   
+    if( flag_stop ) {
+        return;
+    }
     if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //play     
         TRACE_INFO_NEW_WP("-SO-") ;           
         SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size); 
-//        if(testf && (testc++ < 2) ) { 
-//          dump_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], 32 );
-//        }
         AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
         AT91C_BASE_HDMA->HDMA_CHER  |= DMA_ENA << BOARD_SSC_OUT_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);   
 //        DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
@@ -237,7 +236,6 @@ void HDMA_IrqHandler(void)
             TRACE_INFO_NEW_WP( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
             //Demo_Sine_Gen((void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size, Audio_Configure[1].sample_rate); 
 
-            testf = true;
             if( check_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ) {
                 printf("\n\r Check I2S buf err : \n\r");
                 dump_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size );
