@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.06]";
+char fw_version[] = "[FW:A:V3.0]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -230,10 +230,8 @@ static void Audio_Start_Play( void )
 *********************************************************************************************************
 */
 static void Audio_Start_Play_Rec( void )
-{  
-      printf("\r\n SSC OUT DMA_CTRA: 0x%X, DMA_CTRB: 0x%X, DMA_CFG: 0x%X\r\n", AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG);
-
-      Init_I2S_Buffer(); 
+{     
+    Init_I2S_Buffer(); 
     Init_Rec_Setting();
     Init_Play_Setting();
     SSC_Play_Start();
@@ -263,25 +261,20 @@ static void Audio_Stop( void )
 #if( 1 ) 
     
     flag_stop = true ;
-    delay_ms(10); 
-    
+    delay_ms(10);     
     SSC_Record_Stop();
-    SSC_Play_Stop();
-    
-    delay_ms(100);      
+    SSC_Play_Stop();    
+    delay_ms(10);      
     
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
     delay_ms(50);    
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
-    delay_ms(50); 
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
-    delay_ms(50);
+        
+    //I2S_Init();  
+    SSC_Reset(); 
     
-    I2S_Init();  
-    //SSC_Reset(); 
-    printf("\r\n #SSC OUT DMA_CTRA: 0x%X, DMA_CTRB: 0x%X, DMA_CFG: 0x%X\r\n", AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG);
-
     Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
     printf( "\r\nStop Play&Rec...\r\n"); 
@@ -483,8 +476,8 @@ void Debug_Info( void )
     //printf("\r\nPLAY %d, REC %d",counter_play++,counter_rec++); 
     
      
-      printf( "\rBI[Size:%6.3fM,Ful:%u,Ety:%u,FreeSize:%3u%>%3u%] BO[Size:%6.3fM,Ful:%u,Ety:%u,FreeSize:%3u%<%3u%] INT[IN:%u,OUT:%u]",
-                             
+      printf("\rIN[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%>%3u%]  OUT[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%<%3u%]",
+                         
                total_transmit/1000000.0,               
                error_bulkin_full,
                error_bulkin_empt,
@@ -495,60 +488,17 @@ void Debug_Info( void )
                error_bulkout_full,
                error_bulkout_empt,
                BO_free_size,
-               BO_free_size_max,
-    
-               debug_usb_dma_IN,
-               debug_usb_dma_OUT   
+               BO_free_size_max 
                    
              ); 
     
-     DBGUART_free_size = kfifo_get_free_space(&dbguart_fifo) ;
-     DBGUART_free_size = DBGUART_free_size * 100 / DBGUART_FIFO_SIZE;  
-     DBGUART_free_size_min = DBGUART_free_size < DBGUART_free_size_min ? DBGUART_free_size : DBGUART_free_size_min ;
-     printf( " [DBGUART:%3u%>%3u%]", DBGUART_free_size, DBGUART_free_size_min );                         
+//     DBGUART_free_size = kfifo_get_free_space(&dbguart_fifo) ;
+//     DBGUART_free_size = DBGUART_free_size * 100 / DBGUART_FIFO_SIZE;  
+//     DBGUART_free_size_min = DBGUART_free_size < DBGUART_free_size_min ? DBGUART_free_size : DBGUART_free_size_min ;
+//     printf( " [DBGUART:%3u%>%3u%]", DBGUART_free_size, DBGUART_free_size_min );                         
    
-     
-     
-     
-    /*
-    printf( "\rIN[Size:%6.3fMB,Full:%u,Ety:%u]OUT[Size:%6.3fMB,Full:%u,Ety:%u][%u,%u,%u,%u][%u][IN:%u,OUT:%u]",
-                             
-               total_transmit/1000000.0,               
-               error_bulkin_full,
-               error_bulkin_empt,
-                          
-               
-               total_received/1000000.0,
-               error_bulkout_full,
-               error_bulkout_empt,
-               
-               debug_trans_counter1,
-               debug_trans_counter2,
-               debug_trans_counter3,
-               debug_trans_counter4,
-               
-            debug_usb_dma_enterhandler,
-            debug_usb_dma_IN,
-            debug_usb_dma_OUT                   
-             ); 
-      */    
+  
 
-      
-//            printf( "\rIN[Size:%uMB,Full:%u,Empty:%u,FreeSize:%3u%>%3u%] OUT[Size:%uMB,Full:%u,Empty:%u,FreeSize:%3u%<%3u%]",
-//                             
-//               (unsigned int)(total_transmit>>20),               
-//               error_bulkin_full,
-//               error_bulkin_empt,
-//               BI_free_size,
-//               BI_free_size_min,               
-//               
-//               (unsigned int)(total_received>>20), 
-//               error_bulkout_full,
-//               error_bulkout_empt,
-//               BO_free_size,
-//               BO_free_size_max   
-//                   
-//               ); 
 }
 
 
