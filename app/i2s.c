@@ -198,16 +198,18 @@ void HDMA_IrqHandler(void)
 //    status = DMA_GetMaskedStatus();      
     status  = AT91C_BASE_HDMA->HDMA_EBCISR;
     status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
-    if( flag_stop ) {
-        return;
-    }
-    if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //play     
+
+    if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //play 
+        if( flag_stop ) {
+            printf( "\r\nflag_stop PLAY\r\n");
+            return;
+        }    
         TRACE_INFO_NEW_WP("-SO-") ;           
         SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size); 
-        AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-        AT91C_BASE_HDMA->HDMA_CHER  |= DMA_ENA << BOARD_SSC_OUT_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);   
-//        DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-//        DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL); 
+        //AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
+        AT91C_BASE_HDMA->HDMA_CHER   = DMA_ENA << BOARD_SSC_OUT_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);   
+//      DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
+//      DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL); 
         i2s_buffer_out_index ^= 1;   
         temp = kfifo_get_data_size(&bulkout_fifo);
         
@@ -270,10 +272,14 @@ void HDMA_IrqHandler(void)
     
     
     if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
+        if( flag_stop ) {
+            printf( "\r\nflag_stop REC\r\n");
+            return;
+        }  
         TRACE_INFO_NEW_WP("-SI-") ; 
         SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);                      
-        AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0);//DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
-        AT91C_BASE_HDMA->HDMA_CHER  |= DMA_ENA << BOARD_SSC_IN_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);  
+        //AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0);//DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
+        AT91C_BASE_HDMA->HDMA_CHER  = DMA_ENA << BOARD_SSC_IN_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);  
 //        DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
 //        DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
         i2s_buffer_in_index ^= 1;        
@@ -321,8 +327,8 @@ void SSC_Play_Start(void)
     i2s_buffer_out_index = 0 ;
     //Start transmitting WAV file to SSC   
     //disable BTC and CBTC int 
-    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
+    //DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
+    //DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
     // Fill DMA buffer
     SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index] , i2s_play_buffer_size);
     DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0)  );
@@ -349,8 +355,8 @@ void SSC_Record_Start(void)
     i2s_buffer_in_index = 0 ;
     // Start transmitting WAV file to SSC   
     //disable BTC and CBTC int
-    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );
-    DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
+    //DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );
+    //DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
     // Fill DMA buffer
     SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);
     DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
@@ -373,9 +379,9 @@ void SSC_Record_Start(void)
 */
 void SSC_Play_Stop(void)
 {
-    
-    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );  
-    SSC_DisableTransmitter(AT91C_BASE_SSC0);
+    SSC_DisableTransmitter(AT91C_BASE_SSC0);    
+
+    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );      
     DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
     
 
@@ -395,9 +401,9 @@ void SSC_Play_Stop(void)
 */
 void SSC_Record_Stop(void)
 {  
+    SSC_DisableReceiver(AT91C_BASE_SSC0);    
     
-    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );
-    SSC_DisableReceiver(AT91C_BASE_SSC0);
+    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );    
     DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
    
 
