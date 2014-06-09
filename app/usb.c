@@ -342,7 +342,7 @@ void UsbDataTransmit(  unsigned int unused,
 void USB_Init(void)
 {
   
-    printf("Init USB ...");
+    printf("\r\nInit USB ...");
   
    // If there is on board power, switch it off 
 #ifdef PIN_USB_POWER_ENB

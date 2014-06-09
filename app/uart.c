@@ -233,7 +233,7 @@ void USART0_IrqHandler( void )
 */
 void UART_Init( void )
 {
-    printf("Init UART ...");  
+    printf("\r\nInit UART ...");  
     
     PIO_Configure(Uart_Pins, PIO_LISTSIZE(Uart_Pins));    
     usartCurrentBuffer = 0 ;
@@ -273,7 +273,7 @@ void Check_UART_CMD( void )
     }
     data_received = 0;
     for( i = 0; i < counter; i++)  { //analyze the data          
-            pcInt( usartBuffers[1-usartCurrentBuffer][i] ) ;
+        pcInt( usartBuffers[1-usartCurrentBuffer][i] ) ;
     } 
     
     

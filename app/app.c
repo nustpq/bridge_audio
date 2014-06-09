@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.0]";
+char fw_version[] = "[FW:A:V3.1]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -258,26 +258,27 @@ static void Audio_Start_Play_Rec( void )
 */
 static void Audio_Stop( void )
 {  
-#if( 1 ) 
-    
+    printf( "\r\nStop Play&Rec...\r\n"); 
+#if( 1 )     
     flag_stop = true ;
-    delay_ms(10);     
+    delay_ms(100);     
     SSC_Record_Stop();
     SSC_Play_Stop();    
-    delay_ms(10);      
+    delay_ms(50);      
     
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
     delay_ms(50);    
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
+    delay_ms(50); 
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
         
-    //I2S_Init();  
-    SSC_Reset(); 
+    I2S_Init();  
+    //SSC_Reset(); 
     
     Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
-    printf( "\r\nStop Play&Rec...\r\n"); 
+    
 #else            
     printf("\r\n Got command to reset MCU...MCM_RESET_CMD");                                   
     while(1) {
@@ -285,6 +286,7 @@ static void Audio_Stop( void )
     }            
 #endif   
     
+    delay_ms(50);
     
     bulkin_start    = false ;
     bulkout_start   = false ;        

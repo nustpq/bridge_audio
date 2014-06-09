@@ -200,7 +200,7 @@ void HDMA_IrqHandler(void)
     status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
     
     if( flag_stop ) {
-        return;
+        return ;
     }
     
     if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //play     
@@ -420,7 +420,7 @@ void SSC_Record_Stop(void)
 void I2S_Init( void )
 {  
     
-    printf("Init I2S ..."); 
+    printf("\r\nInit I2S ..."); 
 
     PIO_Configure(&SSC_Pins, 1); 
     
