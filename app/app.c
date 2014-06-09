@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.06]";
+char fw_version[] = "[FW:A:V3.07]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -263,12 +263,11 @@ static void Audio_Stop( void )
 #if( 1 ) 
     
     flag_stop = true ;
-    delay_ms(10); 
+    delay_ms(100); 
     
     SSC_Record_Stop();
-    SSC_Play_Stop();
-    
-    delay_ms(100);      
+    SSC_Play_Stop();   
+    delay_ms(50);      
     
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
@@ -276,8 +275,7 @@ static void Audio_Stop( void )
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
     delay_ms(50); 
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
-    delay_ms(50);
-    
+        
     I2S_Init();  
     //SSC_Reset(); 
     printf("\r\n #SSC OUT DMA_CTRA: 0x%X, DMA_CTRB: 0x%X, DMA_CFG: 0x%X\r\n", AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB,AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG);
