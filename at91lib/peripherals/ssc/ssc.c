@@ -630,10 +630,12 @@ void SSC_Channel_Set( unsigned char tx_ch_num, unsigned char rx_ch_num )
 void SSC_Init( unsigned int mclk )
 {
     
-    SSC_Configure(  BOARD_AT73C213_SSC,
+    SSC_Configure(  
+                    BOARD_AT73C213_SSC,
                     BOARD_AT73C213_SSC_ID,
                     0,  //slave not gen clk
-                    mclk );    
+                    mclk 
+                 );    
       
     tcmr.cks    = 1 ;   // TK pin
     rcmr.cks    = 2 ;   // RK pin
@@ -689,6 +691,6 @@ void SSC_Init( unsigned int mclk )
 void SSC_Reset( void )
 {
   
-    BOARD_AT73C213_SSC->SSC_CR =  AT91C_SSC_SWRST;
+    BOARD_AT73C213_SSC->SSC_CR =   AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
     
 }
