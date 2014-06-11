@@ -273,7 +273,7 @@ void Check_UART_CMD( void )
     }
     data_received = 0;
     for( i = 0; i < counter; i++)  { //analyze the data          
-            pcInt( usartBuffers[1-usartCurrentBuffer][i] ) ;
+        pcInt( usartBuffers[1-usartCurrentBuffer][i] ) ;
     } 
     
     

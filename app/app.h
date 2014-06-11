@@ -73,16 +73,14 @@ extern unsigned char i2s_buffer_in_index;
 extern volatile unsigned int i2s_play_buffer_size ;
 extern volatile unsigned int i2s_rec_buffer_size ;
 
-extern unsigned short sample_rate;
-extern unsigned char  sample_index;
-extern unsigned char  channels_play;
-extern unsigned char  channels_rec;
 
-extern volatile bool bulkin_enable;
-extern volatile bool bulkout_enable;
-extern volatile bool bulkout_start;
+extern unsigned char  sample_index;
+
 extern volatile bool bulkin_start;
-extern volatile bool bulkout_kk;
+extern volatile bool bulkout_start;
+extern volatile bool bulkout_enable;
+extern volatile bool bulkin_enable;
+extern volatile bool bulkout_trigger;
 extern volatile bool flag_stop;
 extern volatile unsigned int testc;
 extern kfifo_t bulkout_fifo;

@@ -91,7 +91,7 @@ unsigned int kfifo_put(kfifo_t *fifo, unsigned char *buffer, unsigned int len) {
 	return len;
 }
 
-extern kfifo_t bulkout_fifo;
+//extern kfifo_t bulkout_fifo;
 unsigned int kfifo_get(kfifo_t *fifo, unsigned char *buffer, unsigned int len) {
 	unsigned int l;       
         //__disable_interrupt(); //PQ

@@ -604,8 +604,9 @@
 #define BOARD_SD_DMA_HW_SRC_REQ_ID      DMA_HW_SRC_REQ_ID_MCI0
 #define BOARD_SD_DMA_HW_DEST_REQ_ID     DMA_HW_DEST_REQ_ID_MCI0
 /// SSC DMA hardware handshaking ID    
-#define BOARD_SSC_DMA_HW_SRC_REQ_ID      AT91C_HDMA_SRC_PER_3 // not use
-#define BOARD_SSC_DMA_HW_DEST_REQ_ID     AT91C_HDMA_DST_PER_3  //not use 
+//#define BOARD_SSC_DMA_HW_SRC_REQ_ID      AT91C_HDMA_SRC_PER_3 // not use
+//#define BOARD_SSC_DMA_HW_DEST_REQ_ID     AT91C_HDMA_DST_PER_3  //not use
+                                            
 #define BOARD_SSC_OUT_DMA_HW_SRC_REQ_ID      AT91C_HDMA_SRC_PER_3
 #define BOARD_SSC_OUT_DMA_HW_DEST_REQ_ID     AT91C_HDMA_DST_PER_3
 #define BOARD_SSC_IN_DMA_HW_SRC_REQ_ID       AT91C_HDMA_SRC_PER_4

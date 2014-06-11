@@ -155,7 +155,7 @@ void DMAD_Initialize(unsigned char channel)
 //    IRQ_EnableIT(AT91C_ID_HDMA);
 //#endif
     // Initialize transfer instance.
-    dmad.transfers[channel].transferSize = 0;
+//    dmad.transfers[channel].transferSize = 0;
 
 
 

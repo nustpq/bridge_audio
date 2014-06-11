@@ -135,7 +135,7 @@ void fill_buf_debug( unsigned char *pChar, unsigned int size)
 unsigned char check_buf_debug( unsigned char *pChar, unsigned int size) 
 {
     
-#if( false )
+#if( true )
     unsigned int i;
     unsigned short  *pInt;
     pInt = (unsigned short *)pChar;
@@ -215,10 +215,10 @@ void HDMA_IrqHandler(void)
         
         TRACE_INFO_NEW_WP("\n\r[%d, %d]",temp,error_bulkout_empt);
         if( (i2s_play_buffer_size<<PLAY_BUF_DLY_N) <= temp) { //play buffer delay (2^PLAY_BUF_DLY_N) ms
-            bulkout_kk = true; //1st buffered enough data will trigger SSC Out           
+            bulkout_trigger = true; //1st buffered enough data will trigger SSC Out           
         }
         
-        if ( (i2s_play_buffer_size <= temp) && bulkout_kk ) { //play until buf have enough data  
+        if ( (i2s_play_buffer_size <= temp) && bulkout_trigger ) { //play until buf have enough data  
             if( bulkout_empt ) {
                 TRACE_INFO_NEW_WP( "\r\n ##IN1: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
                 if( bulkout_empt > bulkout_fifo.size ) {
@@ -250,15 +250,15 @@ void HDMA_IrqHandler(void)
             memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
             error_bulkout_empt++; //bulkout fifo empty error
             //printf("[");
-            if( bulkout_kk ) {               
+            if( bulkout_trigger ) {               
                 bulkout_empt++;
                 //printf("*");
             }
         }
         
-        if ( bulkout_start && bulkout_enable && (USBDATAEPSIZE <= kfifo_get_free_space(&bulkout_fifo)) ) { //
+        if ( bulkout_enable && bulkout_start && (USBDATAEPSIZE <= kfifo_get_free_space(&bulkout_fifo)) ) { //
             TRACE_INFO_NEW_WP("-LBO-") ; 
-            bulkout_enable = false ;
+            bulkout_start = false ;
             error_bulkout_full++;
             CDCDSerialDriver_Read(   usbBufferBulkOut,
                                      USBDATAEPSIZE,
@@ -293,9 +293,9 @@ void HDMA_IrqHandler(void)
         }
         kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
         
-        if ( bulkin_start && bulkin_enable && ( ( USBDATAEPSIZE<<1 ) <= kfifo_get_data_size(&bulkin_fifo)) ) {
+        if ( bulkin_enable && bulkin_start && ( ( USBDATAEPSIZE<<1 ) <= kfifo_get_data_size(&bulkin_fifo)) ) {
             TRACE_INFO_NEW_WP("-LBI-") ; 
-            bulkin_enable = false ;
+            bulkin_start = false ;
             error_bulkin_empt++;
             kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
             CDCDSerialDriver_Write(  usbBufferBulkIn,
@@ -327,8 +327,8 @@ void SSC_Play_Start(void)
     i2s_buffer_out_index = 0 ;
     //Start transmitting WAV file to SSC   
     //disable BTC and CBTC int 
-    //DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-    //DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
+//    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
+//    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
     // Fill DMA buffer
     SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index] , i2s_play_buffer_size);
     DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0)  );
@@ -355,8 +355,8 @@ void SSC_Record_Start(void)
     i2s_buffer_in_index = 0 ;
     // Start transmitting WAV file to SSC   
     //disable BTC and CBTC int
-    //DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );
-    //DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
+//    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );
+//    DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
     // Fill DMA buffer
     SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);
     DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
@@ -379,11 +379,11 @@ void SSC_Record_Start(void)
 */
 void SSC_Play_Stop(void)
 {
-    SSC_DisableTransmitter(AT91C_BASE_SSC0);    
-
-    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );      
+        
     DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
+    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );      
     
+    SSC_DisableTransmitter(AT91C_BASE_SSC0);
 
 }
 
@@ -401,11 +401,11 @@ void SSC_Play_Stop(void)
 */
 void SSC_Record_Stop(void)
 {  
-    SSC_DisableReceiver(AT91C_BASE_SSC0);    
-    
-    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );    
+        
     DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
-   
+    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );    
+        
+    SSC_DisableReceiver(AT91C_BASE_SSC0);
 
 }
 
@@ -425,10 +425,10 @@ void I2S_Init( void )
 {  
     
     printf("Init I2S ..."); 
-
+    
     PIO_Configure(&SSC_Pins, 1); 
     
-    IRQ_DisableIT(BOARD_AT73C213_SSC_ID); 
+    IRQ_DisableIT(BOARD_AT73C213_SSC_ID);
     IRQ_DisableIT(AT91C_ID_HDMA);
     
     SSC_Init( MCK ); 
