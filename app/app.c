@@ -237,10 +237,7 @@ static void Audio_Start_Play_Rec( void )
     SSC_Play_Start();
     SSC_Record_Start();
      
-    bulkin_enable   = true ; 
-    bulkout_enable  = true ;
-    SSC_EnableBoth(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN aAT91C_SSC_RXEN  
-    
+
     printf("\r\n[start]DMA REG OUT ==>>\r\n\
         DMA_CTRA:   0x%08X\r\n\
         DMA_CTRB:   0x%08X\r\n\
@@ -289,6 +286,12 @@ static void Audio_Start_Play_Rec( void )
         AT91C_BASE_SSC0->SSC_RHR,\
         AT91C_BASE_SSC0->SSC_THR\
         );
+      
+      
+          bulkin_enable   = true ; 
+    bulkout_enable  = true ;
+    //SSC_EnableBoth(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN aAT91C_SSC_RXEN  
+    
 }
 
 
