@@ -33,6 +33,7 @@
 
 #include "ssc.h"
 #include <utility/trace.h>
+#include <tc/tc.h>
 #if defined(CHIP_SSC_DMA)
 #include <dma/dma.h>
 #include <dmad/dmad.h>
@@ -690,7 +691,13 @@ void SSC_Init( unsigned int mclk )
 
 void SSC_Reset( void )
 {
-  
+    // Disable SSC peripheral clock
+    AT91C_BASE_PMC->PMC_PCDR = 1 << BOARD_AT73C213_SSC_ID;
+    AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;  
+    delay_ms(5);
+    // Enable SSC peripheral clock
+    AT91C_BASE_PMC->PMC_PCER = 1 << BOARD_AT73C213_SSC_ID;
+    AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;  
     BOARD_AT73C213_SSC->SSC_CR =   AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
     
 }

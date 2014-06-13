@@ -33,6 +33,7 @@
 #include <pio/pio_it.h>
 #include <ssc/ssc.h>
 #include <irq/irq.h>
+#include <tc/tc.h>
 #include <stdbool.h>
 #include <string.h>
 #include <usb/device/cdc-serial/CDCDSerialDriver.h>
@@ -145,14 +146,14 @@ unsigned char check_buf_debug( unsigned char *pChar, unsigned int size)
 //           return 1 ;  
 //        } 
         i++;
-        if( *(pInt+i++) !=  0x2211 ) {
+        if( *(pInt+i++) !=  0x1234 ) {
            return 2 ;  
         }        
 //        if( *(pInt+i++) !=  0x55AA ) {
 //           return 1 ;  
 //        }   
         i++;
-        if( *(pInt+i++) !=  0x4433 ) {
+        if( *(pInt+i++) !=  0x5678 ) {
            return 1 ;  
         }       
     
@@ -201,7 +202,7 @@ void HDMA_IrqHandler(void)
 
     if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //play 
         if( flag_stop ) {
-            printf( "\r\nflag_stop PLAY\r\n");
+            //printf( "\r\nflag_stop PLAY\r\n");
             return;
         }    
         TRACE_INFO_NEW_WP("-SO-") ;           
@@ -273,7 +274,7 @@ void HDMA_IrqHandler(void)
     
     if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
         if( flag_stop ) {
-            printf( "\r\nflag_stop REC\r\n");
+            //printf( "\r\nflag_stop REC\r\n");
             return;
         }  
         TRACE_INFO_NEW_WP("-SI-") ; 
@@ -327,11 +328,11 @@ void SSC_Play_Start(void)
     i2s_buffer_out_index = 0 ;
     //Start transmitting WAV file to SSC   
     //disable BTC and CBTC int 
-//    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-//    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
+    //DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
+    //DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
     // Fill DMA buffer
     SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index] , i2s_play_buffer_size);
-    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN    
+    //SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN    
     
     DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0)  );
     DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
@@ -361,7 +362,7 @@ void SSC_Record_Start(void)
 //    DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
     // Fill DMA buffer
     SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);
-    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN    
+    //SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN    
     
     DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
     DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);
@@ -383,11 +384,11 @@ void SSC_Record_Start(void)
 */
 void SSC_Play_Stop(void)
 {
-        
-    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
-    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );      
-    
+         
     SSC_DisableTransmitter(AT91C_BASE_SSC0);
+    delay_ms(5);
+    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
+    DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) ); 
 
 }
 
@@ -405,11 +406,11 @@ void SSC_Play_Stop(void)
 */
 void SSC_Record_Stop(void)
 {  
-        
-    DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
-    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );    
-        
+              
     SSC_DisableReceiver(AT91C_BASE_SSC0);
+    delay_ms(5);
+    DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
+    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );   
 
 }
 

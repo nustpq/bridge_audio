@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.0a]";
+char fw_version[] = "[FW:A:V3.0b]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -233,12 +233,13 @@ static void Audio_Start_Play_Rec( void )
 {  
     Init_I2S_Buffer(); 
     Init_Play_Setting();
-    Init_Rec_Setting();    
+    Init_Rec_Setting(); 
+    delay_ms(10);
     SSC_Play_Start();
     SSC_Record_Start();
      
-
-    printf("\r\n[start]DMA REG OUT ==>>\r\n\
+    printf("\r\n\r\n================================");
+    printf("\r\n[start]DMA OUT REG :\r\n\
         DMA_CTRA:   0x%08X\r\n\
         DMA_CTRB:   0x%08X\r\n\
         DMA_CFG:    0x%08X\r\n\
@@ -263,17 +264,17 @@ static void Audio_Start_Play_Rec( void )
         AT91C_BASE_HDMA->HDMA_EBCISR,\
         AT91C_BASE_HDMA->HDMA_CHSR\
         );
-      printf("\r\n[start]SSC REG ==####\r\n\
-        SSC_CR:   0x%08X\r\n\
-        SSC_CMR:   0x%08X\r\n\
-        SSC_RCMR:    0x%08X\r\n\
-        SSC_RFMR:  0x%08X\r\n\
-        SSC_TCMR:  0x%08X\r\n\
+    printf("\r\n[start]SSC REG  :\r\n\
+        SSC_CR:     0x%08X\r\n\
+        SSC_CMR:    0x%08X\r\n\
+        SSC_RCMR:   0x%08X\r\n\
+        SSC_RFMR:   0x%08X\r\n\
+        SSC_TCMR:   0x%08X\r\n\
         SSC_TFMR:   0x%08X\r\n\
-        SSC_SR:   0x%08X\r\n\
-        SSC_IMR:   0x%08X\r\n\
-        SSC_RHR: 0x%08X\r\n\
-        SSC_THR: 0x%08X\r\n",\
+        SSC_SR:     0x%08X\r\n\
+        SSC_IMR:    0x%08X\r\n\
+        SSC_RHR:    0x%08X\r\n\
+        SSC_THR:    0x%08X\r\n",\
             
         AT91C_BASE_SSC0->SSC_CR,\
         AT91C_BASE_SSC0->SSC_CMR,\
@@ -288,9 +289,9 @@ static void Audio_Start_Play_Rec( void )
         );
       
       
-          bulkin_enable   = true ; 
+    bulkin_enable   = true ; 
     bulkout_enable  = true ;
-    //SSC_EnableBoth(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN aAT91C_SSC_RXEN  
+    SSC_EnableBoth(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN aAT91C_SSC_RXEN  
     
 }
 
@@ -323,26 +324,26 @@ static void Audio_Stop( void )
     
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
-    delay_ms(50);    
+    delay_ms(100);    
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
-    delay_ms(50); 
+    delay_ms(100); 
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
     
     //I2S_Init();  
     SSC_Reset(); 
-    
-    printf("\r\n[stop]DMA REG OUT ===============>>\r\n\
-        DMA_CTRA:   0x%08X\r\n\
-        DMA_CTRB:   0x%08X\r\n\
-        DMA_CFG:    0x%08X\r\n\
-        DMA_SADDR:  0x%08X\r\n\
-        DMA_DADDR:  0x%08X\r\n\
-        DMA_SREQ:   0x%08X\r\n\
-        DMA_CREQ:   0x%08X\r\n\
-        DMA_LAST:   0x%08X\r\n\
-        DMA_EBCIMR: 0x%08X\r\n\
-        DMA_EBCISR: 0x%08X\r\n\
-        DMA_CHSR:   0x%08X\r\n",\
+    delay_ms(50); 
+    printf("\r\n[stop]DMA OUT REG :\r\n\
+        DMA_CTRA:         0x%08X\r\n\
+        DMA_CTRB:         0x%08X\r\n\
+        DMA_CFG:          0x%08X\r\n\
+        DMA_SADDR:        0x%08X\r\n\
+        DMA_DADDR:        0x%08X\r\n\
+        DMA_SREQ:         0x%08X\r\n\
+        DMA_CREQ:         0x%08X\r\n\
+        DMA_LAST:         0x%08X\r\n\
+        DMA_EBCIMR:       0x%08X\r\n\
+        DMA_EBCISR:       0x%08X\r\n\
+        DMA_CHSR:         0x%08X\r\n",\
             
         AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA,\
         AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB,\
@@ -357,17 +358,17 @@ static void Audio_Stop( void )
         AT91C_BASE_HDMA->HDMA_CHSR\
         );
     
-    printf("\r\n[stop]SSC REG ===============####\r\n\
-        SSC_CR:   0x%08X\r\n\
-        SSC_CMR:   0x%08X\r\n\
-        SSC_RCMR:    0x%08X\r\n\
-        SSC_RFMR:  0x%08X\r\n\
-        SSC_TCMR:  0x%08X\r\n\
-        SSC_TFMR:   0x%08X\r\n\
-        SSC_SR:   0x%08X\r\n\
-        SSC_IMR:   0x%08X\r\n\
-        SSC_RHR: 0x%08X\r\n\
-        SSC_THR: 0x%08X\r\n",\
+    printf("\r\n[stop]SSC REG :\r\n\
+        SSC_CR:           0x%08X\r\n\
+        SSC_CMR:          0x%08X\r\n\
+        SSC_RCMR:         0x%08X\r\n\
+        SSC_RFMR:         0x%08X\r\n\
+        SSC_TCMR:         0x%08X\r\n\
+        SSC_TFMR:         0x%08X\r\n\
+        SSC_SR:           0x%08X\r\n\
+        SSC_IMR:          0x%08X\r\n\
+        SSC_RHR:          0x%08X\r\n\
+        SSC_THR:          0x%08X\r\n",\
             
         AT91C_BASE_SSC0->SSC_CR,\
         AT91C_BASE_SSC0->SSC_CMR,\
