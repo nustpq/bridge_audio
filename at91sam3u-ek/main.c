@@ -58,7 +58,7 @@ int main( void )
     SysTick_Init();
     UART_Init();
      
-#if( true )
+#if( false )
 #else
     USART_Write( AT91C_BASE_US0, 0, 0 ); //Send ACK
     delay_ms(1000);
@@ -69,7 +69,7 @@ int main( void )
     
     while(1) {  
       
-        //Debug_Info(); 
+        Debug_Info(); 
         Check_UART_CMD();
         Audio_State_Control();
         DBGUART_Service();
