@@ -126,9 +126,11 @@ void DMAD_Initialize(unsigned char channel)
     
     DMA_EnableChannel(channel);
         // Set DMA channel config
-    AT91C_BASE_HDMA->HDMA_CH[channel].HDMA_CFG   = 0x01000000 ;    
-    AT91C_BASE_HDMA->HDMA_CH[channel].HDMA_CTRLA = 1 ;     
-    AT91C_BASE_HDMA->HDMA_CH[channel].HDMA_CTRLB = 0 ;
+    
+//    DMA_EnableChannel(channel);
+//    AT91C_BASE_HDMA->HDMA_CH[channel].HDMA_CFG   = 0x01000000 ;    
+//    AT91C_BASE_HDMA->HDMA_CH[channel].HDMA_CTRLA = 3 ;     
+//    AT91C_BASE_HDMA->HDMA_CH[channel].HDMA_CTRLB = 0 ;
     
     DMA_Disable(); //disbale in case of it's enabled previously
     // Enable peripheral clock
@@ -154,7 +156,7 @@ void DMAD_Initialize(unsigned char channel)
 //    IRQ_EnableIT(AT91C_ID_HDMA);
 //#endif
     // Initialize transfer instance.
-    dmad.transfers[channel].transferSize = 0;
+//    dmad.transfers[channel].transferSize = 0;
 
 
 

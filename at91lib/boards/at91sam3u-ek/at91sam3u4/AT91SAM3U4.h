@@ -4894,7 +4894,7 @@ typedef struct _AT91S_HDMA_CH {
 	AT91_REG	 HDMA_CTRLA; 	// HDMA Channel Control A Register
 	AT91_REG	 HDMA_CTRLB; 	// HDMA Channel Control B Register
 	AT91_REG	 HDMA_CFG; 	// HDMA Channel Configuration Register
-    AT91_REG	 Reserved[4]; 	//bug!!   PQ fixed  
+        AT91_REG	 Reserved[4]; 	//bug!!   PQ fixed  
 } AT91S_HDMA_CH, *AT91PS_HDMA_CH;
 #else
 #define HDMA_SADDR      (AT91_CAST(AT91_REG *) 	0x00000000) // (HDMA_SADDR) HDMA Channel Source Address Register

@@ -241,8 +241,8 @@ void UsbDataReceived(  unsigned int unused,
 {
     TRACE_INFO_NEW_WP("\r\n#BO:") ;
     //Play
-    if ( ! bulkout_start ) {
-        printf("\r\nstatus %d, bulkout_start %d\r\n",status, bulkout_start);
+    if ( ! bulkout_enable ) {
+        printf("\r\nstatus %d, bulkout_enable %d\r\n",status, bulkout_enable);
         return ;
     }
     if ( status == USBD_STATUS_SUCCESS ) {     
@@ -261,7 +261,7 @@ void UsbDataReceived(  unsigned int unused,
                                       (TransferCallback) UsbDataReceived,
                                       0);        
         } else { //usb out too fast                     
-            bulkout_enable  = true ; 
+            bulkout_start  = true ; 
             //printf("\r\n");                   
         }     
         total_received += received ; 
@@ -297,8 +297,8 @@ void UsbDataTransmit(  unsigned int unused,
 {
     TRACE_INFO_NEW_WP("\r\n#BI:") ;
     //Record    
-    if ( ! bulkin_start ) {
-        printf("\r\nstatus %d, bulkin_start %d\r\n",status, bulkin_start);
+    if ( ! bulkin_enable ) {
+        printf("\r\nstatus %d, bulkin_enable %d\r\n",status, bulkin_enable);
         return ;
     }
     
@@ -312,7 +312,7 @@ void UsbDataTransmit(  unsigned int unused,
                                     (TransferCallback) UsbDataTransmit,
                                     0);       
         } else {                    
-            bulkin_enable  = true ; 
+            bulkin_start  = true ; 
             
         }              
         total_transmit += transmit ; 
