@@ -50,6 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+char fw_version[] = "[FW:A:V3.2]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -313,26 +314,26 @@ static void Audio_Start_Play_Rec( void )
 static void Audio_Stop( void )
 {  
     printf( "\r\nStop Play & Rec...\r\n"); 
+    
 #if( true )   
     
-	bulkin_enable    = false ;
+    bulkin_enable    = false ;
     bulkout_enable   = false ; 
     flag_stop = true ;  
     delay_ms(50); //wait until DMA interruption done.
-    //printf( "\r\nflag_stop Done\r\n");    SSC_Play_Stop();    
-     
+    //printf( "\r\nflag_stop Done\r\n"); 
+    
+    SSC_Play_Stop();         
     SSC_Record_Stop();      
     delay_ms(50);  
-    
-    
+        
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
-   
     delay_ms(100);    
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
-
     delay_ms(100); 
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
+    
     //I2S_Init();  
     SSC_Reset(); 
     delay_ms(50); 
@@ -386,7 +387,7 @@ static void Audio_Stop( void )
 //        AT91C_BASE_SSC0->SSC_RHR,\
 //        AT91C_BASE_SSC0->SSC_THR\
 //        );
-        Init_Bulk_FIFO(); //???
+    Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
    
     
@@ -397,9 +398,10 @@ static void Audio_Stop( void )
     }            
 #endif   
     
-    bulkin_start   = true ; 
-    bulkout_start  = true ;
-    bulkout_trigger      = false ;     flag_stop       = false ;
+    bulkin_start    = true ; 
+    bulkout_start   = true ;
+    bulkout_trigger = false ;     
+    flag_stop       = false ;
     bulkout_empt    = 0;  
     
     //reset debug counters
@@ -483,7 +485,7 @@ void Audio_State_Control( void )
                 state_check = 3;  
                 //Audio_Start_Play_Rec();
                 Audio_Start_Play();
-                delay_ms(1);
+                delay_ms(5);
                 Audio_Start_Rec(); 
             break;
 
@@ -599,8 +601,7 @@ void Debug_Info( void )
                total_received/1000000.0,
                error_bulkout_full,
                error_bulkout_empt,
-               BO_free_size,
-           
+               BO_free_size,           
                BO_free_size_max 
                    
             

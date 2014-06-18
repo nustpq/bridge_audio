@@ -136,7 +136,7 @@ void fill_buf_debug( unsigned char *pChar, unsigned int size)
 unsigned char check_buf_debug( unsigned char *pChar, unsigned int size) 
 {
     
-#if( true )
+#if( false )
     unsigned int i;
     unsigned short  *pInt;
     pInt = (unsigned short *)pChar;
@@ -199,12 +199,13 @@ void HDMA_IrqHandler(void)
 //    status = DMA_GetMaskedStatus();      
     status  = AT91C_BASE_HDMA->HDMA_EBCISR;
     status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
-
-        if( flag_stop ) {
-        return;
+    
+    if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //record     
+        if( flag_stop ) {    
             //printf( "\r\nflag_stop PLAY\r\n");
             return;
-    }        TRACE_INFO_NEW_WP("-SO-") ;           
+        }        
+        TRACE_INFO_NEW_WP("-SO-") ;           
         SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size); 
      
         //AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
@@ -215,11 +216,9 @@ void HDMA_IrqHandler(void)
         temp = kfifo_get_data_size(&bulkout_fifo);
         
         TRACE_INFO_NEW_WP("\n\r[%d, %d]",temp,error_bulkout_empt);
-        if( (i2s_play_buffer_size<<PLAY_BUF_DLY_N) <= temp) { //play buffer delay (2^PLAY_BUF_DLY_N) ms
-       
+        if( (i2s_play_buffer_size<<PLAY_BUF_DLY_N) <= temp) { //play buffer delay (2^PLAY_BUF_DLY_N) ms       
             bulkout_trigger = true; //1st buffered enough data will trigger SSC Out           
-        }
-        
+        }        
 
         if ( (i2s_play_buffer_size <= temp) && bulkout_trigger ) { //play until buf have enough data  
             if( bulkout_empt ) {
@@ -241,7 +240,6 @@ void HDMA_IrqHandler(void)
             TRACE_INFO_NEW_WP( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
             //Demo_Sine_Gen((void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size, Audio_Configure[1].sample_rate); 
 
-
 //            if( check_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ) {
 //                printf("\n\r Check I2S buf err : \n\r");
 //                dump_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size );
@@ -259,12 +257,10 @@ void HDMA_IrqHandler(void)
                 bulkout_empt++;
                 //printf("*");
             }
-        }
-        
+        }        
       
         if ( bulkout_enable && bulkout_start && (USBDATAEPSIZE <= kfifo_get_free_space(&bulkout_fifo)) ) { //
-            TRACE_INFO_NEW_WP("-LBO-") ; 
-       
+            TRACE_INFO_NEW_WP("-LBO-") ;        
             bulkout_start = false ;
             error_bulkout_full++;
             CDCDSerialDriver_Read(   usbBufferBulkOut,
@@ -272,11 +268,9 @@ void HDMA_IrqHandler(void)
                                      (TransferCallback) UsbDataReceived,
                                      0);
 
-
         }
     }
-    
-    
+        
     
     if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
         if( flag_stop ) {

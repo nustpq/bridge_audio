@@ -124,7 +124,7 @@ void DMAD_Initialize(unsigned char channel)
     unsigned int status;
     unsigned int flag;
     
-    DMA_EnableChannel(channel);
+   // DMA_EnableChannel(channel);
         // Set DMA channel config
     
 //    DMA_EnableChannel(channel);
