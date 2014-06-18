@@ -136,7 +136,7 @@ void fill_buf_debug( unsigned char *pChar, unsigned int size)
 unsigned char check_buf_debug( unsigned char *pChar, unsigned int size) 
 {
     
-#if( false )
+#if( true )
     unsigned int i;
     unsigned short  *pInt;
     pInt = (unsigned short *)pChar;
@@ -146,14 +146,14 @@ unsigned char check_buf_debug( unsigned char *pChar, unsigned int size)
 //           return 1 ;  
 //        } 
         i++;
-        if( *(pInt+i++) !=  0x1234 ) {
+        if( *(pInt+i++) !=  0x2211 ) {
            return 2 ;  
         }        
 //        if( *(pInt+i++) !=  0x55AA ) {
 //           return 1 ;  
 //        }   
         i++;
-        if( *(pInt+i++) !=  0x5678 ) {
+        if( *(pInt+i++) !=  0x4433 ) {
            return 1 ;  
         }       
     

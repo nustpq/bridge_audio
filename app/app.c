@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.0c]";
+char fw_version[] = "[FW:A:V3.0d]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -310,7 +310,7 @@ static void Audio_Start_Play_Rec( void )
 static void Audio_Stop( void )
 {      
     printf( "\r\nStop Play & Rec...\r\n"); 
-#if( false ) 
+#if( true ) 
     
     bulkin_enable    = false ;
     bulkout_enable   = false ; 
@@ -469,7 +469,7 @@ void Audio_State_Control( void )
                     Stop_CMD_Miss_Counter++;
                 } 
                 state_check = 2;                 
-                Audio_Start_Play();
+                Audio_Start_Play();               
             break;
             
             case AUDIO_CMD_START_PALYREC :                
@@ -478,7 +478,10 @@ void Audio_State_Control( void )
                     Stop_CMD_Miss_Counter++;
                 } 
                 state_check = 3;                 
-                Audio_Start_Play_Rec();
+                //Audio_Start_Play_Rec();
+                Audio_Start_Play();
+                delay_ms(1);
+                Audio_Start_Rec(); 
             break;
 
             case AUDIO_CMD_STOP :   
