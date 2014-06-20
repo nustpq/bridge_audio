@@ -136,7 +136,7 @@ void fill_buf_debug( unsigned char *pChar, unsigned int size)
 unsigned char check_buf_debug( unsigned char *pChar, unsigned int size) 
 {
     
-#if( true )
+#if( false )
     unsigned int i;
     unsigned short  *pInt;
     pInt = (unsigned short *)pChar;
@@ -239,13 +239,13 @@ void HDMA_IrqHandler(void)
             TRACE_INFO_NEW_WP( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
             //Demo_Sine_Gen((void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size, Audio_Configure[1].sample_rate); 
 
-            if( check_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ) {
-                printf("\n\r Check I2S buf err : \n\r");
-                dump_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size );
-                while(1){ 
-                    DBGUART_Service();
-                };
-            }
+//            if( check_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ) {
+//                printf("\n\r Check I2S buf err : \n\r");
+//                dump_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size );
+//                while(1){ 
+//                    DBGUART_Service();
+//                };
+//            }
             
         } else {  //play buf empty error, send silence : 0x00
             memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
