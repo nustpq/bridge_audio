@@ -207,11 +207,8 @@ void HDMA_IrqHandler(void)
         }        
         TRACE_INFO_NEW_WP("-SO-") ;           
         SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size); 
-     
         //AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
         AT91C_BASE_HDMA->HDMA_CHER   = DMA_ENA << BOARD_SSC_OUT_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);   
-//        DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-//        DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL); 
         i2s_buffer_out_index ^= 1;   
         temp = kfifo_get_data_size(&bulkout_fifo);
         
@@ -251,8 +248,7 @@ void HDMA_IrqHandler(void)
         } else {  //play buf empty error, send silence : 0x00
             memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
             error_bulkout_empt++; //bulkout fifo empty error
-            //printf("[");
-          
+            //printf("[");          
             if( bulkout_trigger ) {               
                 bulkout_empt++;
                 //printf("*");
@@ -282,8 +278,6 @@ void HDMA_IrqHandler(void)
    
         //AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0);//DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
         AT91C_BASE_HDMA->HDMA_CHER  = DMA_ENA << BOARD_SSC_IN_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);  
-//        DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
-//        DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
         i2s_buffer_in_index ^= 1;        
         //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);   //bulkin tes data for debug 
         if ( i2s_rec_buffer_size > kfifo_get_free_space( &bulkin_fifo ) ) { //if rec fifo buf full    

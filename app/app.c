@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.2.1]";
+char fw_version[] = "[FW:A:V3.2.2]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -121,7 +121,7 @@ unsigned int counter_rec  = 0;
 */
 void Init_GPIO( void )
 {
-    PIO_InitializeInterrupts( PIO_PRIORITY );     
+    //PIO_InitializeInterrupts( PIO_PRIORITY );     
     LED_Configure(USBD_LEDPOWER);
     LED_Configure(USBD_LEDUDATA);    
     LED_Set(USBD_LEDPOWER); 
@@ -233,65 +233,12 @@ static void Audio_Start_Play( void )
 */
 static void Audio_Start_Play_Rec( void )
 {     
-
     Init_I2S_Buffer(); 
-
     Init_Play_Setting();
     Init_Rec_Setting(); 
-    delay_ms(10);
+
     SSC_Play_Start();
     SSC_Record_Start();
-//     
-//    printf("\r\n\r\n================================");
-//    printf("\r\n[start]DMA OUT REG :\r\n\
-//        DMA_CTRA:   0x%08X\r\n\
-//        DMA_CTRB:   0x%08X\r\n\
-//        DMA_CFG:    0x%08X\r\n\
-//        DMA_SADDR:  0x%08X\r\n\
-//        DMA_DADDR:  0x%08X\r\n\
-//        DMA_SREQ:   0x%08X\r\n\
-//        DMA_CREQ:   0x%08X\r\n\
-//        DMA_LAST:   0x%08X\r\n\
-//        DMA_EBCIMR: 0x%08X\r\n\
-//        DMA_EBCISR: 0x%08X\r\n\
-//        DMA_CHSR:   0x%08X\r\n",\
-//            
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA,\
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB,\
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG,\
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_SADDR,\
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_DADDR,\
-//        AT91C_BASE_HDMA->HDMA_SREQ,\
-//        AT91C_BASE_HDMA->HDMA_CREQ,\
-//        AT91C_BASE_HDMA->HDMA_LAST,\
-//        AT91C_BASE_HDMA->HDMA_EBCIMR,\
-//        AT91C_BASE_HDMA->HDMA_EBCISR,\
-//        AT91C_BASE_HDMA->HDMA_CHSR\
-//        );
-//    printf("\r\n[start]SSC REG  :\r\n\
-//        SSC_CR:     0x%08X\r\n\
-//        SSC_CMR:    0x%08X\r\n\
-//        SSC_RCMR:   0x%08X\r\n\
-//        SSC_RFMR:   0x%08X\r\n\
-//        SSC_TCMR:   0x%08X\r\n\
-//        SSC_TFMR:   0x%08X\r\n\
-//        SSC_SR:     0x%08X\r\n\
-//        SSC_IMR:    0x%08X\r\n\
-//        SSC_RHR:    0x%08X\r\n\
-//        SSC_THR:    0x%08X\r\n",\
-//            
-//        AT91C_BASE_SSC0->SSC_CR,\
-//        AT91C_BASE_SSC0->SSC_CMR,\
-//        AT91C_BASE_SSC0->SSC_RCMR,\
-//        AT91C_BASE_SSC0->SSC_RFMR,\
-//        AT91C_BASE_SSC0->SSC_TCMR,\
-//        AT91C_BASE_SSC0->SSC_TFMR,\
-//        AT91C_BASE_SSC0->SSC_SR,\
-//        AT91C_BASE_SSC0->SSC_IMR,\
-//        AT91C_BASE_SSC0->SSC_RHR,\
-//        AT91C_BASE_SSC0->SSC_THR\
-//        );
-     
       
     bulkin_enable   = true ; 
     bulkout_enable  = true ;
@@ -316,7 +263,7 @@ static void Audio_Stop( void )
     printf( "\r\nStop Play & Rec...\r\n"); 
     
 #if( true )   
-    
+        
     bulkin_enable    = false ;
     bulkout_enable   = false ; 
     flag_stop = true ;  
@@ -337,60 +284,9 @@ static void Audio_Stop( void )
     //I2S_Init();  
     SSC_Reset(); 
     delay_ms(50); 
-    
-//    printf("\r\n[stop]DMA OUT REG :\r\n\
-//        DMA_CTRA:         0x%08X\r\n\
-//        DMA_CTRB:         0x%08X\r\n\
-//        DMA_CFG:          0x%08X\r\n\
-//        DMA_SADDR:        0x%08X\r\n\
-//        DMA_DADDR:        0x%08X\r\n\
-//        DMA_SREQ:         0x%08X\r\n\
-//        DMA_CREQ:         0x%08X\r\n\
-//        DMA_LAST:         0x%08X\r\n\
-//        DMA_EBCIMR:       0x%08X\r\n\
-//        DMA_EBCISR:       0x%08X\r\n\
-//        DMA_CHSR:         0x%08X\r\n",\
-//            
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA,\
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB,\
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG,\
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_SADDR,\
-//        AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_DADDR,\
-//        AT91C_BASE_HDMA->HDMA_SREQ,\
-//        AT91C_BASE_HDMA->HDMA_CREQ,\
-//        AT91C_BASE_HDMA->HDMA_LAST,\
-//        AT91C_BASE_HDMA->HDMA_EBCIMR,\
-//        AT91C_BASE_HDMA->HDMA_EBCISR,\
-//        AT91C_BASE_HDMA->HDMA_CHSR\
-//        );
-//    
-//    printf("\r\n[stop]SSC REG :\r\n\
-//        SSC_CR:           0x%08X\r\n\
-//        SSC_CMR:          0x%08X\r\n\
-//        SSC_RCMR:         0x%08X\r\n\
-//        SSC_RFMR:         0x%08X\r\n\
-//        SSC_TCMR:         0x%08X\r\n\
-//        SSC_TFMR:         0x%08X\r\n\
-//        SSC_SR:           0x%08X\r\n\
-//        SSC_IMR:          0x%08X\r\n\
-//        SSC_RHR:          0x%08X\r\n\
-//        SSC_THR:          0x%08X\r\n",\
-//            
-//        AT91C_BASE_SSC0->SSC_CR,\
-//        AT91C_BASE_SSC0->SSC_CMR,\
-//        AT91C_BASE_SSC0->SSC_RCMR,\
-//        AT91C_BASE_SSC0->SSC_RFMR,\
-//        AT91C_BASE_SSC0->SSC_TCMR,\
-//        AT91C_BASE_SSC0->SSC_TFMR,\
-//        AT91C_BASE_SSC0->SSC_SR,\
-//        AT91C_BASE_SSC0->SSC_IMR,\
-//        AT91C_BASE_SSC0->SSC_RHR,\
-//        AT91C_BASE_SSC0->SSC_THR\
-//        );
+      
     Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
-   
-    
 #else            
     printf("\r\n Got command to reset MCU...MCM_RESET_CMD");                                   
     while(1) {
@@ -483,7 +379,11 @@ void Audio_State_Control( void )
                     Stop_CMD_Miss_Counter++;
                 } 
                 state_check = 3;  
-                //Audio_Start_Play_Rec();
+                //Audio_Start_Play_Rec();  
+                
+                SSC_Reset();  
+                Init_Bulk_FIFO();
+                
                 Audio_Start_Play();
                 delay_ms(1);
                 Audio_Start_Rec(); 
