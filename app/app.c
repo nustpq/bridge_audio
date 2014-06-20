@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.2]";
+char fw_version[] = "[FW:A:V3.2.1]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -485,7 +485,7 @@ void Audio_State_Control( void )
                 state_check = 3;  
                 //Audio_Start_Play_Rec();
                 Audio_Start_Play();
-                delay_ms(5);
+                delay_ms(1);
                 Audio_Start_Rec(); 
             break;
 
