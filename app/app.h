@@ -25,11 +25,11 @@
 // A programmable priority level of 0-15 for each interrupt. A higher level corresponds to a lower 
 // priority, so level 0 is the highest interrupt priority
 //
-#define PIO_PRIORITY        7
-#define TIMER_PRIORITY      6
+//#define PIO_PRIORITY        7
+//#define TIMER_PRIORITY      6
 #define USB_PRIORITY        3
 #define HDMA_PRIORITY       2
-#define UART_PRIORITY       1
+#define UART_PRIORITY       4
 
 
 #define  AUDIO_CMD_IDLE                 0x00

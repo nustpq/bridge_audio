@@ -152,23 +152,56 @@ unsigned char TC_FindMckDivisor(
 //------------------------------------------------------------------------------
 /// Handles interrupts coming from Timer #0.
 //------------------------------------------------------------------------------
-static volatile unsigned int timer0_counter = 0 ;
-    
-void TC0_IrqHandler( void )
-{  
-  
-    unsigned int status = AT91C_BASE_TC0->TC_SR;
-    if ((status & AT91C_TC_CPCS) != 0) { 
-        AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;
-        timer0_counter++;
-        //LED_TOGGLE_DATA ; 
-  
-    }
-    
-}
+//static volatile unsigned int timer0_counter = 0 ;
+//    
+//void TC0_IrqHandler( void )
+//{  
+//  
+//    unsigned int status = AT91C_BASE_TC0->TC_SR;
+//    if ((status & AT91C_TC_CPCS) != 0) { 
+//        AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;
+//        timer0_counter++;
+//        //LED_TOGGLE_DATA ; 
+//  
+//    }
+//    
+//}
+//
+//
+//// Configure timer 0 for delay_ms()
+//void Timer0_Init( void )
+//{
+//    unsigned int counter; 
+//    
+//    counter =  MCK / 8 / 1000; //1ms time 
+//    counter = (counter & 0xFFFF0000) == 0 ? counter : 0xFFFF ;
+//
+//    AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC0);
+//    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS;
+//    AT91C_BASE_TC0->TC_IDR = 0xFFFFFFFF;
+//    AT91C_BASE_TC0->TC_CMR = AT91C_TC_CLKS_TIMER_DIV2_CLOCK //choose 1/8 
+//                             | AT91C_TC_CPCSTOP
+//                             | AT91C_TC_CPCDIS
+//                             | AT91C_TC_WAVESEL_UP_AUTO
+//                             | AT91C_TC_WAVE;
+//    AT91C_BASE_TC0->TC_RC = counter ;
+//    AT91C_BASE_TC0->TC_IER = AT91C_TC_CPCS;
+//    IRQ_ConfigureIT(AT91C_ID_TC0, TIMER_PRIORITY, TC0_IrqHandler);
+//    IRQ_EnableIT(AT91C_ID_TC0);
+//    
+//}
+//
+//
+//void  delay_ms( unsigned int delay)
+//{
+//
+//    timer0_counter = 0;
+//    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;   //start    
+//    while ( timer0_counter < delay );
+//    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS; //stop
+//
+//}
 
-
-// Configure timer 0 for delay_ms()
 void Timer0_Init( void )
 {
     unsigned int counter; 
@@ -179,31 +212,46 @@ void Timer0_Init( void )
     AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC0);
     AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS;
     AT91C_BASE_TC0->TC_IDR = 0xFFFFFFFF;
-    AT91C_BASE_TC0->TC_CMR = AT91C_TC_CLKS_TIMER_DIV2_CLOCK //choose 1/8 
+    AT91C_BASE_TC0->TC_CMR = AT91C_TC_CLKS_TIMER_DIV4_CLOCK //choose 1/128 
                              | AT91C_TC_CPCSTOP
                              | AT91C_TC_CPCDIS
                              | AT91C_TC_WAVESEL_UP_AUTO
                              | AT91C_TC_WAVE;
-    AT91C_BASE_TC0->TC_RC = counter ;
-    AT91C_BASE_TC0->TC_IER = AT91C_TC_CPCS;
-    IRQ_ConfigureIT(AT91C_ID_TC0, TIMER_PRIORITY, TC0_IrqHandler);
-    IRQ_EnableIT(AT91C_ID_TC0);
+    AT91C_BASE_TC0->TC_RC = counter ;    
     
 }
 
 
-void  delay_ms( unsigned int delay)
-{
 
-    timer0_counter = 0;
-    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;   //start    
-    while ( timer0_counter < delay );
-    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS; //stop
-
+void  delay_ms( unsigned int delay_ms ) //
+{   
+    unsigned int counter_top;
+    unsigned int counter_cycle;
+    
+    // MCK / (1000) / ( DIV[timer_div] ) * delay_ms ; = 96000000/1000/128 *delay_ms = 750 * delay_ms    
+    counter_cycle   = delay_ms / 87 ;
+    counter_top     = delay_ms - counter_cycle * 87 ;
+    
+    if( counter_cycle > 0 ) {     
+        while( counter_cycle-- >0 ) { 
+            AT91C_BASE_TC0->TC_RC  = 87 * 750 ;
+            AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN +  AT91C_TC_SWTRG ;
+            while( !(AT91C_BASE_TC0->TC_SR & AT91C_TC_CPCS) ) ;  
+        }
+        
+    }             
+    counter_top =  (counter_top - 0) * 750 ;   
+    AT91C_BASE_TC0->TC_RC  = counter_top;
+    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN +  AT91C_TC_SWTRG ;
+    
+    while( !(AT91C_BASE_TC0->TC_SR & AT91C_TC_CPCS) ) ;     
+    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS;     
+ 
+    
 }
 
 
-
+//////////////////////////////////////////
 #define DEBUG_INFO_FRESH_INTERVAL 100  //100ms
 
 
