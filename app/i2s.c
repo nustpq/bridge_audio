@@ -282,7 +282,7 @@ void HDMA_IrqHandler(void)
         //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);   //bulkin tes data for debug 
         if ( i2s_rec_buffer_size > kfifo_get_free_space( &bulkin_fifo ) ) { //if rec fifo buf full    
             kfifo_release(&bulkin_fifo, i2s_rec_buffer_size);       //discard oldest data for newest data  
-            error_bulkin_full++; //bulkin fifo full        
+            //error_bulkin_full++; //bulkin fifo full        
         }
         if( error_bulkin_full ) {//force record data to fixed line to alert user record error...  
              memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x10,i2s_rec_buffer_size);  

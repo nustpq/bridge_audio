@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.2.2]";
+char fw_version[] = "[FW:A:V3.2.3]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -270,7 +270,8 @@ static void Audio_Stop( void )
     delay_ms(50); //wait until DMA interruption done.
     //printf( "\r\nflag_stop Done\r\n"); 
     
-    SSC_Play_Stop();         
+    SSC_Play_Stop();
+    delay_ms(50);  
     SSC_Record_Stop();      
     delay_ms(50);  
         
@@ -280,10 +281,10 @@ static void Audio_Stop( void )
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
     delay_ms(100); 
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
-    
+    delay_ms(200);
     //I2S_Init();  
     SSC_Reset(); 
-    delay_ms(50); 
+    delay_ms(200); 
       
     Init_Bulk_FIFO(); //???
     LED_Clear(USBD_LEDUDATA);
