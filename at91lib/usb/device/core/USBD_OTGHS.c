@@ -867,7 +867,7 @@ void UDPD_IrqHandler(void)
 
     if (deviceState >= USBD_STATE_POWERED) {
 
-        LED_Clear(USBD_LEDUSB);
+       // LED_Clear(USBD_LEDUSB);
     }
 }
 

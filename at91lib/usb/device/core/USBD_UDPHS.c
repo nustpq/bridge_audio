@@ -628,7 +628,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
  
     
     //debug_usb_dma_enterhandler++;
-    
+    printf("2 ");
     status = AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMASTATUS;
     //printf("<Dma.Ept%d>", bEndpoint);
 
@@ -730,6 +730,7 @@ void UDPD_IrqHandler(void)
     unsigned char numIT;
     static unsigned int usb_frame_counter = 0 ;
     
+    LED_SET_DATA;
     /*
     if (deviceState >= USBD_STATE_POWERED) {
 
@@ -744,9 +745,9 @@ void UDPD_IrqHandler(void)
     // Handle all UDPHS interrupts
     TRACE_DEBUG_WP("H");
     
-    if( (usb_frame_counter++ & 0x3F) == 0 ) {         
-        LED_TOGGLE_DATA; //LED_Toggle(USBD_LEDUDATA);  
-    }
+//    if( (usb_frame_counter++ & 0x3F) == 0 ) {         
+//        LED_TOGGLE_DATA; //LED_Toggle(USBD_LEDUDATA);  
+//    }
     
     while (status != 0) {
 
@@ -773,7 +774,7 @@ void UDPD_IrqHandler(void)
             // Pull-Up must be connected
             // Transceiver must be disabled
 
-            LED_Clear(USBD_LEDUSB);
+           // LED_Clear(USBD_LEDUSB);
 
             UDPHS_DisableBIAS();
 
@@ -886,11 +887,13 @@ void UDPD_IrqHandler(void)
 //                        if( numIT == CDCDSerialDriverDescriptors_DATAOUT ) {
 //                            debug_usb_dma_OUT++;
 //                        }
-//                          if( numIT == CDCDSerialDriverDescriptors_DATAIN ) {
-//                            debug_usb_dma_IN++;
-//                        }
-                        
                         UDPHS_DmaHandler(numIT);
+                          if( numIT == CDCDSerialDriverDescriptors_DATAIN ) {
+                            //debug_usb_dma_IN++;
+                           //printf(". ");
+                        }
+                        
+                        
                         status &= ~(1 << SHIFT_DMA << numIT);
                         if (status != 0) {
 
@@ -919,6 +922,8 @@ void UDPD_IrqHandler(void)
         LED_CLEAR_DATA;
     }
     */
+    
+    LED_CLEAR_DATA;
     
 }
 
@@ -1123,6 +1128,7 @@ char USBD_Write( unsigned char    bEndpoint,
             // Enable endpoint IT
             AT91C_BASE_UDPHS->UDPHS_IEN |= (1 << SHIFT_INTERUPT << bEndpoint);
             AT91C_BASE_UDPHS->UDPHS_EPT[bEndpoint].UDPHS_EPTCTLENB = AT91C_UDPHS_TX_PK_RDY;
+        printf("0 ");
         }
         else {
             // Others endpoints (not control)
@@ -1153,6 +1159,7 @@ char USBD_Write( unsigned char    bEndpoint,
                                                 | AT91C_UDPHS_END_B_EN
                                                 | AT91C_UDPHS_END_BUFFIT
                                                 | AT91C_UDPHS_CHANN_ENB );
+            printf("1 ");
         }
     }
 #endif

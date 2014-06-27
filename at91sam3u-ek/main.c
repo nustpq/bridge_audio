@@ -72,7 +72,7 @@ int main( void )
         //Debug_Info(); 
         Check_UART_CMD();
         Audio_State_Control();
-        DBGUART_Service();
+        //DBGUART_Service();
       
     }
     

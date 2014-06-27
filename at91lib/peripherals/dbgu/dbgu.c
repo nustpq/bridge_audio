@@ -71,6 +71,9 @@ void DBGUART_Service( void )
     
 }
 
+/*
+//Problem happens: if this print() is called in different intrruptions.
+*/
 unsigned char Print_Error_Info[] = "\r\n**Overflow**\r\n";
 static unsigned char buff_counter = 0;
 void printc( unsigned char data )
@@ -78,18 +81,19 @@ void printc( unsigned char data )
     unsigned int size;
     unsigned int len;
     
-//    BUFF_DBGUART[buff_counter++] = data;
-//    if( buff_counter == DBGUART_BUFFER_SIZE ) {
-//        buff_counter = 0;    
-//        size = kfifo_get_free_space( &dbguart_fifo );        
-//        if(size >= len ) {
-//           kfifo_put(&dbguart_fifo, pStr, len) ;
-//        } else {
+    BUFF_DBGUART[buff_counter++] = data;
+    if( buff_counter == DBGUART_BUFFER_SIZE ) {
+        buff_counter = 0;    
+        size = kfifo_get_free_space( &dbguart_fifo );        
+        if(size >= DBGUART_BUFFER_SIZE ) {
+           kfifo_put(&dbguart_fifo, BUFF_DBGUART, DBGUART_BUFFER_SIZE) ;
+        }
+//        else {
 //           kfifo_put(&dbguart_fifo, Print_Error_Info, strlen(Print_Error_Info)) ;        
 //        }
-//        
-//    }
-    kfifo_put(&dbguart_fifo, &data, 1) ;
+        
+    }
+    //kfifo_put(&dbguart_fifo, &data, 1) ;
     
   
 }

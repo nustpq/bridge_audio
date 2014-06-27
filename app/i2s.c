@@ -39,6 +39,7 @@
 #include <usb/device/cdc-serial/CDCDSerialDriver.h>
 #include <usb/device/cdc-serial/CDCDSerialDriverDescriptors.h>
 #include <utility/trace.h>
+#include <utility/led.h>
 #include <dmad/dmad.h>
 #include <dma/dma.h>
 #include "kfifo.h"
@@ -199,7 +200,7 @@ void HDMA_IrqHandler(void)
 //    status = DMA_GetMaskedStatus();      
     status  = AT91C_BASE_HDMA->HDMA_EBCISR;
     status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
-    
+    LED_SET_POWER;
     if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //record     
         if( flag_stop ) {    
             //printf( "\r\nflag_stop PLAY\r\n");
@@ -255,7 +256,7 @@ void HDMA_IrqHandler(void)
             }
         }        
       
-        if ( bulkout_enable && bulkout_start && (USBDATAEPSIZE <= kfifo_get_free_space(&bulkout_fifo)) ) { //
+        if ( bulkout_enable && bulkout_start && ((USBDATAEPSIZE<<2) <= kfifo_get_free_space(&bulkout_fifo)) ) { //
             TRACE_INFO_NEW_WP("-LBO-") ;        
             bulkout_start = false ;
             error_bulkout_full++;
@@ -265,15 +266,15 @@ void HDMA_IrqHandler(void)
                                      0);
 
         }
-    }
-        
+    }        
     
     if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
         if( flag_stop ) {
             //printf( "\r\nflag_stop REC\r\n");
             return;
         }  
-        TRACE_INFO_NEW_WP("-SI-") ; 
+        TRACE_INFO_NEW_WP("-SI-") ;
+        //printf("# ");
         SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);                      
    
         //AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0);//DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
@@ -289,8 +290,9 @@ void HDMA_IrqHandler(void)
         }
         kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
         
-        if ( bulkin_enable && bulkin_start && ( ( USBDATAEPSIZE<<1 ) <= kfifo_get_data_size(&bulkin_fifo)) ) {
+        if ( bulkin_enable && bulkin_start && ( (USBDATAEPSIZE<<2) <= kfifo_get_data_size(&bulkin_fifo)) ) {
             TRACE_INFO_NEW_WP("-LBI-") ; 
+            printf("\r\nLBI ");
             bulkin_start = false ;
             error_bulkin_empt++;
             kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
@@ -302,6 +304,8 @@ void HDMA_IrqHandler(void)
         }
         
     }   
+    
+    LED_CLEAR_POWER;
     
 }
 
@@ -380,8 +384,7 @@ void SSC_Record_Start(void)
 void SSC_Play_Stop(void)
 {
     
-    SSC_DisableTransmitter(AT91C_BASE_SSC0);
-    delay_ms(5);
+    SSC_DisableTransmitter(AT91C_BASE_SSC0);    
     DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
     DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) ); 
 
@@ -402,8 +405,7 @@ void SSC_Play_Stop(void)
 void SSC_Record_Stop(void)
 {  
     
-    SSC_DisableReceiver(AT91C_BASE_SSC0);
-    delay_ms(5);
+    SSC_DisableReceiver(AT91C_BASE_SSC0); 
     DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
     DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );   
 

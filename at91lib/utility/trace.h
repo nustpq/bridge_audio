@@ -92,7 +92,7 @@
 //         Global Definitions
 //------------------------------------------------------------------------------
 
-#define DBGUART_FIFO_EN  //PQ
+//#define DBGUART_FIFO_EN  //PQ
 
 #define TRACE_LEVEL_DEBUG      5
 #define TRACE_LEVEL_INFO       4

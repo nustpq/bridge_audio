@@ -45,7 +45,7 @@
 void USBDCallbacks_Suspended(void)
 {
     // Turn off LEDs
-    LED_Clear(USBD_LEDPOWER);
-    LED_Clear(USBD_LEDUSB);
+   // LED_Clear(USBD_LEDPOWER);
+   // LED_Clear(USBD_LEDUSB);
 }
 

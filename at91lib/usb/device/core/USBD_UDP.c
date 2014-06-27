@@ -650,7 +650,7 @@ void UDPD_IrqHandler(void)
     // Toggle USB LED if the device is active
     if (deviceState >= USBD_STATE_POWERED) {
 
-        LED_Set(USBD_LEDUSB);
+      //  LED_Set(USBD_LEDUSB);
     }
 
     // Service interrupts
@@ -779,7 +779,7 @@ void UDPD_IrqHandler(void)
     TRACE_INFO_WP("\n\r");
     if (deviceState >= USBD_STATE_POWERED) {
 
-        LED_Clear(USBD_LEDUSB);
+       // LED_Clear(USBD_LEDUSB);
     }
 }
 
