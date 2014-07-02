@@ -16,7 +16,7 @@
 
 //Softpack Version
 #define MCK                  BOARD_MCK
-#define I2S_BUFFER_SIZE      768   //audio data transfered per frame, Max 48kHz:   48*2*8=768
+#define I2S_BUFFER_SIZE      1536//768   //audio data transfered per frame, Max 48kHz:   48*2*8=768
 #define USBDATAEPSIZE        BOARD_USB_ENDPOINTS_MAXPACKETSIZE( CDCDSerialDriverDescriptors_DATAIN ) //512
 #define USB_OUT_BUFFER_SIZE  16384  //2^14=16384  //USB audio data, size MUST be 2^n .
 #define USB_IN_BUFFER_SIZE   16384  //2^14=16384  //USB audio data, size MUST be 2^n .
@@ -27,9 +27,10 @@
 //
 //#define PIO_PRIORITY        7
 //#define TIMER_PRIORITY      6
-#define USB_PRIORITY        3
-#define HDMA_PRIORITY       2
 #define UART_PRIORITY       4
+#define USB_PRIORITY        3
+#define HDMA_PRIORITY       2 //SSC must have highest priority
+
 
 
 #define  AUDIO_CMD_IDLE                 0x00
@@ -66,8 +67,8 @@ extern unsigned char FIFOBufferBulkIn[];
 extern unsigned char I2SBuffersOut[2][I2S_BUFFER_SIZE]; 
 extern unsigned char I2SBuffersIn[2][I2S_BUFFER_SIZE]; 
 
-extern unsigned char i2s_buffer_out_index;
-extern unsigned char i2s_buffer_in_index;
+extern volatile unsigned char i2s_buffer_out_index;
+extern volatile unsigned char i2s_buffer_in_index;
 
 
 extern volatile unsigned int i2s_play_buffer_size ;

@@ -78,6 +78,9 @@ unsigned char Print_Error_Info[] = "\r\n**Overflow**\r\n";
 static unsigned char buff_counter = 0;
 void printc( unsigned char data )
 {
+
+#if(0)
+
     unsigned int size;
     unsigned int len;
     
@@ -93,8 +96,9 @@ void printc( unsigned char data )
 //        }
         
     }
-    //kfifo_put(&dbguart_fifo, &data, 1) ;
-    
+#else
+    kfifo_put(&dbguart_fifo, &data, 1) ;
+#endif   
   
 }
 

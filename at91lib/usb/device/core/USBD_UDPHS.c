@@ -132,6 +132,8 @@ typedef struct
     Transfer       transfer;
     /// Special case for send a ZLP
     unsigned char  sendZLP;
+    
+    unsigned char reserved[3];
 } Endpoint;
 
 //------------------------------------------------------------------------------
@@ -231,6 +233,7 @@ static void UDPHS_EndOfTransfer( unsigned char bEndpoint, char bStatus )
         TRACE_DEBUG_WP("Eo");
         if(pEndpoint->state == UDP_ENDPOINT_SENDING) {
             pEndpoint->sendZLP = 0;
+           // printf("E");
         }
         // Endpoint returns in Idle state
         pEndpoint->state = UDP_ENDPOINT_IDLE;
@@ -625,23 +628,29 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
     int           justTransferred;
     unsigned int  status;
     unsigned char result = USBD_STATUS_SUCCESS;
- 
     
-    //debug_usb_dma_enterhandler++;
-  
-   // printf("2 ");
+    //debug_usb_dma_enterhandler++;    
  
     status = AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMASTATUS;
     //printf("<Dma.Ept%d>", bEndpoint);
 
     // Disable DMA interrupt to avoid receiving 2 interrupts (B_EN and TR_EN)
-//    AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMACONTROL &=
-//        ~(AT91C_UDPHS_END_TR_EN | AT91C_UDPHS_END_B_EN);
+    AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMACONTROL &=
+        ~(AT91C_UDPHS_END_TR_EN | AT91C_UDPHS_END_B_EN);
 
     AT91C_BASE_UDPHS->UDPHS_IEN &= ~(1 << SHIFT_DMA << bEndpoint);
+//    if(bEndpoint == 2) {
+//        printf("<"); 
+//    } 
+//  
+    //else if(bEndpoint == 1) {
+//        printf("d");
+//    } else {
+//        printf("*"); 
+//    }
 
     if( AT91C_UDPHS_END_BF_ST == (status & AT91C_UDPHS_END_BF_ST) ) {
-       //printf("+");
+//        printf("+1");       
         TRACE_INFO("EndBuffer ");
         //debug_trans_counter1++;
         // BUFF_COUNT holds the number of untransmitted bytes.
@@ -661,6 +670,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
         if( (pTransfer->remaining + pTransfer->buffered) > 0 ) {
              //debug_trans_counter2++;
             // Prepare an other transfer
+//            printf("\r\n+2");
             if( pTransfer->remaining > DMA_MAX_FIFO_SIZE ) {
 
                 pTransfer->buffered = DMA_MAX_FIFO_SIZE;    
@@ -692,6 +702,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
     else if( AT91C_UDPHS_END_TR_ST == (status & AT91C_UDPHS_END_TR_ST) ) {
 
         TRACE_INFO("EndTransf ");
+//         printf("\r\n+3");
         //debug_trans_counter3++;
         pTransfer->transferred = pTransfer->buffered
                                  - ((status & AT91C_UDPHS_BUFF_COUNT) >> 16);
@@ -701,7 +712,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
         TRACE_DEBUG_WP("0pTransfer->remaining %d \n\r", pTransfer->remaining);
     }
     else {
-
+//        printf("\r\n+4");
         TRACE_ERROR("UDPHS_DmaHandler: Error (0x%08X)\n\r", status);
         result = USBD_STATUS_ABORTED;
     }
@@ -709,9 +720,12 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
     // Invoke callback
     if( pTransfer->remaining == 0 ) {
         //debug_trans_counter4++;
-        TRACE_DEBUG_WP("EOT ");
+     
         UDPHS_EndOfTransfer(bEndpoint, result);
-    }
+    } 
+//    if(bEndpoint == 2) {
+//        printf(">"); 
+//    }
 }
 #endif
 
@@ -731,11 +745,11 @@ void UDPD_IrqHandler(void)
     unsigned int  status;
     unsigned char numIT;
     static unsigned int usb_frame_counter = 0 ;
-    
-    LED_SET_DATA;
+   
+   // LED_SET_DATA;
+
     /*
     if (deviceState >= USBD_STATE_POWERED) {
-
         //LED_Set(USBD_LEDUSB);
         LED_SET_DATA;
     }
@@ -747,10 +761,7 @@ void UDPD_IrqHandler(void)
     // Handle all UDPHS interrupts
     TRACE_DEBUG_WP("H");
     
-//    if( (usb_frame_counter++ & 0x3F) == 0 ) {         
-//        LED_TOGGLE_DATA; //LED_Toggle(USBD_LEDUDATA);  
-//    }
-    
+
     while (status != 0) {
 
         // Start Of Frame (SOF)
@@ -863,6 +874,7 @@ void UDPD_IrqHandler(void)
         }
         // Endpoint interrupts
         else {
+            
 #ifndef DMA
             // Handle endpoint interrupts
             for (numIT = 0; numIT < NUM_IT_MAX; numIT++) {
@@ -879,7 +891,15 @@ void UDPD_IrqHandler(void)
                 UDPHS_EndpointHandler( 0 );
             }
             else {
-
+                // Check if endpoint has a pending interrupt
+                if ((status & (1 << SHIFT_DMA << 1)) != 0) { 
+                        UDPHS_DmaHandler(1);                    
+                }
+                
+                if ((status & (1 << SHIFT_DMA << 2)) != 0) { 
+                        UDPHS_DmaHandler(2);                    
+                } 
+/*
                 numIT = 1;
                 while((status&(0x7E<<SHIFT_DMA)) != 0) {
 
@@ -887,14 +907,13 @@ void UDPD_IrqHandler(void)
                     if ((status & (1 << SHIFT_DMA << numIT)) != 0) {                        
 //                        if( numIT == CDCDSerialDriverDescriptors_DATAOUT ) {
 //                            debug_usb_dma_OUT++;
-//                        }
+//                        }                        
+//                        if( numIT == CDCDSerialDriverDescriptors_DATAIN ) {
+//                          debug_usb_dma_IN++;
+//                         printf(". ");
+//                      }
+                        
                         UDPHS_DmaHandler(numIT);
-                          if( numIT == CDCDSerialDriverDescriptors_DATAIN ) {
-                            //debug_usb_dma_IN++;
-                           //printf(". ");
-                        }
-                        
-                        
                         status &= ~(1 << SHIFT_DMA << numIT);
                         if (status != 0) {
 
@@ -903,6 +922,9 @@ void UDPD_IrqHandler(void)
                     }
                     numIT++;
                 }
+*/               
+                          
+                
             }
 #endif
         }
@@ -910,12 +932,13 @@ void UDPD_IrqHandler(void)
         // Retrieve new interrupt status
         status = AT91C_BASE_UDPHS->UDPHS_INTSTA & AT91C_BASE_UDPHS->UDPHS_IEN;
 
-        TRACE_DEBUG_WP("\n\r");
-        if (status != 0) {
-
-            TRACE_DEBUG_WP("  - ");
-        }
+//        TRACE_DEBUG_WP("\n\r");
+//        if (status != 0) {
+//            TRACE_DEBUG_WP("  - ");
+//        }
+        
     }
+    
     /*
     if (deviceState >= USBD_STATE_POWERED) {
 
@@ -924,8 +947,11 @@ void UDPD_IrqHandler(void)
     }
     */
     
-    LED_CLEAR_DATA;
+//    if( (usb_frame_counter++ & 0x3F) == 0 ) {         
+//        LED_TOGGLE_DATA; //LED_Toggle(USBD_LEDUDATA);  
+//    }
     
+  //   LED_CLEAR_DATA;
 }
 
 //------------------------------------------------------------------------------
@@ -1094,8 +1120,10 @@ char USBD_Write( unsigned char    bEndpoint,
 
     // Return if the endpoint is not in IDLE state
     if (pEndpoint->state != UDP_ENDPOINT_IDLE)  {
-
+//        printf("V");
         return USBD_STATUS_LOCKED;
+    } else {
+//        printf("(");
     }
     //TRACE_DEBUG_WP("Write%d(%d) ", bEndpoint, dLength);
     TRACE_INFO("Write%d(%d) ", bEndpoint, dLength);
@@ -1129,14 +1157,14 @@ char USBD_Write( unsigned char    bEndpoint,
             // Enable endpoint IT
             AT91C_BASE_UDPHS->UDPHS_IEN |= (1 << SHIFT_INTERUPT << bEndpoint);
             AT91C_BASE_UDPHS->UDPHS_EPT[bEndpoint].UDPHS_EPTCTLENB = AT91C_UDPHS_TX_PK_RDY;
-        //printf("0 ");
+//        printf("Z");
         }
         else {
             // Others endpoints (not control)
             if( pTransfer->remaining > DMA_MAX_FIFO_SIZE ) {
 
                 // Transfer the max
-                pTransfer->buffered = DMA_MAX_FIFO_SIZE;    
+                pTransfer->buffered = DMA_MAX_FIFO_SIZE;                
             }
             else {
                 // Transfer the good size
@@ -1160,11 +1188,11 @@ char USBD_Write( unsigned char    bEndpoint,
                                                 | AT91C_UDPHS_END_B_EN
                                                 | AT91C_UDPHS_END_BUFFIT
                                                 | AT91C_UDPHS_CHANN_ENB );
-           // printf("1 ");
+           
         }
     }
 #endif
-
+//printf(")");
     return USBD_STATUS_SUCCESS;
 }
 
@@ -1188,10 +1216,11 @@ char USBD_Read( unsigned char    bEndpoint,
   
     // Return if the endpoint is not in IDLE state
     if (pEndpoint->state != UDP_ENDPOINT_IDLE) {
-
+      printf("g");
         return USBD_STATUS_LOCKED;
+    } else {
+   // printf("r");
     }
-
     TRACE_DEBUG_WP("Read%d(%d) ", bEndpoint, dLength);
 
     // Endpoint enters Receiving state

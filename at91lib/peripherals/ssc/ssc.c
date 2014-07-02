@@ -506,8 +506,6 @@ unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
     
     // Set DMA channel config
 
-   
-
     
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_CTRLA = \
                                         ((length>>1) \
@@ -694,7 +692,7 @@ void SSC_Reset( void )
     // Disable SSC peripheral clock
     AT91C_BASE_PMC->PMC_PCDR = 1 << BOARD_AT73C213_SSC_ID;
     AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;  
-    delay_ms(5);
+
     // Enable SSC peripheral clock
     AT91C_BASE_PMC->PMC_PCER = 1 << BOARD_AT73C213_SSC_ID;
     AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;  

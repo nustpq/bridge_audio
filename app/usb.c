@@ -241,6 +241,7 @@ void UsbDataReceived(  unsigned int unused,
 {
     TRACE_INFO_NEW_WP("\r\n#BO:") ;
     //Play
+   // printf("b");
     if ( ! bulkout_enable ) {
         printf("\r\nstatus %d, bulkout_enable %d\r\n",status, bulkout_enable);
         return ;
@@ -295,7 +296,7 @@ void UsbDataTransmit(  unsigned int unused,
                               unsigned int remaining )
 {
     TRACE_INFO_NEW_WP("\r\n#BI:") ;
-    //printf("BI ");
+//    printf("{");
     //Record    
     if ( ! bulkin_enable ) {
         printf("\r\nstatus %d, bulkin_enable %d\r\n",status, bulkin_enable);
@@ -325,6 +326,7 @@ void UsbDataTransmit(  unsigned int unused,
         TRACE_WARNING( "\r\nERROR : UsbDataTransmit: Rr-transfer hit\r\n" );           
     }    
     
+//    printf("}");
 }
 
 
