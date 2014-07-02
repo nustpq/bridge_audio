@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.2.5]";
+char fw_version[] = "[FW:A:V3.2.6]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -277,8 +277,10 @@ static void Audio_Stop( void )
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
     delay_ms(50);    
     AT91C_BASE_UDPHS->UDPHS_EPTRST = (1<<CDCDSerialDriverDescriptors_DATAIN | 1<<CDCDSerialDriverDescriptors_DATAOUT);
-    delay_ms(100); 
+    delay_ms(50); 
     Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
+    Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);
+
     delay_ms(50);
     //I2S_Init();  
     SSC_Reset(); 

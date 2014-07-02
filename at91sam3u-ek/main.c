@@ -38,6 +38,8 @@
 #include <app.h>
 #include <dbgu/dbgu.h>
 #include <irq/irq.h>
+#include <tc/tc.h>
+#include <utility/led.h>
 
 
 int main( void )
@@ -54,7 +56,8 @@ int main( void )
     printf("-- Compiled: %s %s by PQ--\r\n", __DATE__, __TIME__);
     printf("--------------------------------------------------\r\n");
     
-    Timer0_Init();    
+    Timer0_Init(); 
+    Timer1_Init();
     SysTick_Init();
     UART_Init();
      
@@ -66,7 +69,14 @@ int main( void )
     
     USB_Init();
     I2S_Init();
-    
+//    while(1){
+//     
+//        delay_us(10);
+//        LED_CLEAR_POWER;
+//        delay_us(10);
+//        LED_SET_POWER;
+//        
+//    }
     while(1) {  
       
         //Debug_Info(); 

@@ -221,8 +221,6 @@ void Timer0_Init( void )
     
 }
 
-
-
 void  delay_ms( unsigned int delay_ms ) //
 {   
     unsigned int counter_top;
@@ -246,9 +244,42 @@ void  delay_ms( unsigned int delay_ms ) //
     
     while( !(AT91C_BASE_TC0->TC_SR & AT91C_TC_CPCS) ) ;     
     AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS;     
- 
+     
+}
+
+
+void Timer1_Init( void )
+{
+    
+    AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC1);
+    AT91C_BASE_TC1->TC_CCR = AT91C_TC_CLKDIS;
+    AT91C_BASE_TC1->TC_IDR = 0xFFFFFFFF;
+    AT91C_BASE_TC1->TC_CMR = AT91C_TC_CLKS_TIMER_DIV1_CLOCK //choose 1/2
+                             | AT91C_TC_CPCSTOP
+                             | AT91C_TC_CPCDIS
+                             | AT91C_TC_WAVESEL_UP_AUTO
+                             | AT91C_TC_WAVE;
     
 }
+
+void  __ramfunc delay_us(unsigned int delay_us)  
+{   
+   unsigned int counter_top;   
+
+   // MCK / (1000*1000) / ( DIV[timer_div] ) * delay_us ; = 96000000/1000000/2 *delay_us = 48*  *delay_us   
+    counter_top =  (delay_us - 1) * 48 ;               
+    if( counter_top & 0xFFFF0000 ) {
+        counter_top = 0; // if exceeds TC_RC ...       
+    } 
+    
+     AT91C_BASE_TC1->TC_RC  = counter_top;// if exceeds TC_RC ...
+     AT91C_BASE_TC1->TC_CCR = AT91C_TC_CLKEN +  AT91C_TC_SWTRG ;
+     while( !( AT91C_BASE_TC1->TC_SR & AT91C_TC_CPCS) ) ;  
+     AT91C_BASE_TC1->TC_CCR = AT91C_TC_CLKDIS;     
+    
+}
+
+
 
 
 //////////////////////////////////////////
@@ -291,43 +322,6 @@ unsigned char Check_SysTick_State( void )
 
 
 
-
-void Timer1_Init( void )
-{
-    unsigned int counter; 
-    
-    counter =  MCK / 128 / 1000 * DEBUG_INFO_FRESH_INTERVAL;  
-    counter = (counter & 0xFFFF0000) == 0 ? counter : 0xFFFF ;
-
-    AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC1);
-    AT91C_BASE_TC1->TC_CCR = AT91C_TC_CLKDIS;
-    AT91C_BASE_TC1->TC_IDR = 0xFFFFFFFF;
-    AT91C_BASE_TC1->TC_CMR = AT91C_TC_CLKS_TIMER_DIV4_CLOCK //choose 1/128 
-                             | AT91C_TC_CPCSTOP
-                             | AT91C_TC_CPCDIS
-                             | AT91C_TC_WAVESEL_UP_AUTO
-                             | AT91C_TC_WAVE;
-    AT91C_BASE_TC1->TC_RC = counter;
-    AT91C_BASE_TC1->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;   //start
-    
-}
-
-
-unsigned char Check_Timer1_State( void )
-{
-    unsigned int status = AT91C_BASE_TC1->TC_SR;
-
-    if ((status & AT91C_TC_CPCS) != 0) { 
-        //AT91C_BASE_TC1->TC_CCR = AT91C_TC_CLKDIS;
-        AT91C_BASE_TC1->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;        
-        //LED_TOGGLE_DATA ;   
-        return 1;
-    } else {
-        return 0;
-        
-    }
-    
-}
 
 
 

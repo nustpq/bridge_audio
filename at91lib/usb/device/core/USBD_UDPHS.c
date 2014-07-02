@@ -628,18 +628,20 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
  
     
     //debug_usb_dma_enterhandler++;
-    printf("2 ");
+  
+   // printf("2 ");
+ 
     status = AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMASTATUS;
     //printf("<Dma.Ept%d>", bEndpoint);
 
     // Disable DMA interrupt to avoid receiving 2 interrupts (B_EN and TR_EN)
-    AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMACONTROL &=
-        ~(AT91C_UDPHS_END_TR_EN | AT91C_UDPHS_END_B_EN);
+//    AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMACONTROL &=
+//        ~(AT91C_UDPHS_END_TR_EN | AT91C_UDPHS_END_B_EN);
 
     AT91C_BASE_UDPHS->UDPHS_IEN &= ~(1 << SHIFT_DMA << bEndpoint);
 
     if( AT91C_UDPHS_END_BF_ST == (status & AT91C_UDPHS_END_BF_ST) ) {
-       
+       //printf("+");
         TRACE_INFO("EndBuffer ");
         //debug_trans_counter1++;
         // BUFF_COUNT holds the number of untransmitted bytes.
@@ -882,8 +884,7 @@ void UDPD_IrqHandler(void)
                 while((status&(0x7E<<SHIFT_DMA)) != 0) {
 
                     // Check if endpoint has a pending interrupt
-                    if ((status & (1 << SHIFT_DMA << numIT)) != 0) {
-                        
+                    if ((status & (1 << SHIFT_DMA << numIT)) != 0) {                        
 //                        if( numIT == CDCDSerialDriverDescriptors_DATAOUT ) {
 //                            debug_usb_dma_OUT++;
 //                        }
@@ -1128,7 +1129,7 @@ char USBD_Write( unsigned char    bEndpoint,
             // Enable endpoint IT
             AT91C_BASE_UDPHS->UDPHS_IEN |= (1 << SHIFT_INTERUPT << bEndpoint);
             AT91C_BASE_UDPHS->UDPHS_EPT[bEndpoint].UDPHS_EPTCTLENB = AT91C_UDPHS_TX_PK_RDY;
-        printf("0 ");
+        //printf("0 ");
         }
         else {
             // Others endpoints (not control)
@@ -1159,7 +1160,7 @@ char USBD_Write( unsigned char    bEndpoint,
                                                 | AT91C_UDPHS_END_B_EN
                                                 | AT91C_UDPHS_END_BUFFIT
                                                 | AT91C_UDPHS_CHANN_ENB );
-            printf("1 ");
+           // printf("1 ");
         }
     }
 #endif

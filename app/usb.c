@@ -295,7 +295,7 @@ void UsbDataTransmit(  unsigned int unused,
                               unsigned int remaining )
 {
     TRACE_INFO_NEW_WP("\r\n#BI:") ;
-    printf("BI ");
+    //printf("BI ");
     //Record    
     if ( ! bulkin_enable ) {
         printf("\r\nstatus %d, bulkin_enable %d\r\n",status, bulkin_enable);

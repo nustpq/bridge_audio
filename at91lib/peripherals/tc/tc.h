@@ -78,6 +78,7 @@ extern unsigned char TC_FindMckDivisor(
 
 
 extern void delay_ms( unsigned int ms );
+extern void  delay_us(unsigned int delay_us) ;
 
 extern void Timer0_Init( void );
 

@@ -196,12 +196,13 @@ void HDMA_IrqHandler(void)
 {
     unsigned int status;  
     unsigned int temp;
-
+   LED_SET_POWER;
 //    status = DMA_GetMaskedStatus();      
     status  = AT91C_BASE_HDMA->HDMA_EBCISR;
     status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
-    LED_SET_POWER;
-    if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //record     
+  
+    if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //record 
+         
         if( flag_stop ) {    
             //printf( "\r\nflag_stop PLAY\r\n");
             return;
@@ -256,7 +257,7 @@ void HDMA_IrqHandler(void)
             }
         }        
       
-        if ( bulkout_enable && bulkout_start && ((USBDATAEPSIZE<<2) <= kfifo_get_free_space(&bulkout_fifo)) ) { //
+        if ( bulkout_enable && bulkout_start && ((USBDATAEPSIZE<<1) <= kfifo_get_free_space(&bulkout_fifo)) ) { //
             TRACE_INFO_NEW_WP("-LBO-") ;        
             bulkout_start = false ;
             error_bulkout_full++;
@@ -266,9 +267,11 @@ void HDMA_IrqHandler(void)
                                      0);
 
         }
+         
     }        
     
-    if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
+    if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record 
+      
         if( flag_stop ) {
             //printf( "\r\nflag_stop REC\r\n");
             return;
@@ -290,9 +293,8 @@ void HDMA_IrqHandler(void)
         }
         kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
         
-        if ( bulkin_enable && bulkin_start && ( (USBDATAEPSIZE<<2) <= kfifo_get_data_size(&bulkin_fifo)) ) {
-            TRACE_INFO_NEW_WP("-LBI-") ; 
-            printf("\r\nLBI ");
+        if ( bulkin_enable && bulkin_start && ( (USBDATAEPSIZE<<1) <= kfifo_get_data_size(&bulkin_fifo)) ) {
+            TRACE_INFO_NEW_WP("-LBI-") ;            
             bulkin_start = false ;
             error_bulkin_empt++;
             kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
@@ -304,8 +306,8 @@ void HDMA_IrqHandler(void)
         }
         
     }   
-    
-    LED_CLEAR_POWER;
+     LED_CLEAR_POWER;
+  
     
 }
 
