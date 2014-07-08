@@ -241,7 +241,6 @@ void UsbDataReceived(  unsigned int unused,
 {
     TRACE_INFO_NEW_WP("\r\n#BO:") ;
     //Play
-   // printf("b");
     if ( ! bulkout_enable ) {
         printf("\r\nstatus %d, bulkout_enable %d\r\n",status, bulkout_enable);
         return ;
@@ -249,11 +248,11 @@ void UsbDataReceived(  unsigned int unused,
     if ( status == USBD_STATUS_SUCCESS ) {     
         //while( received > kfifo_get_free_space( &bulkout_fifo ) ) ; //wait if buf is full   
         kfifo_put(&bulkout_fifo, usbBufferBulkOut, received);
-//        if( check_buf_debug(usbBufferBulkOut, received) ) {
-//                printf("\r\n Check USB BI buf err : \r\n");
-//                dump_buf_debug(usbBufferBulkOut, received );
-//                while(1){ DBGUART_Service();};
-//            }
+        if( check_buf_debug(usbBufferBulkOut, received) ) {
+                printf("\r\n Check USB BI buf err : \r\n");
+                dump_buf_debug(usbBufferBulkOut, received );
+                while(1){ DBGUART_Service();};
+            }
         
         if ( USBDATAEPSIZE <= kfifo_get_free_space( &bulkout_fifo ) ) { //enouth free buffer                      
             CDCDSerialDriver_Read(    usbBufferBulkOut,
@@ -261,8 +260,7 @@ void UsbDataReceived(  unsigned int unused,
                                       (TransferCallback) UsbDataReceived,
                                       0);        
         } else { //usb out too fast                     
-            bulkout_start  = true ; 
-            //printf("\r\n");                   
+            bulkout_start  = true ;                               
         }     
         total_received += received ; 
      
@@ -296,7 +294,6 @@ void UsbDataTransmit(  unsigned int unused,
                               unsigned int remaining )
 {
     TRACE_INFO_NEW_WP("\r\n#BI:") ;
-//    printf("{");
     //Record    
     if ( ! bulkin_enable ) {
         printf("\r\nstatus %d, bulkin_enable %d\r\n",status, bulkin_enable);
@@ -313,8 +310,7 @@ void UsbDataTransmit(  unsigned int unused,
                                     (TransferCallback) UsbDataTransmit,
                                     0);       
         } else {                    
-            bulkin_start  = true ; 
-            //printf("*");
+            bulkin_start  = true ;  
         }              
         total_transmit += transmit ; 
      
@@ -326,7 +322,6 @@ void UsbDataTransmit(  unsigned int unused,
         TRACE_WARNING( "\r\nERROR : UsbDataTransmit: Rr-transfer hit\r\n" );           
     }    
     
-//    printf("}");
 }
 
 

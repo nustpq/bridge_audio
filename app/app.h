@@ -14,9 +14,11 @@
 #ifndef _APP_INC_
 #define _APP_INC_
 
+//#define METHOD_BY_RESET_MCU
+
 //Softpack Version
 #define MCK                  BOARD_MCK
-#define I2S_BUFFER_SIZE      1536//768   //audio data transfered per frame, Max 48kHz:   48*2*8=768
+#define I2S_BUFFER_SIZE      1536//768   //audio data transfered per frame, Max 48kHz:   48*2*8*2=1536
 #define USBDATAEPSIZE        BOARD_USB_ENDPOINTS_MAXPACKETSIZE( CDCDSerialDriverDescriptors_DATAIN ) //512
 #define USB_OUT_BUFFER_SIZE  16384  //2^14=16384  //USB audio data, size MUST be 2^n .
 #define USB_IN_BUFFER_SIZE   16384  //2^14=16384  //USB audio data, size MUST be 2^n .
@@ -30,7 +32,6 @@
 #define UART_PRIORITY       4
 #define USB_PRIORITY        3
 #define HDMA_PRIORITY       2 //SSC must have highest priority
-
 
 
 #define  AUDIO_CMD_IDLE                 0x00
@@ -83,7 +84,6 @@ extern volatile bool bulkout_enable;
 extern volatile bool bulkin_enable;
 extern volatile bool bulkout_trigger;
 extern volatile bool flag_stop;
-extern volatile unsigned int testc;
 extern kfifo_t bulkout_fifo;
 extern kfifo_t bulkin_fifo;
 
@@ -117,7 +117,6 @@ extern volatile unsigned int debug_trans_counter1 ;
 extern volatile unsigned int debug_trans_counter2 ;  
 extern volatile unsigned int debug_trans_counter3 ;
 extern volatile unsigned int debug_trans_counter4 ;  
-extern volatile unsigned int debug_usb_dma_enterhandler;
 extern volatile unsigned int debug_usb_dma_IN ;
 extern volatile unsigned int debug_usb_dma_OUT;
 #endif //#ifndef APP_H

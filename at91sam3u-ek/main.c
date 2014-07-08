@@ -61,25 +61,17 @@ int main( void )
     SysTick_Init();
     UART_Init();
      
-#if( true )
-#else
+#ifdef METHOD_BY_RESET_MCU
     USART_Write( AT91C_BASE_US0, 0, 0 ); //Send ACK
     delay_ms(1000);
 #endif
     
     USB_Init();
     I2S_Init();
-//    while(1){
-//     
-//        delay_us(10);
-//        LED_CLEAR_POWER;
-//        delay_us(10);
-//        LED_SET_POWER;
-//        
-//    }
+
     while(1) {  
       
-        //Debug_Info(); 
+        Debug_Info(); 
         Check_UART_CMD();
         Audio_State_Control();
         DBGUART_Service();

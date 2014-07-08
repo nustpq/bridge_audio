@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.2.7]";
+char fw_version[] = "[FW:A:V3.2.8]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -61,7 +61,7 @@ unsigned char usbBufferBulkIn[USBDATAEPSIZE];
 unsigned char FIFOBufferBulkOut[USB_OUT_BUFFER_SIZE];
 unsigned char FIFOBufferBulkIn[USB_IN_BUFFER_SIZE];  
 
-//Buffer Level 3:  Double-buffer for I2S data : MAX 48*2*6=576 B
+//Buffer Level 3:  Double-buffer for I2S data : MAX 48*2*8*2 = 1536 B
 unsigned char I2SBuffersOut[2][I2S_BUFFER_SIZE]; // Play
 unsigned char I2SBuffersIn[2][I2S_BUFFER_SIZE];  // Record
 // Current I2S buffer index.
@@ -84,13 +84,12 @@ volatile bool bulkin_start     = true;
 volatile bool bulkout_start    = true;
 volatile bool bulkout_trigger  = false ;
 volatile bool flag_stop         = false ;
-volatile unsigned int testc     = 0;
+
 volatile unsigned int bulkout_empt = 0;
 volatile unsigned int debug_trans_counter1 = 0 ;
 volatile unsigned int debug_trans_counter2 = 0 ;  
 volatile unsigned int debug_trans_counter3 = 0 ;
 volatile unsigned int debug_trans_counter4 = 0 ;  
-volatile unsigned int debug_usb_dma_enterhandler = 0;
 volatile unsigned int debug_usb_dma_IN = 0;
 volatile unsigned int debug_usb_dma_OUT = 0;
 
@@ -262,12 +261,19 @@ static void Audio_Start_Play_Rec( void )
 
 static void Audio_Stop( void )
 {  
-    printf( "\r\nStop Play & Rec...\r\n"); 
     
-        
+#ifdef METHOD_BY_RESET_MCU             
+    printf("\r\n Got command to reset MCU...MCM_RESET_CMD");                                   
+    while(1) {
+        AT91C_BASE_RSTC->RSTC_RCR = 0xa5000005 ; //reset MCU     
+    }       
+#endif  
+    
+    printf( "\r\nStop Play & Rec...\r\n"); 
+
     bulkin_enable    = false ;
     bulkout_enable   = false ; 
-    flag_stop = true ;  
+    flag_stop        = true ;  
     delay_ms(10); //wait until DMA interruption done.
     //printf( "\r\nflag_stop Done\r\n"); 
     
@@ -289,16 +295,17 @@ static void Audio_Stop( void )
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_NAK_OUT ;
 //    delay_ms(50);    
 //    AT91C_BASE_UDPHS->UDPHS_EPTRST =  1<<CDCDSerialDriverDescriptors_DATAOUT;
-//    delay_ms(50);   
+    delay_ms(50);   
+    
     //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);    
     //I2S_Init();  
     SSC_Reset(); 
         
     Init_Bulk_FIFO(); //???
-    LED_Clear(USBD_LEDUDATA);
+    LED_Clear( USBD_LEDUDATA );
     
     bulkin_start    = true ; 
-    bulkout_start   = true ;
+    bulkout_start   = true ;    
     bulkout_trigger = false ;     
     flag_stop       = false ;
     bulkout_empt    = 0;  
@@ -311,18 +318,14 @@ static void Audio_Stop( void )
     error_bulkout_full  = 0 ;
     error_bulkout_empt  = 0 ;
     error_bulkin_full   = 0 ;
-    error_bulkin_empt   = 0 ;
-    
-    
-    testc = 0;
+    error_bulkin_empt   = 0 ;    
     debug_trans_counter1=0;
     debug_trans_counter2=0;
     debug_trans_counter3=0;
-    debug_trans_counter4=0;
-               
-    debug_usb_dma_enterhandler=0;
-    debug_usb_dma_IN=0;
+    debug_trans_counter4=0; 
+    debug_usb_dma_IN  =0;
     debug_usb_dma_OUT =0;
+        
 }
 
 
@@ -382,21 +385,15 @@ void Audio_State_Control( void )
                     Stop_CMD_Miss_Counter++;
                 } 
                 state_check = 3;  
-                //Audio_Start_Play_Rec();  
-                
-                //SSC_Reset();  
-                //Init_Bulk_FIFO();
-                
+                //Audio_Start_Play_Rec();                 
                 Audio_Start_Play();
-                delay_ms(1);
-                //delay_us(200);
+                delay_ms(1);//delay_us(200);                
                 Audio_Start_Rec(); 
             break;
 
             case AUDIO_CMD_STOP :   
                 state_check = 0;               
-                Audio_Stop();  
-                //   Audio_Reset(); 
+                Audio_Stop();          
             break;   
         
             case AUDIO_CMD_CFG:
@@ -423,10 +420,6 @@ void Audio_State_Control( void )
             
      }
      
-    if( audio_cmd_index == AUDIO_CMD_STOP) {        
-//        delay_ms(2000);
-//        Audio_Reset();        
-    }
     audio_cmd_index = AUDIO_CMD_IDLE ;     
     
     

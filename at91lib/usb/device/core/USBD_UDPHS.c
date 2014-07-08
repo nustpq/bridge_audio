@@ -629,8 +629,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
     unsigned int  status;
     unsigned char result = USBD_STATUS_SUCCESS;
     
-    //debug_usb_dma_enterhandler++;    
- 
+
     status = AT91C_BASE_UDPHS->UDPHS_DMA[bEndpoint].UDPHS_DMASTATUS;
     //printf("<Dma.Ept%d>", bEndpoint);
 
@@ -746,8 +745,6 @@ void UDPD_IrqHandler(void)
     unsigned char numIT;
     static unsigned int usb_frame_counter = 0 ;
    
-   // LED_SET_DATA;
-
     /*
     if (deviceState >= USBD_STATE_POWERED) {
         //LED_Set(USBD_LEDUSB);
@@ -759,8 +756,7 @@ void UDPD_IrqHandler(void)
     status = AT91C_BASE_UDPHS->UDPHS_INTSTA & AT91C_BASE_UDPHS->UDPHS_IEN;
     
     // Handle all UDPHS interrupts
-    TRACE_DEBUG_WP("H");
-    
+    TRACE_DEBUG_WP("H");    
 
     while (status != 0) {
 
@@ -787,7 +783,7 @@ void UDPD_IrqHandler(void)
             // Pull-Up must be connected
             // Transceiver must be disabled
 
-           // LED_Clear(USBD_LEDUSB);
+            LED_Clear(USBD_LEDUSB);
 
             UDPHS_DisableBIAS();
 
@@ -891,6 +887,7 @@ void UDPD_IrqHandler(void)
                 UDPHS_EndpointHandler( 0 );
             }
             else {
+/////////////////////////////////////////////////////////////////////                
                 // Check if endpoint has a pending interrupt
                 if ((status & (1 << SHIFT_DMA << 1)) != 0) { 
                         UDPHS_DmaHandler(1);                    
@@ -898,7 +895,8 @@ void UDPD_IrqHandler(void)
                 
                 if ((status & (1 << SHIFT_DMA << 2)) != 0) { 
                         UDPHS_DmaHandler(2);                    
-                } 
+                }
+/////////////////                
 /*
                 numIT = 1;
                 while((status&(0x7E<<SHIFT_DMA)) != 0) {
@@ -923,7 +921,7 @@ void UDPD_IrqHandler(void)
                     numIT++;
                 }
 */               
-                          
+////////////////////////////////////////////////////////////////////                          
                 
             }
 #endif
@@ -947,11 +945,11 @@ void UDPD_IrqHandler(void)
     }
     */
     
-//    if( (usb_frame_counter++ & 0x3F) == 0 ) {         
-//        LED_TOGGLE_DATA; //LED_Toggle(USBD_LEDUDATA);  
-//    }
+    if( (usb_frame_counter++ & 0x3F) == 0 ) {         
+        LED_TOGGLE_DATA; //LED_Toggle(USBD_LEDUDATA);  
+    }
     
-  //   LED_CLEAR_DATA;
+
 }
 
 //------------------------------------------------------------------------------
