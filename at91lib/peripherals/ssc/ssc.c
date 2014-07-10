@@ -262,11 +262,8 @@ unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
  
 
     // Clear any pending interrupts
-    AT91C_BASE_HDMA->HDMA_EBCISR;//read EBCISR
-    
-    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_SADDR = srcAddress;
-    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_DADDR = destAddress;
-    
+    //AT91C_BASE_HDMA->HDMA_EBCISR;//read EBCISR
+        
     // Set DMA channel config
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG =  \
                                          (BOARD_SSC_OUT_DMA_HW_SRC_REQ_ID \
@@ -275,7 +272,9 @@ unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
                                         | AT91C_HDMA_DST_H2SEL_HW \
                                         | AT91C_HDMA_SOD_DISABLE \
                                         | AT91C_HDMA_FIFOCFG_LARGESTBURST); 
-    
+   
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_SADDR = srcAddress;
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_DADDR = destAddress;    
     
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA = \
                                         ((length>>1) \
@@ -494,18 +493,14 @@ unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
     startDestAddr   = (unsigned short*)(buffer);
     srcAddress      = (unsigned int)startSourceAddr;    // Set the data start address
     destAddress     = (unsigned int)startDestAddr;
- 
-    
- 
+  
     // Clear any pending interrupts
-    AT91C_BASE_HDMA->HDMA_EBCISR; //read EBCISR ????
+    //AT91C_BASE_HDMA->HDMA_EBCISR; //read EBCISR ????
     
-    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_SADDR = srcAddress;
-    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_DADDR = destAddress;
+
     
     
     // Set DMA channel config
-
     
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_CTRLA = \
                                         ((length>>1) \
@@ -513,6 +508,9 @@ unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
                                         | AT91C_HDMA_DST_WIDTH_HALFWORD \
                                         | AT91C_HDMA_SCSIZE_1 \
                                         | AT91C_HDMA_DCSIZE_1);  
+    
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_SADDR = srcAddress;
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_DADDR = destAddress;
     
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_CTRLB = \
                                          (AT91C_HDMA_DST_DSCR_FETCH_DISABLE \
@@ -689,13 +687,14 @@ void SSC_Init( unsigned int mclk )
 
 void SSC_Reset( void )
 {
-    // Disable SSC peripheral clock
-    AT91C_BASE_PMC->PMC_PCDR = 1 << BOARD_AT73C213_SSC_ID;
-    AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;  
-
-    // Enable SSC peripheral clock
-    AT91C_BASE_PMC->PMC_PCER = 1 << BOARD_AT73C213_SSC_ID;
-    AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;  
+//    // Disable SSC peripheral clock
+//    AT91C_BASE_PMC->PMC_PCDR = 1 << BOARD_AT73C213_SSC_ID;
+//    AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;  
+//
+//    // Enable SSC peripheral clock
+//    AT91C_BASE_PMC->PMC_PCER = 1 << BOARD_AT73C213_SSC_ID;
+//    AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;  
+    
     BOARD_AT73C213_SSC->SSC_CR =   AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
     
 }

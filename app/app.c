@@ -191,10 +191,11 @@ static void Init_Rec_Setting( void )
 static void Audio_Start_Rec( void )
 {  
     Init_Rec_Setting();
-    SSC_Record_Start();   
+    
     bulkin_start   = true ;        
     bulkin_enable  = true ;        
-    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN    
+    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN 
+    SSC_Record_Start();      
 }
 
 
@@ -213,9 +214,10 @@ static void Audio_Start_Play( void )
 {  
     Init_I2S_Buffer();   
     Init_Play_Setting();   
-    SSC_Play_Start();
+    
     bulkout_enable  = true ;
-    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN       
+    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN  
+    SSC_Play_Start();     
 }
 
 
