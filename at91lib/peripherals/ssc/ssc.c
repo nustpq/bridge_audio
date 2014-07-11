@@ -262,7 +262,7 @@ unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
  
 
     // Clear any pending interrupts
-    //AT91C_BASE_HDMA->HDMA_EBCISR;//read EBCISR
+    AT91C_BASE_HDMA->HDMA_EBCISR;//read EBCISR
         
     // Set DMA channel config
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG =  \
@@ -495,7 +495,7 @@ unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
     destAddress     = (unsigned int)startDestAddr;
   
     // Clear any pending interrupts
-    //AT91C_BASE_HDMA->HDMA_EBCISR; //read EBCISR ????
+    AT91C_BASE_HDMA->HDMA_EBCISR; //read EBCISR ????
     
 
     

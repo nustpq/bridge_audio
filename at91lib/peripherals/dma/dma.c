@@ -116,7 +116,7 @@ unsigned int DMA_GetMaskedStatus(void)
 void DMA_EnableChannel(unsigned int channel)
 {
     ASSERT(channel < DMA_CHANNEL_NUM, "this channel does not exist");
-    AT91C_BASE_HDMA->HDMA_CHER |= DMA_ENA << channel;
+    AT91C_BASE_HDMA->HDMA_CHER = DMA_ENA << channel;
 }
 
 //------------------------------------------------------------------------------
@@ -126,7 +126,7 @@ void DMA_EnableChannel(unsigned int channel)
 void DMA_DisableChannel(unsigned int channel)
 {
     ASSERT(channel < DMA_CHANNEL_NUM, "this channel does not exist");
-    AT91C_BASE_HDMA->HDMA_CHDR |= DMA_DIS << channel;
+    AT91C_BASE_HDMA->HDMA_CHDR = DMA_DIS << channel;
     while( (AT91C_BASE_HDMA->HDMA_CHSR ) & (DMA_EN << channel) );//wait
     
 }
