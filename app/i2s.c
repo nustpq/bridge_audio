@@ -240,6 +240,7 @@ void HDMA_IrqHandler(void)
             }  
              
             kfifo_get(&bulkout_fifo, (unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ;
+            sync_play_rec = true;
             TRACE_INFO_NEW_WP( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
             //Demo_Sine_Gen((void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size, Audio_Configure[1].sample_rate); 
 
@@ -286,8 +287,9 @@ void HDMA_IrqHandler(void)
         if( error_bulkin_full ) {//force record data to fixed line to alert user record error...  
              memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x10,i2s_rec_buffer_size);  
         }
-        kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
-        
+        if( !(audio_state==3 && sync_play_rec==false) ) {
+            kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
+        } 
         if ( bulkin_enable && bulkin_start && ( (USBDATAEPSIZE<<1) <= kfifo_get_data_size(&bulkin_fifo)) ) {
             TRACE_INFO_NEW_WP("-LBI-") ;  
             bulkin_start = false ;

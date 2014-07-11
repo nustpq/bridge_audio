@@ -94,6 +94,9 @@ extern void Usb_Init(void);
 extern void Init_Buffer( void );
 extern void Audio_State_Control( void );
 
+extern unsigned char sync_play_rec;
+extern unsigned char audio_state;
+
 void UART_Init( void );
 void Check_UART_CMD( void );
 void USB_Init( void );

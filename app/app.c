@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.2.9]";
+char fw_version[] = "[FW:A:V3.2.a]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -77,13 +77,13 @@ kfifo_t bulkin_fifo;
 volatile unsigned int i2s_play_buffer_size ; //real i2s paly buffer
 volatile unsigned int i2s_rec_buffer_size ;  //real i2s record buffer
 
-
-volatile bool bulkout_enable   = false ;
-volatile bool bulkin_enable    = false ;
+unsigned char sync_play_rec    = false;
+volatile bool bulkout_enable   = false;
+volatile bool bulkin_enable    = false;
 volatile bool bulkin_start     = true;
 volatile bool bulkout_start    = true;
-volatile bool bulkout_trigger  = false ;
-volatile bool flag_stop         = false ;
+volatile bool bulkout_trigger  = false;
+volatile bool flag_stop        = false;
 
 volatile unsigned int bulkout_empt = 0;
 volatile unsigned int debug_trans_counter1 = 0 ;
@@ -312,6 +312,7 @@ static void Audio_Stop( void )
     bulkout_start   = true ;    
     bulkout_trigger = false ;     
     flag_stop       = false ;
+    sync_play_rec   = false ;
     bulkout_empt    = 0;  
     
     //reset debug counters
@@ -345,7 +346,7 @@ static void Audio_Stop( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static unsigned char state_check  = 0; //avoid re-start issue in case of not stop previous start 
+unsigned char audio_state  = 0; //avoid re-start issue in case of not stop previous start 
 
 void Audio_State_Control( void )
 {    
@@ -366,38 +367,39 @@ void Audio_State_Control( void )
         switch( audio_cmd_index ) {
             
             case AUDIO_CMD_START_REC :                
-                if( state_check != 0 ) {
+                if( audio_state != 0 ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 1;            
+                audio_state = 1;            
                 Audio_Start_Rec();                
             break;
 
             case AUDIO_CMD_START_PLAY :                
-                if( state_check != 0 ) {
+                if( audio_state != 0 ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 2;     
+                audio_state = 2;     
                 Audio_Start_Play();               
             break;
             
             case AUDIO_CMD_START_PALYREC :                
-                if( state_check != 0 ) {
+                if( audio_state != 0 ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 3;  
+                audio_state = 3;            
+                
                 //Audio_Start_Play_Rec();                 
                 Audio_Start_Rec();
                 delay_ms(1);//delay_us(200);                
                 Audio_Start_Play(); 
             break;
 
-            case AUDIO_CMD_STOP :   
-                state_check = 0;               
-                Audio_Stop();          
+            case AUDIO_CMD_STOP :                                
+                Audio_Stop(); 
+                audio_state = 0;                 
             break;   
         
             case AUDIO_CMD_CFG:
