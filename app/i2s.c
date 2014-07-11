@@ -208,13 +208,44 @@ void HDMA_IrqHandler(void)
     if( flag_stop ) {         
         return;        
     }
+    
+    if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
 
-    if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //record          
+        TRACE_INFO_NEW_WP("-SI-") ;       
+        SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);                      
+        //AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0);//DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
+        AT91C_BASE_HDMA->HDMA_CHER  = DMA_ENA << BOARD_SSC_IN_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);  
+        i2s_buffer_in_index ^= 1;        
+        //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);   //bulkin tes data for debug 
+        if ( i2s_rec_buffer_size > kfifo_get_free_space( &bulkin_fifo ) ) { //if rec fifo buf full    
+            kfifo_release(&bulkin_fifo, i2s_rec_buffer_size);       //discard oldest data for newest data  
+            //error_bulkin_full++; //bulkin fifo full        
+        }
+        if( error_bulkin_full ) {//force record data to fixed line to alert user record error...  
+             memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x10,i2s_rec_buffer_size);  
+        }
+        kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
+        
+        if ( bulkin_enable && bulkin_start && ( (USBDATAEPSIZE<<1) <= kfifo_get_data_size(&bulkin_fifo)) ) {
+            TRACE_INFO_NEW_WP("-LBI-") ;  
+            bulkin_start = false ;
+            error_bulkin_empt++;
+            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
+            CDCDSerialDriver_Write(  usbBufferBulkIn,
+                                     USBDATAEPSIZE,
+                                    (TransferCallback) UsbDataTransmit,
+                                     0); 
+        }
+                           
+    }   
+
+   
+    if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) { //play        
      
         TRACE_INFO_NEW_WP("-SO-") ;           
         SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size); 
-        AT91C_BASE_HDMA->HDMA_EBCIER |= 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
-        AT91C_BASE_HDMA->HDMA_CHER   |= DMA_ENA << BOARD_SSC_OUT_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);   
+        //AT91C_BASE_HDMA->HDMA_EBCIER = 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0);// DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
+        AT91C_BASE_HDMA->HDMA_CHER   = DMA_ENA << BOARD_SSC_OUT_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);   
         i2s_buffer_out_index ^= 1;   
         temp = kfifo_get_data_size(&bulkout_fifo);
         
@@ -243,13 +274,13 @@ void HDMA_IrqHandler(void)
             TRACE_INFO_NEW_WP( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
             //Demo_Sine_Gen((void *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size, Audio_Configure[1].sample_rate); 
 
-            if( check_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ) {
-                printf("\n\r Check I2S buf err : \n\r");
-                dump_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size );
-                while(1){ 
-                    DBGUART_Service();
-                };
-            }
+//            if( check_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ) {
+//                printf("\n\r Check I2S buf err : \n\r");
+//                dump_buf_debug((unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size );
+//                while(1){ 
+//                    DBGUART_Service();
+//                };
+//            }
             
         } else {  //play buf empty error, send silence : 0x00
             memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
@@ -270,38 +301,7 @@ void HDMA_IrqHandler(void)
         }
       
     }        
-    
-    if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record       
-
-        TRACE_INFO_NEW_WP("-SI-") ;       
-        SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);                      
-        AT91C_BASE_HDMA->HDMA_EBCIER |= 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0);//DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
-        AT91C_BASE_HDMA->HDMA_CHER  |= DMA_ENA << BOARD_SSC_IN_DMA_CHANNEL;//DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);  
-        i2s_buffer_in_index ^= 1;        
-        //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);   //bulkin tes data for debug 
-        if ( i2s_rec_buffer_size > kfifo_get_free_space( &bulkin_fifo ) ) { //if rec fifo buf full    
-            kfifo_release(&bulkin_fifo, i2s_rec_buffer_size);       //discard oldest data for newest data  
-            //error_bulkin_full++; //bulkin fifo full        
-        }
-        if( error_bulkin_full ) {//force record data to fixed line to alert user record error...  
-             memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x10,i2s_rec_buffer_size);  
-        }
-        kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
-        
-        if ( bulkin_enable && bulkin_start && ( (USBDATAEPSIZE<<1) <= kfifo_get_data_size(&bulkin_fifo)) ) {
-            TRACE_INFO_NEW_WP("-LBI-") ;  
-            bulkin_start = false ;
-            error_bulkin_empt++;
-            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
-            CDCDSerialDriver_Write(  usbBufferBulkIn,
-                                     USBDATAEPSIZE,
-                                    (TransferCallback) UsbDataTransmit,
-                                     0); 
-        }
-                           
-    }   
-
-    
+ 
 }
 
 
@@ -326,11 +326,11 @@ void SSC_Play_Start(void)
     DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
     // Fill DMA buffer
     SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index] , i2s_play_buffer_size);
-    //SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN    
+    i2s_buffer_out_index ^= 1;     
     
     DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0)  );
     DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
-    i2s_buffer_out_index ^= 1; 
+   //  SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN   
       
 }
 
@@ -356,12 +356,12 @@ void SSC_Record_Start(void)
     DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
     // Fill DMA buffer
     SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size);
-    //SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN    
+    i2s_buffer_in_index ^= 1;    
     
     DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
     DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);
-    i2s_buffer_in_index ^= 1; 
-       
+    
+    // SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN       
 }
 
 

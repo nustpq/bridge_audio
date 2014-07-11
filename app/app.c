@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.2.8]";
+char fw_version[] = "[FW:A:V3.2.9]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -191,11 +191,12 @@ static void Init_Rec_Setting( void )
 static void Audio_Start_Rec( void )
 {  
     Init_Rec_Setting();
-    
+    SSC_Record_Start();
     bulkin_start   = true ;        
-    bulkin_enable  = true ;        
+    bulkin_enable  = true ;  
+    //delay_ms(1);      
     SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN 
-    SSC_Record_Start();      
+      
 }
 
 
@@ -214,10 +215,11 @@ static void Audio_Start_Play( void )
 {  
     Init_I2S_Buffer();   
     Init_Play_Setting();   
-    
+    SSC_Play_Start(); 
     bulkout_enable  = true ;
+    //delay_ms(1);   
     SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN  
-    SSC_Play_Start();     
+       
 }
 
 
@@ -270,39 +272,37 @@ static void Audio_Stop( void )
         AT91C_BASE_RSTC->RSTC_RCR = 0xa5000005 ; //reset MCU     
     }       
 #endif  
-    
+     
     printf( "\r\nStop Play & Rec...\r\n"); 
-
+    flag_stop        = true ;  
+    delay_ms(50); //wait until DMA interruption done.
+    //printf( "\r\nflag_stop Done\r\n");    
     bulkin_enable    = false ;
     bulkout_enable   = false ; 
-    flag_stop        = true ;  
-    delay_ms(10); //wait until DMA interruption done.
-    //printf( "\r\nflag_stop Done\r\n"); 
     
     SSC_Play_Stop();  
     SSC_Record_Stop();  
- 
+    delay_ms(50);
+    
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
 //    delay_ms(50);
 // 
-//     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN ;
+//    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN ;
 //    delay_ms(50); 
 //    Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
 //    
-//       
-// 
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
 //   
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_NAK_OUT ;
 //    delay_ms(50);    
 //    AT91C_BASE_UDPHS->UDPHS_EPTRST =  1<<CDCDSerialDriverDescriptors_DATAOUT;
-    delay_ms(50);   
-    
+          
     //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);    
     //I2S_Init();  
-    SSC_Reset(); 
-        
+    SSC_Reset();     
+    //delay_ms(500); 
+    
     Init_Bulk_FIFO(); //???
     LED_Clear( USBD_LEDUDATA );
     
@@ -327,7 +327,7 @@ static void Audio_Stop( void )
     debug_trans_counter4=0; 
     debug_usb_dma_IN  =0;
     debug_usb_dma_OUT =0;
-        
+     
 }
 
 
@@ -388,9 +388,9 @@ void Audio_State_Control( void )
                 } 
                 state_check = 3;  
                 //Audio_Start_Play_Rec();                 
-                Audio_Start_Play();
+                Audio_Start_Rec();
                 delay_ms(1);//delay_us(200);                
-                Audio_Start_Rec(); 
+                Audio_Start_Play(); 
             break;
 
             case AUDIO_CMD_STOP :   

@@ -145,7 +145,7 @@ void pcInt(  unsigned char ch )
         break ;
         
         case CMD_STAT_CMD2 :  
-             audio_cmd_index = ch;  //
+             audio_cmd_index = ch;
              PcCmdCounter    = 0;
              state_mac       = CMD_STAT_SYNC1 ;
           
@@ -154,7 +154,7 @@ void pcInt(  unsigned char ch )
         case CMD_STAT_DATA :
             *(pChar+PcCmdCounter) = ch; 
             PcCmdCounter++;
-            if( PcCmdCounter > 3 ) { //check verflow
+            if( PcCmdCounter > 3 ) { //check overflow
                Audio_Configure[(*pChar)&0x01] = *(AUDIO_CFG *)pChar;                
                audio_cmd_index = AUDIO_CMD_CFG ; 
                PcCmdCounter = 0 ;        

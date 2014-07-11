@@ -42,9 +42,10 @@
 #define  AUDIO_CMD_CFG                  0x05
 #define  AUDIO_CMD_VERSION              0x06
 
-#define   ERR_USB_STATE                 0xFD
-#define   ERR_AUD_CFG                   0xFE
-#define   ERR_CMD_TYPE                  0xFF
+//Error
+#define  ERR_USB_STATE                  250u
+#define  ERR_AUD_CFG                    251u
+#define  ERR_CMD_TYPE                   252u
 
 
 typedef struct {
