@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.2.9]";
+char fw_version[] = "[FW:A:V3.4]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -149,7 +149,7 @@ static void Init_Play_Setting( void )
     sample_rate   = Audio_Configure[1].sample_rate ;
     printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...\r\n",counter_play++,channels_play,sample_rate);  
     i2s_play_buffer_size = sample_rate / 1000 * channels_play * 2 * 2;  
-    SSC_Channel_Set( channels_play, 0 );  
+    SSC_Channel_Set_Tx( channels_play );  
 }
 
 
@@ -166,14 +166,14 @@ static void Init_Play_Setting( void )
 */
 static void Init_Rec_Setting( void )
 {
-    unsigned short sample_rate ; //not support 44.1khz now
+    unsigned short sample_rate ; //not support 44.1kHz now
     unsigned char  channels_rec;
     
     channels_rec = Audio_Configure[0].channel_num ;
     sample_rate  = Audio_Configure[0].sample_rate ; 
     printf( "\r\nStart [%dth]Rec [%dCH - %dHz]...\r\n",counter_rec++,channels_rec,sample_rate);     
     i2s_rec_buffer_size  = sample_rate / 1000 * channels_rec  * 2 * 2; 
-    SSC_Channel_Set( 0, channels_rec ); 
+    SSC_Channel_Set_Rx( channels_rec ); 
 }
 
 
@@ -193,9 +193,8 @@ static void Audio_Start_Rec( void )
     Init_Rec_Setting();
     SSC_Record_Start();
     bulkin_start   = true ;        
-    bulkin_enable  = true ;  
-    //delay_ms(1);      
-    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN 
+    bulkin_enable  = true ;   
+    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable AT91C_SSC_RXEN 
       
 }
 
@@ -217,8 +216,7 @@ static void Audio_Start_Play( void )
     Init_Play_Setting();   
     SSC_Play_Start(); 
     bulkout_enable  = true ;
-    //delay_ms(1);   
-    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN  
+    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN  
        
 }
 
@@ -245,7 +243,7 @@ static void Audio_Start_Play_Rec( void )
       
     bulkin_enable   = true ; 
     bulkout_enable  = true ;
-    SSC_EnableBoth(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN aAT91C_SSC_RXEN   
+    SSC_EnableBoth(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN aAT91C_SSC_RXEN   
     
 }
 
@@ -301,9 +299,9 @@ static void Audio_Stop( void )
     //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);    
     //I2S_Init();  
     SSC_Reset();     
-    //delay_ms(500); 
+    delay_ms(50); 
     
-    Init_Bulk_FIFO(); //???
+    Init_Bulk_FIFO();    
     LED_Clear( USBD_LEDUDATA );
     
     bulkin_start    = true ; 
@@ -313,20 +311,20 @@ static void Audio_Stop( void )
     bulkout_empt    = 0;  
     
     //reset debug counters
-    BO_free_size_max    = 0 ;
-    BI_free_size_min    = 100 ; 
-    total_received      = 0 ;
-    total_transmit      = 0 ;
-    error_bulkout_full  = 0 ;
-    error_bulkout_empt  = 0 ;
-    error_bulkin_full   = 0 ;
-    error_bulkin_empt   = 0 ;    
-    debug_trans_counter1=0;
-    debug_trans_counter2=0;
-    debug_trans_counter3=0;
-    debug_trans_counter4=0; 
-    debug_usb_dma_IN  =0;
-    debug_usb_dma_OUT =0;
+    BO_free_size_max      = 0 ;
+    BI_free_size_min      = 100 ; 
+    total_received        = 0 ;
+    total_transmit        = 0 ;
+    error_bulkout_full    = 0 ;
+    error_bulkout_empt    = 0 ;
+    error_bulkin_full     = 0 ;
+    error_bulkin_empt     = 0 ;    
+    debug_trans_counter1  = 0 ;
+    debug_trans_counter2  = 0 ;
+    debug_trans_counter3  = 0 ;
+    debug_trans_counter4  = 0 ; 
+    debug_usb_dma_IN      = 0 ;
+    debug_usb_dma_OUT     = 0 ;
      
 }
 
@@ -388,9 +386,9 @@ void Audio_State_Control( void )
                 } 
                 state_check = 3;  
                 //Audio_Start_Play_Rec();                 
-                Audio_Start_Rec();
-                delay_ms(1);//delay_us(200);                
-                Audio_Start_Play(); 
+                Audio_Start_Play();
+                delay_ms(1);                
+                Audio_Start_Rec(); 
             break;
 
             case AUDIO_CMD_STOP :   
@@ -450,7 +448,7 @@ void Debug_Info( void )
     static unsigned int counter;
      
     if( !(bulkout_enable || bulkin_enable) ) { 
-        if( Check_SysTick_State() == 0 ){ 
+        if( Check_SysTick_State() == 0 ) { 
               return;
         }
         printf("\rWaitting for USB trans start...[Miss Stop = %d]",Stop_CMD_Miss_Counter);
@@ -458,7 +456,7 @@ void Debug_Info( void )
     }
     
     //start print debug_after USB trans started
-    if( (total_received < 204800) && (total_transmit < 204800) ){  
+    if( (total_received < 102400) && (total_transmit < 102400) ){  
         return;
     }  
          
@@ -478,22 +476,17 @@ void Debug_Info( void )
     if( counter++ % 20 == 0 ) { //20*100ms = 1s 
         printf("\r\n");        
     } 
-        
-    
+            
 //    if( (total_received>>1) > total_transmit ) {
 //        printf( "\rbulkin_start = %d , bulkin_start = %d, bulkin_fifo data size = %d ",                
 //                            bulkin_enable,
 //                            bulkin_start,
-//                        
 //                            kfifo_get_data_size(&bulkin_fifo));
 //        return;
-//      
 //    }
     //if(total_transmit >5000000 ) {  error_bulkin_full++; } //simulate bulkin fifo full error 
     //printf("\r\nPLAY %d, REC %d",counter_play++,counter_rec++); 
-    
-     
-    
+      
       printf("\rIN[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%>%3u%]  OUT[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%<%3u%]",
                          
                total_transmit/1000000.0,               
@@ -511,13 +504,10 @@ void Debug_Info( void )
             
              ); 
     
-
 //     DBGUART_free_size = kfifo_get_free_space(&dbguart_fifo) ;
 //     DBGUART_free_size = DBGUART_free_size * 100 / DBGUART_FIFO_SIZE;  
 //     DBGUART_free_size_min = DBGUART_free_size < DBGUART_free_size_min ? DBGUART_free_size : DBGUART_free_size_min ;
 //     printf( " [DBGUART:%3u%>%3u%]", DBGUART_free_size, DBGUART_free_size_min );                         
-   
-  
      
 }
 

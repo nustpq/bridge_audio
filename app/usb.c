@@ -209,6 +209,7 @@ static unsigned int check_bulkout_data( unsigned char *pBuf, unsigned int length
 
 void Init_Bulk_FIFO( void )
 {
+   
     kfifo_t *pfifo;
     
     pfifo = &bulkout_fifo;
@@ -216,7 +217,10 @@ void Init_Bulk_FIFO( void )
     pfifo = &bulkin_fifo;
     kfifo_init_static(pfifo, FIFOBufferBulkIn, USB_IN_BUFFER_SIZE);
 
+
 }  
+
+
 
 
 /*

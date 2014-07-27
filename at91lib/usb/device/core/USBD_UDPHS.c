@@ -1789,8 +1789,7 @@ void  Reset_USBHS_HDMA (unsigned char channel)
         // RESET endpoint canal DMA:
         // DMA stop channel command
         AT91C_BASE_UDPHS->UDPHS_DMA[channel].UDPHS_DMACONTROL = 0;  // STOP command
-    
-        
+            
         // Clear status endpoint
         // Disable endpoint
 //        AT91C_BASE_UDPHS->UDPHS_EPT[channel].UDPHS_EPTCTLDIS = AT91C_UDPHS_SHRT_PCKT

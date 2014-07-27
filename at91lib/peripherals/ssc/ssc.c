@@ -624,6 +624,30 @@ void SSC_Channel_Set( unsigned char tx_ch_num, unsigned char rx_ch_num )
     
 }
 
+void SSC_Channel_Set_Tx( unsigned char tx_ch_num )
+{       
+    if( tx_ch_num > 0 ) {
+        
+        tfmr.datnb  = tx_ch_num - 1 ; //5 ; //6 slot TDM
+        SSC_ConfigureTransmitter( BOARD_AT73C213_SSC,  tcmr.value,  tfmr.value   );
+        
+    }       
+         
+}
+
+
+void SSC_Channel_Set_Rx( unsigned char rx_ch_num )
+{     
+    if( rx_ch_num > 0 ) {
+        
+        rfmr.datnb  = rx_ch_num - 1 ; //5 ; 
+        SSC_ConfigureReceiver(  BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   );
+        
+    }
+    
+}
+
+
 void SSC_Init( unsigned int mclk )
 {
     

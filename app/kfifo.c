@@ -52,8 +52,6 @@
 //
 //}
 
-
-
 void kfifo_init(kfifo_t *fifo, int size) {
 	fifo->buffer = (unsigned char *) malloc(size);
 	fifo->size = size;
@@ -73,8 +71,6 @@ void kfifo_init_static(kfifo_t *fifo, unsigned char *pBuf, int size) {
 void kfifo_reset(kfifo_t *fifo) {
 	fifo->in = fifo->out = 0;
 }
-
-
 
 unsigned int kfifo_put(kfifo_t *fifo, unsigned char *buffer, unsigned int len) {
 	unsigned int l;
@@ -116,7 +112,6 @@ unsigned int kfifo_release(kfifo_t *fifo, unsigned int len) {
         //__enable_interrupt(); //PQ
 	return len;
 }
-
 
 //no interruption for debug printf use
 unsigned int kfifo_get_free_space(kfifo_t *fifo) {
