@@ -117,7 +117,7 @@ void Init_I2S_Buffer( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static unsigned int test_a = 0;
+static unsigned char test_a = 0;
 void fill_buf_debug( unsigned char *pChar, unsigned int size) 
 {
     unsigned int i;
@@ -129,7 +129,7 @@ void fill_buf_debug( unsigned char *pChar, unsigned int size)
        *(pInt+i++) =  0x3300 + test_a; 
        *(pInt+i++) =  0x4400 + test_a;     
        *(pInt+i++) =  0x5500 + test_a; 
-       *(pInt+i++) =  0x6600 + test_a;  
+      // *(pInt+i++) =  0x6600 + test_a;  
 //       *(pInt+i++) =  0x7700 + test_a; 
 //       *(pInt+i++) =  0x8800 + test_a; 
     }

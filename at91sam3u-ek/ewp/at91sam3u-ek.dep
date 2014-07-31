@@ -6,381 +6,303 @@
   <configuration>
     <name>at91sam3u4_flash</name>
     <outputs>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\AT91SAM3U4.h</file>
-      <file>$PROJ_DIR$\..\..\app\usb.c</file>
-      <file>$PROJ_DIR$\..\..\usb-device-cdc-serial-project</file>
-      <file>$PROJ_DIR$\..\..\app\sine_table.c</file>
-      <file>$PROJ_DIR$\..\..\app\uart.c</file>
-      <file>$PROJ_DIR$\..\..\app\i2s.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\chip.h</file>
-      <file>$PROJ_DIR$\..\..\app\app.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\flash.icf</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.c</file>
-      <file>$PROJ_DIR$\..\..\app\kfifo.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\sram.icf</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_cstartup_iar.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCAbstractControlManagementDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\irq\irq.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCDeviceDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\irq\nvic.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCCallManagementDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCCommunicationInterfaceDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCGenericDescriptor.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCGenericRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCHeaderDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCDataInterfaceDescriptor.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_OTGHS.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceAssociationDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBConfigurationDescriptor.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCUnionDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBDeviceQualifierDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCUnionDescriptor.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBConfigurationDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBDeviceDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBStringDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\trace.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Resumed.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverDescriptors.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDP.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\led.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\trace.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.h</file>
-      <file>$PROJ_DIR$\..\..\resources\iar\at91sam3u-ek-flash.mac</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\assert.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.c</file>
-      <file>$PROJ_DIR$\..\..\resources\iar\at91sam3u-ek-psram.mac</file>
-      <file>$PROJ_DIR$\..\main.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDPHS.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Initialized.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Suspended.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCallbacks.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.h</file>
+      <file>$PROJ_DIR$\..\..\usb-device-cdc-serial-project</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\chip.h</file>
+      <file>$PROJ_DIR$\..\..\app\app.c</file>
+      <file>$PROJ_DIR$\..\..\app\kfifo.c</file>
+      <file>$PROJ_DIR$\..\..\app\uart.c</file>
+      <file>$PROJ_DIR$\..\..\app\i2s.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\AT91SAM3U4.h</file>
+      <file>$PROJ_DIR$\..\..\app\sine_table.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\flash.icf</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\sram.icf</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board.h</file>
+      <file>$PROJ_DIR$\..\..\app\usb.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_cstartup_iar.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCAbstractControlManagementDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCCallManagementDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCCommunicationInterfaceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\irq\nvic.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCDeviceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCHeaderDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBConfigurationDescriptor.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCDataInterfaceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\irq\irq.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\tc.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBSetConfigurationRequest.pbi</file>
+      <file>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\exceptions.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_memories.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\usb.pbi</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\led.c</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\board_lowlevel.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDCallbacks_Initialized.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDDriverCb_IfSettingChanged.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\sine_table.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBD_UDPHS.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGenericDescriptor.o</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pio.o</file>
-      <file>$PROJ_DIR$\..\..\resources\iar\at91sam3u-ek-sram.mac</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pio_it.o</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_CfgChanged.c</file>
-      <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Reset.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_IfSettingChanged.c</file>
       <file>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDDriverCb_IfSettingChanged.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBSetConfigurationRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBGenericDescriptor.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\trace.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBConfigurationDescriptor.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\CDCDSerialDriverDescriptors.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriverCb_CfgChanged.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\kfifo.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\pio.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\core_cm3.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\trace.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Reset.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\nvic.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\at91sam3u4_flash.map</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\i2s.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBEndpointDescriptor.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Suspended.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\nvic.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pmc.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\CDCLineCoding.lst</file>
-      <file>$PROJ_DIR$\..\..\app\app.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBEndpointDescriptor.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dmad.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBD_UDP.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBConfigurationDescriptor.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\led.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGetDescriptorRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_UDP.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pmc.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCDSerialDriverDescriptors.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\dma.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBSetConfigurationRequest.lst</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDDriver.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\sine_table.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\usart.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\ssc.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\ssc.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\kfifo.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCSetControlLineStateRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\at91sam3u-ek.pbd</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Resumed.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\main.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGenericRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDCallbacks_Reset.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\core_cm3.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_cstartup_iar.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\dmad.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_OTGHS.pbi</file>
-      <file>$PROJ_DIR$\..\..\app\sine_table.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCDSerialDriver.o</file>
-      <file>$PROJ_DIR$\..\..\app\usb.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCSetControlLineStateRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\main.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Exe\at91sam3u4_flash.out</file>
-      <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_cstartup_iar.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\led.o</file>
-      <file>$PROJ_DIR$\..\..\app\kfifo.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\led.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\tc.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\sine_table.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGetDescriptorRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriver.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBInterfaceRequest.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCLineCoding.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_memories.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_lowlevel.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\app.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Suspended.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDCallbacks_Suspended.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBConfigurationDescriptor.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Exe\AB03_Audio_V.bin</file>
-      <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_UDP.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pio_it.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\pio_it.lst</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\usart.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBD_UDPHS.lst</file>
-      <file>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\nvic.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dbgu.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\board_lowlevel.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_UDPHS.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDCallbacks_Initialized.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_memories.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\dbgu.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\board_cstartup_iar.lst</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pio.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\sine_table.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\tc.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Initialized.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\usart.o</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dbgu.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBFeatureRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\exceptions.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_UDPHS.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pio_it.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGenericRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dbgu.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl7M_tlf.a</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBSetAddressRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Initialized.o</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriverCb_IfSettingChanged.pbi</file>
       <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGenericRequest.pbi</file>
-      <file>$TOOLKIT_DIR$\lib\dl7M_tlf.a</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\app.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCDSerialDriverDescriptors.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBFeatureRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\app.lst</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBSetAddressRequest.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\board_cstartup_iar.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Initialized.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_UDPHS.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBD_OTGHS.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Resumed.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBInterfaceRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriver.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDDriverCb_CfgChanged.lst</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\kfifo.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBInterfaceRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBGenericRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\uart.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\exceptions.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\usart.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_UDPHS.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pio.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\usart.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\nvic.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBFeatureRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\dbgu.lst</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_OTGHS.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBDeviceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBStringDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDP.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDPHS.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Initialized.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\dma.lst</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBDeviceQualifierDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceAssociationDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Resumed.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\assert.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\led.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_CfgChanged.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverDescriptors.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_IfSettingChanged.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Suspended.c</file>
+      <file>$PROJ_DIR$\..\..\resources\iar\at91sam3u-ek-sram.mac</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCSetControlLineStateRequest.o</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.h</file>
+      <file>$PROJ_DIR$\..\main.c</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\core_cm3.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\led.c</file>
+      <file>$PROJ_DIR$\..\..\resources\iar\at91sam3u-ek-psram.mac</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCallbacks.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.c</file>
+      <file>$PROJ_DIR$\..\..\resources\iar\at91sam3u-ek-flash.mac</file>
+      <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Reset.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\trace.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\trace.c</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\ssc.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\dmad.lst</file>
+      <file>$PROJ_DIR$\..\..\app\sine_table.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGenericRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\kfifo.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\usart.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\i2s.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pmc.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCDSerialDriverDescriptors.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\main.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_cstartup_iar.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDCallbacks_Reset.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Resumed.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\ssc.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDDriver.lst</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\trace.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\trace.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\pio.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\at91sam3u4_flash.map</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\kfifo.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_OTGHS.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\sine_table.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\at91sam3u-ek.pbd</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBSetConfigurationRequest.lst</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGetDescriptorRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\nvic.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Suspended.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\CDCDSerialDriverDescriptors.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBGenericDescriptor.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pmc.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBD_UDP.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Reset.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBConfigurationDescriptor.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\main.o</file>
+      <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\led.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\core_cm3.pbi</file>
+      <file>$PROJ_DIR$\..\..\app\app.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriverCb_CfgChanged.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\nvic.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_memories.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\CDCLineCoding.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBEndpointDescriptor.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_UDP.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dmad.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Exe\at91sam3u4_flash.out</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_UDP.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\pio_it.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBEndpointDescriptor.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBConfigurationDescriptor.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_lowlevel.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\app.o</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\List\CDCDSerialDriver.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGenericDescriptor.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\usb.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\sine_table.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBSetConfigurationRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\usb.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriverCb_IfSettingChanged.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBFeatureRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\pmc.lst</file>
+      <file>$PROJ_DIR$\..\..\app\usb.h</file>
+      <file>$PROJ_DIR$\..\..\app\kfifo.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCDSerialDriver.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBInterfaceRequest.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriverCb_CfgChanged.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\List\uart.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\CDCSetControlLineStateRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dma.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dma.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\board_memories.lst</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.h</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dmad.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDCallbacks_Resumed.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\i2s.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBGetDescriptorRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\exceptions.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\uart.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBEndpointDescriptor.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriver.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBConfigurationDescriptor.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCLineCoding.o</file>
+      <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBSetConfigurationRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCSetControlLineStateRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dma.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_cstartup_iar.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\pio_it.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\tc.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Reset.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCLineCoding.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\app.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\board_memories.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Suspended.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Exe\AB03_Audio_V.bin</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\led.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGetDescriptorRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\led.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDCallbacks_Suspended.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\pmc.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCDSerialDriver.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBSetAddressRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\i2s.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\ssc.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBSetAddressRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_OTGHS.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBInterfaceRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBD_OTGHS.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\kfifo.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDDriverCb_CfgChanged.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Initialized.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\exceptions.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBGenericRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Resumed.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\uart.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\tc.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBInterfaceRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\List\core_cm3.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriver.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDDriverCb_IfSettingChanged.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBGenericDescriptor.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\board_lowlevel.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\tc.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBGetDescriptorRequest.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\trace.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\uart.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\core_cm3.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\CDCSetControlLineStateRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\app.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\dma.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBD_OTGHS.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBDCallbacks_Resumed.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBFeatureRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\ssc.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\usb.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\USBSetAddressRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCLineCoding.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\exceptions.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\i2s.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\usb.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBFeatureRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\i2s.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBEndpointDescriptor.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\CDCDSerialDriverDescriptors.o</file>
     </outputs>
     <file>
-      <name>[ROOT_NODE]</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.c</name>
       <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 171 122</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\app\usb.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 234 231</file>
-        </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 97</file>
+          <file> 235</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 259 145</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 26 9 6 0 33 38 32 15 87 275 128 165 143 221 182 102 205 163 220 164 150 142 224 85 52 48 49 76 77 81 71 62 64 65 56 78 208 105 175 195 130</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 26 9 6 0 33 38 32 15 87 275 128 165 143 221 182 102 205 163 220 164 150 142 224 85 52 48 49 76 77 81 71 62 64 65 56 78 208 105 175 195 130</file>
+          <file> 7 133</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\app\sine_table.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 210 145</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 178</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 162</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 162</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\app\uart.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 239 268</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 249</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 26 9 6 0 38 32 78 208 128 165 143 221 182 102 205 150 105 15 87 275 163 220 85 224 175 130</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 26 9 6 0 38 32 78 208 128 165 143 221 182 102 205 150 105 15 87 275 163 220 85 224 175 130</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\app\i2s.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 255 123</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 246</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 9 6 0 26 33 195 15 87 275 128 165 143 221 182 102 205 163 220 28 224 164 150 142 76 49 52 48 77 81 71 62 64 65 56 78 208 105 32 85 198 108 175 130 168</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 6 0 26 33 195 15 87 275 128 165 143 221 182 102 205 163 220 28 224 164 150 142 76 49 52 48 77 81 71 62 64 65 56 78 208 105 32 85 198 108 175 130 168</file>
+          <file> 7 133</file>
         </tool>
       </inputs>
     </file>
@@ -388,45 +310,22 @@
       <name>$PROJ_DIR$\..\..\app\app.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 228 186</file>
+          <name>BICOMP</name>
+          <file> 241</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 225</file>
+          <name>ICCARM</name>
+          <file> 260 218</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 9 6 0 224 26 33 28 38 195 78 208 128 165 143 221 182 102 205 150 105 32 85 76 49 52 48 77 81 71 62 64 65 56 17 175 168 130</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 9 6 0 224 26 33 28 38 195 78 208 128 165 143 221 182 102 205 150 105 32 85 76 49 52 48 77 81 71 62 64 65 56 17 175 168 130</file>
+          <file> 18 9 14 56 30 48 28 24 228 157 83 184 149 167 72 217 58 80 182 52 32 137 104 133 105 122 134 141 109 5 130 106 124 46 223 222 203</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 201 185</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 273</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 9 6 0 20 36 26</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 6 0 20 36 26</file>
+          <file> 18 9 14 56 30 48 28 24 228 157 83 184 149 167 72 217 58 80 182 52 32 137 104 133 105 122 134 141 109 5 130 106 124 46 223 222 203</file>
         </tool>
       </inputs>
     </file>
@@ -434,22 +333,137 @@
       <name>$PROJ_DIR$\..\..\app\kfifo.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 261 116</file>
+          <name>BICOMP</name>
+          <file> 163</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 149</file>
+          <name>ICCARM</name>
+          <file> 91 181</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 159 128 165 143 221 182 102 205 150 164 142 15 9 6 0 87 275 163 220 175</file>
+          <name>BICOMP</name>
+          <file> 188 184 149 167 72 217 58 80 182 176 189 43 18 9 14 140 90 175 77 223</file>
         </tool>
         <tool>
+          <name>ICCARM</name>
+          <file> 188 184 149 167 72 217 58 80 182 176 189 43 18 9 14 140 90 175 77 223</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\uart.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 159 128 165 143 221 182 102 205 150 164 142 15 9 6 0 87 275 163 220 175</file>
+          <file> 257</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 227 94</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30 18 9 14 24 32 157 83 184 149 167 72 217 58 80 182 52 43 140 90 175 77 137 56 223 203</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 30 18 9 14 24 32 157 83 184 149 167 72 217 58 80 182 52 43 140 90 175 77 137 56 223 203</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\i2s.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 270</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 273 165</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 9 14 30 48 228 43 140 90 184 149 167 72 217 58 80 175 77 28 56 176 182 189 104 133 105 122 134 141 109 5 130 106 124 157 83 52 32 137 54 67 223 203 222</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18 9 14 30 48 228 43 140 90 184 149 167 72 217 58 80 175 77 28 56 176 182 189 104 133 105 122 134 141 109 5 130 106 124 157 83 52 32 137 54 67 223 203 222</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\sine_table.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 220</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 63 185</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 161</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 161</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\usb.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 59</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 266 271</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30 18 9 14 48 24 32 43 140 90 184 149 167 72 217 58 80 175 77 176 182 189 56 137 105 122 133 104 134 141 109 5 130 106 124 157 83 52 223 228 203</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 30 18 9 14 48 24 32 43 140 90 184 149 167 72 217 58 80 175 77 176 182 189 56 137 105 122 133 104 134 141 109 5 130 106 124 157 83 52 223 228 203</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 253</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 60 216</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 9 14 6 22 30</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18 9 14 6 22 30</file>
         </tool>
       </inputs>
     </file>
@@ -457,45 +471,22 @@
       <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_cstartup_iar.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 207 158</file>
+          <name>BICOMP</name>
+          <file> 237</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 173</file>
+          <name>ICCARM</name>
+          <file> 81 170</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 9 6 0 25 36</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 9 6 0 25 36</file>
+          <file> 18 9 14 38 22</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 129 183</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 252</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 44 89 208 128 165 143 221 182 102 205 150 105 78 9 6 0 26 32</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 44 89 208 128 165 143 221 182 102 205 150 105 78 9 6 0 26 32</file>
+          <file> 18 9 14 38 22</file>
         </tool>
       </inputs>
     </file>
@@ -503,45 +494,22 @@
       <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 243 184</file>
+          <name>BICOMP</name>
+          <file> 57</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 204</file>
+          <name>ICCARM</name>
+          <file> 242 206</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 9 6 0 26</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 9 6 0 26</file>
+          <file> 18 9 14 30</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 140 241</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 242</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 108 9 6 0 89 208 128 165 143 221 182 102 205 150 105 78 26 32</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 108 9 6 0 89 208 128 165 143 221 182 102 205 150 105 78 26 32</file>
+          <file> 18 9 14 30</file>
         </tool>
       </inputs>
     </file>
@@ -549,298 +517,45 @@
       <name>$PROJ_DIR$\..\..\at91lib\peripherals\irq\nvic.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 126 121</file>
+          <name>BICOMP</name>
+          <file> 100</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 199</file>
+          <name>ICCARM</name>
+          <file> 205 191</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 9 6 0 15 87 275 128 165 143 221 182 102 205 163 220 25 78 26 208 150 105 32</file>
+          <name>BICOMP</name>
+          <file> 18 9 14 43 140 90 184 149 167 72 217 58 80 175 77 38 157 30 83 182 52 32</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 9 6 0 15 87 275 128 165 143 221 182 102 205 163 220 25 78 26 208 150 105 32</file>
+          <name>ICCARM</name>
+          <file> 18 9 14 43 140 90 184 149 167 72 217 58 80 175 77 38 157 30 83 182 52 32</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 117 100</file>
+          <name>BICOMP</name>
+          <file> 268</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 209</file>
+          <name>ICCARM</name>
+          <file> 207 232</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 26 9 6 0</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 26 9 6 0</file>
+          <file> 2 136 83 184 149 167 72 217 58 80 182 52 157 18 9 14 30 32</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 265 248</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 216</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 25</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 25</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 160 132</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 244</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 198 108 9 6 0 15 87 275 128 165 143 221 182 102 205 163 220 89 208 150 105 78 26 32</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 198 108 9 6 0 15 87 275 128 165 143 221 182 102 205 163 220 89 208 150 105 78 26 32</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 206 200</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 214</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 32 224 164 128 165 143 221 182 102 205 150 142 9 6 0 175 130 78 26 208 105</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 32 224 164 128 165 143 221 182 102 205 150 142 9 6 0 175 130 78 26 208 105</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 237 127</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 138</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 17 9 6 0 89 208 128 165 143 221 182 102 205 150 105 78 26 32</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 9 6 0 89 208 128 165 143 221 182 102 205 150 105 78 26 32</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 177 211</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 269</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15 9 6 0 87 275 128 165 143 221 182 102 205 163 220 85 224 175 28 130</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 15 9 6 0 87 275 128 165 143 221 182 102 205 163 220 85 224 175 28 130</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 194 103</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 193</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 33 26 9 6 0 15 87 275 128 165 143 221 182 102 205 163 220 89 208 150 105 78 32</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 33 26 9 6 0 15 87 275 128 165 143 221 182 102 205 163 220 89 208 150 105 78 32</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 146 213</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 196</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 38 9 6 0 78 26 208 128 165 143 221 182 102 205 150 105 32 89</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 38 9 6 0 78 26 208 128 165 143 221 182 102 205 150 105 32 89</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 147 148</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 256</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 195 9 6 0 78 26 208 128 165 143 221 182 102 205 150 105 32 28 108 198</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 195 9 6 0 78 26 208 128 165 143 221 182 102 205 150 105 32 28 108 198</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_OTGHS.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 260 258</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 161</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 52 48 49 79 84 81 71 9 6 0 62 64 65 56 26 78 208 128 165 143 221 182 102 205 150 105 32 85 63 17</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 52 48 49 79 84 81 71 9 6 0 62 64 65 56 26 78 208 128 165 143 221 182 102 205 150 105 32 85 63 17</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 270 259</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 181</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 59 49</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 59 49</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 254 257</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 218</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 72 49</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 72 49</file>
+          <file> 2 136 83 184 149 167 72 217 58 80 182 52 157 18 9 14 30 32</file>
         </tool>
       </inputs>
     </file>
@@ -848,275 +563,307 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBConfigurationDescriptor.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 134 113</file>
+          <name>BICOMP</name>
+          <file> 231</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 189</file>
+          <name>ICCARM</name>
+          <file> 198 215</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 62 64 65 48</file>
+          <name>BICOMP</name>
+          <file> 5 130 106 122</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 62 64 65 48</file>
+          <name>ICCARM</name>
+          <file> 5 130 106 122</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 227 215</file>
+          <name>BICOMP</name>
+          <file> 229</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 236</file>
+          <name>ICCARM</name>
+          <file> 160 210</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 63 49</file>
+          <name>BICOMP</name>
+          <file> 54 67 18 9 14 43 140 90 184 149 167 72 217 58 80 175 77 136 83 182 52 157 30 32</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 63 49</file>
+          <name>ICCARM</name>
+          <file> 54 67 18 9 14 43 140 90 184 149 167 72 217 58 80 175 77 136 83 182 52 157 30 32</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 266 155</file>
+          <name>BICOMP</name>
+          <file> 254</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 222</file>
+          <name>ICCARM</name>
+          <file> 239 51</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 49</file>
+          <name>BICOMP</name>
+          <file> 43 18 9 14 140 90 184 149 167 72 217 58 80 175 77 137 56 223 28 203</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 49</file>
+          <name>ICCARM</name>
+          <file> 43 18 9 14 140 90 184 149 167 72 217 58 80 175 77 137 56 223 28 203</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 240 151</file>
+          <name>BICOMP</name>
+          <file> 261</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 169</file>
+          <name>ICCARM</name>
+          <file> 119 236</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 61 49</file>
+          <name>BICOMP</name>
+          <file> 67 18 9 14 136 83 184 149 167 72 217 58 80 182 52 157 30 32</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 61 49</file>
+          <name>ICCARM</name>
+          <file> 67 18 9 14 136 83 184 149 167 72 217 58 80 182 52 157 30 32</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 141 233</file>
+          <name>BICOMP</name>
+          <file> 55</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 110</file>
+          <name>ICCARM</name>
+          <file> 95 269</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 73 49</file>
+          <name>BICOMP</name>
+          <file> 38</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 73 49</file>
+          <name>ICCARM</name>
+          <file> 38</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 247 136</file>
+          <name>BICOMP</name>
+          <file> 68</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 179</file>
+          <name>ICCARM</name>
+          <file> 102 71</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 54 49</file>
+          <name>BICOMP</name>
+          <file> 32 56 176 184 149 167 72 217 58 80 182 189 18 9 14 223 203 157 30 83 52</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 54 49</file>
+          <name>ICCARM</name>
+          <file> 32 56 176 184 149 167 72 217 58 80 182 189 18 9 14 223 203 157 30 83 52</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 114 226</file>
+          <name>BICOMP</name>
+          <file> 213</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 139</file>
+          <name>ICCARM</name>
+          <file> 238 69</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 77 81 71 9 6 0 62 64 65 48 56 75 49 39 16 30 43 42 29 14 55</file>
+          <name>BICOMP</name>
+          <file> 48 30 18 9 14 43 140 90 184 149 167 72 217 58 80 175 77 136 83 182 52 157 32</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 77 81 71 9 6 0 62 64 65 48 56 75 49 39 16 30 43 42 29 14 55</file>
+          <name>ICCARM</name>
+          <file> 48 30 18 9 14 43 140 90 184 149 167 72 217 58 80 175 77 136 83 182 52 157 32</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 131 250</file>
+          <name>BICOMP</name>
+          <file> 166</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 124</file>
+          <name>ICCARM</name>
+          <file> 249 195</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 48</file>
+          <name>BICOMP</name>
+          <file> 46 18 9 14 136 83 184 149 167 72 217 58 80 182 52 157 30 32</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 48</file>
+          <name>ICCARM</name>
+          <file> 46 18 9 14 136 83 184 149 167 72 217 58 80 182 52 157 30 32</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 111 99</file>
+          <name>BICOMP</name>
+          <file> 96</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 230</file>
+          <name>ICCARM</name>
+          <file> 164 99</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 64</file>
+          <name>BICOMP</name>
+          <file> 24 18 9 14 157 30 83 184 149 167 72 217 58 80 182 52 32 136</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 64</file>
+          <name>ICCARM</name>
+          <file> 24 18 9 14 157 30 83 184 149 167 72 217 58 80 182 52 32 136</file>
         </tool>
       </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 98</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 179 66</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30 18 9 14</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 30 18 9 14</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 265</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 173 159</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 228 18 9 14 157 30 83 184 149 167 72 217 58 80 182 52 32 28 67 54</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 228 18 9 14 157 30 83 184 149 167 72 217 58 80 182 52 32 28 67 54</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 211 180</file>
+        </tool>
+      </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 229 167</file>
+          <name>BICOMP</name>
+          <file> 250</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 253</file>
+          <name>ICCARM</name>
+          <file> 219 224</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 76 49 52 48 77 81 71 9 6 0 62 64 65 56 78 26 208 128 165 143 221 182 102 205 150 105 32 89 84 44 40 61</file>
+          <name>BICOMP</name>
+          <file> 104 133 105 122 134 141 109 18 9 14 5 130 106 124 157 30 83 184 149 167 72 217 58 80 182 52 32 136 146 2 1 7</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 76 49 52 48 77 81 71 9 6 0 62 64 65 56 78 26 208 128 165 143 221 182 102 205 150 105 32 89 84 44 40 61</file>
+          <name>ICCARM</name>
+          <file> 104 133 105 122 134 141 109 18 9 14 5 130 106 124 157 30 83 184 149 167 72 217 58 80 182 52 32 136 146 2 1 7</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Resumed.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_OTGHS.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 245 267</file>
+          <name>BICOMP</name>
+          <file> 183</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 153</file>
+          <name>ICCARM</name>
+          <file> 85 262</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 79 49 52 48 85</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 79 49 52 48 85</file>
+          <file> 105 122 133 118 146 141 109 18 9 14 5 130 106 124 30 157 83 184 149 167 72 217 58 80 182 52 32 137 129 46</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 271 157</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 118</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 275 128 165 143 221 182 102 205</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 275 128 165 143 221 182 102 205</file>
+          <file> 105 122 133 118 146 141 109 18 9 14 5 130 106 124 30 157 83 184 149 167 72 217 58 80 182 52 32 137 129 46</file>
         </tool>
       </inputs>
     </file>
@@ -1124,91 +871,22 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDP.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 133 137</file>
+          <name>BICOMP</name>
+          <file> 209</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 192</file>
+          <name>ICCARM</name>
+          <file> 196 212</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 52 48 49 79 9 6 0 26 78 208 128 165 143 221 182 102 205 150 105 32 85</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 52 48 49 79 9 6 0 26 78 208 128 165 143 221 182 102 205 150 105 32 85</file>
+          <file> 105 122 133 118 18 9 14 30 157 83 184 149 167 72 217 58 80 182 52 32 137</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\utility\trace.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 119 274</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 112</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 78 9 6 0 26 208 128 165 143 221 182 102 205 150 105 32 264</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 78 9 6 0 26 208 128 165 143 221 182 102 205 150 105 32 264</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 144 180</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 272</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 84 81 71 9 6 0 62 64 65 48 56 49 96 52 78 26 208 128 165 143 221 182 102 205 150 105 32 63 72 54 73 59 164 142</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 84 81 71 9 6 0 62 64 65 48 56 49 96 52 78 26 208 128 165 143 221 182 102 205 150 105 32 63 72 54 73 59 164 142</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 154 170</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 232</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 224 28 9 6 0 78 26 208 128 165 143 221 182 102 205 150 105 32 38 77 81 71 62 64 65 48 56 175 168 130 15 87 275 163 220 85</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 224 28 9 6 0 78 26 208 128 165 143 221 182 102 205 150 105 32 38 77 81 71 62 64 65 48 56 175 168 130 15 87 275 163 220 85</file>
+          <file> 105 122 133 118 18 9 14 30 157 83 184 149 167 72 217 58 80 182 52 32 137</file>
         </tool>
       </inputs>
     </file>
@@ -1216,22 +894,22 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDPHS.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 197 217</file>
+          <name>BICOMP</name>
+          <file> 97</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 202</file>
+          <name>ICCARM</name>
+          <file> 64 84</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 224 52 48 49 79 84 81 71 9 6 0 62 64 65 56 26 78 208 128 165 143 221 182 102 205 150 105 32 85 63 77 175 130</file>
+          <name>BICOMP</name>
+          <file> 56 105 122 133 118 146 141 109 18 9 14 5 130 106 124 30 157 83 184 149 167 72 217 58 80 182 52 32 137 129 134 223 203</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 224 52 48 49 79 84 81 71 9 6 0 62 64 65 56 26 78 208 128 165 143 221 182 102 205 150 105 32 85 63 77 175 130</file>
+          <name>ICCARM</name>
+          <file> 56 105 122 133 118 146 141 109 18 9 14 5 130 106 124 30 157 83 184 149 167 72 217 58 80 182 52 32 137 129 134 223 203</file>
         </tool>
       </inputs>
     </file>
@@ -1239,68 +917,252 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Initialized.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 203 212</file>
+          <name>BICOMP</name>
+          <file> 82</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 263</file>
+          <name>ICCARM</name>
+          <file> 61 75</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 79 49 52 48 9 6 0 15 87 275 128 165 143 221 182 102 205 163 220 224 175 130</file>
+          <name>BICOMP</name>
+          <file> 118 133 105 122 18 9 14 43 140 90 184 149 167 72 217 58 80 175 77 56 223 203</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 79 49 52 48 9 6 0 15 87 275 128 165 143 221 182 102 205 163 220 224 175 130</file>
+          <name>ICCARM</name>
+          <file> 118 133 105 122 18 9 14 43 140 90 184 149 167 72 217 58 80 175 77 56 223 203</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Suspended.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 188 125</file>
+          <name>BICOMP</name>
+          <file> 74</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 187</file>
+          <name>ICCARM</name>
+          <file> 267 79</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 79 49 52 48 85</file>
+          <name>BICOMP</name>
+          <file> 111 133</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 79 49 52 48 85</file>
+          <name>ICCARM</name>
+          <file> 111 133</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\utility\led.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 135 174</file>
+          <name>BICOMP</name>
+          <file> 214</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 176</file>
+          <name>ICCARM</name>
+          <file> 208 274</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 85 9 6 0 26</file>
+          <name>BICOMP</name>
+          <file> 122</file>
         </tool>
         <tool>
+          <name>ICCARM</name>
+          <file> 122</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 85 9 6 0 26</file>
+          <file> 70</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 93 162</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 133</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 133</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 225</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 92 87</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 127 133</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 127 133</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 252</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 194 65</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 130</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 130</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 246</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 255 190</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 110 133</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 110 133</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 53</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 187 234</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 133</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108 133</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 168</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 193 275</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 134 141 109 18 9 14 5 130 106 122 124 112 133 0 31 27 40 33 26 25 4</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 134 141 109 18 9 14 5 130 106 122 124 112 133 0 31 27 40 33 26 25 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 272</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 264 101</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 129 133</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 129 133</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Resumed.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 172</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 263 86</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 118 133 105 122 137</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 118 133 105 122 137</file>
         </tool>
       </inputs>
     </file>
@@ -1308,45 +1170,45 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_CfgChanged.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 262 115</file>
+          <name>BICOMP</name>
+          <file> 226</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 238</file>
+          <name>ICCARM</name>
+          <file> 89 204</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 96 78 9 6 0 26 208 128 165 143 221 182 102 205 150 105 32 85 52 48 49</file>
+          <name>BICOMP</name>
+          <file> 152 157 18 9 14 30 83 184 149 167 72 217 58 80 182 52 32 137 105 122 133</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 96 78 9 6 0 26 208 128 165 143 221 182 102 205 150 105 32 85 52 48 49</file>
+          <name>ICCARM</name>
+          <file> 152 157 18 9 14 30 83 184 149 167 72 217 58 80 182 52 32 137 105 122 133</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Reset.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 156 251</file>
+          <name>BICOMP</name>
+          <file> 202</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 120</file>
+          <name>ICCARM</name>
+          <file> 258 148</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 79 49</file>
+          <name>BICOMP</name>
+          <file> 90 184 149 167 72 217 58 80</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 79 49</file>
+          <name>ICCARM</name>
+          <file> 90 184 149 167 72 217 58 80</file>
         </tool>
       </inputs>
     </file>
@@ -1354,22 +1216,160 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_IfSettingChanged.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 109 235</file>
+          <name>BICOMP</name>
+          <file> 76</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 219</file>
+          <name>ICCARM</name>
+          <file> 62 251</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 96 78 9 6 0 26 208 128 165 143 221 182 102 205 150 105 32</file>
+          <name>BICOMP</name>
+          <file> 152 157 18 9 14 30 83 184 149 167 72 217 58 80 182 52 32</file>
         </tool>
         <tool>
+          <name>ICCARM</name>
+          <file> 152 157 18 9 14 30 83 184 149 167 72 217 58 80 182 52 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Suspended.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 96 78 9 6 0 26 208 128 165 143 221 182 102 205 150 105 32</file>
+          <file> 243</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 248 192</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 118 133 105 122 137</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 118 133 105 122 137</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 221</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 169 199</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 56 28 18 9 14 157 30 83 184 149 167 72 217 58 80 182 52 32 24 134 141 109 5 130 106 122 124 223 222 203 43 140 90 175 77 137</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 56 28 18 9 14 157 30 83 184 149 167 72 217 58 80 182 52 32 24 134 141 109 5 130 106 122 124 223 222 203 43 140 90 175 77 137</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\utility\led.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 245</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 201 247</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 137 18 9 14 30</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 137 18 9 14 30</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 88</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 174 230</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 146 141 109 18 9 14 5 130 106 122 124 133 152 105 157 30 83 184 149 167 72 217 58 80 182 52 32 129 111 110 108 127 176 189</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 146 141 109 18 9 14 5 130 106 122 124 133 152 105 157 30 83 184 149 167 72 217 58 80 182 52 32 129 111 110 108 127 176 189</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Reset.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 197</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 171 240</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 118 133</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 118 133</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\utility\trace.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 177</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 178 256</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 157 18 9 14 30 83 184 149 167 72 217 58 80 182 52 32 78</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 157 18 9 14 30 83 184 149 167 72 217 58 80 182 52 32 78</file>
         </tool>
       </inputs>
     </file>
@@ -1378,17 +1378,17 @@
       <outputs>
         <tool>
           <name>OBJCOPY</name>
-          <file> 190</file>
+          <file> 244</file>
         </tool>
         <tool>
           <name>ILINK</name>
-          <file> 122</file>
+          <file> 180</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ILINK</name>
-          <file> 8 186 158 185 184 167 226 183 151 157 200 241 132 248 123 116 174 170 121 100 103 127 145 148 211 274 268 213 231 113 258 137 217 212 251 267 125 180 115 235 250 215 99 155 136 259 257 233 166 172 191 223</file>
+          <file> 16 218 170 216 206 224 275 232 145 148 71 236 210 269 165 181 247 199 191 66 69 195 185 159 51 256 94 99 271 215 262 212 84 75 240 86 192 230 204 251 274 101 65 162 190 87 79 234 155 233 200 73</file>
         </tool>
       </inputs>
     </file>
@@ -1396,368 +1396,290 @@
   <configuration>
     <name>at91sam3u4_sram</name>
     <outputs>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\AT91SAM3U4.h</file>
-      <file>$PROJ_DIR$\..\..\app\usb.c</file>
-      <file>$PROJ_DIR$\..\..\app\sine_table.c</file>
-      <file>$PROJ_DIR$\..\..\app\uart.c</file>
-      <file>$PROJ_DIR$\..\..\app\i2s.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\chip.h</file>
-      <file>$PROJ_DIR$\..\..\app\app.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.c</file>
-      <file>$PROJ_DIR$\..\..\app\kfifo.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_cstartup_iar.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCAbstractControlManagementDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\irq\irq.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCDeviceDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\irq\nvic.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCCallManagementDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCCommunicationInterfaceDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCGenericDescriptor.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCGenericRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCHeaderDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCDataInterfaceDescriptor.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_OTGHS.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBConfigurationDescriptor.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCUnionDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBDeviceQualifierDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCUnionDescriptor.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBConfigurationDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBDeviceDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBStringDescriptor.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\trace.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Resumed.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverDescriptors.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDP.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\led.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\trace.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\assert.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.c</file>
-      <file>$PROJ_DIR$\..\main.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDPHS.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Initialized.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Suspended.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCallbacks.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\utility\led.c</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_CfgChanged.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\chip.h</file>
+      <file>$PROJ_DIR$\..\..\app\app.c</file>
+      <file>$PROJ_DIR$\..\..\app\kfifo.c</file>
+      <file>$PROJ_DIR$\..\..\app\uart.c</file>
+      <file>$PROJ_DIR$\..\..\app\i2s.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\at91sam3u4\AT91SAM3U4.h</file>
+      <file>$PROJ_DIR$\..\..\app\sine_table.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board.h</file>
+      <file>$PROJ_DIR$\..\..\app\usb.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_cstartup_iar.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCAbstractControlManagementDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCCallManagementDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCCommunicationInterfaceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\irq\nvic.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCDeviceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCHeaderDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBConfigurationDescriptor.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCDataInterfaceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\irq\irq.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBEndpointDescriptor.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\CDCSetControlLineStateRequest.lst</file>
       <file>$TOOLKIT_DIR$\inc\c\ystdio.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Reset.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_IfSettingChanged.c</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$PROJ_DIR$\..\..\app\app.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-      <file>$PROJ_DIR$\..\..\app\sine_table.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-      <file>$PROJ_DIR$\..\..\app\usb.h</file>
-      <file>$PROJ_DIR$\..\..\app\kfifo.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-      <file>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.h</file>
       <file>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCSetControlLineStateRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\ssc.o</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.h</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\dbgu.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCLineCoding.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\tc.lst</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
       <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
       <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCDSerialDriverDescriptors.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pio.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDDriverCb_IfSettingChanged.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBSetAddressRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\uart.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCDSerialDriverDescriptors.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBConfigurationDescriptor.pbi</file>
       <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dmad.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_memories.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_UDP.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBGetDescriptorRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCDSerialDriver.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\pio_it.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\dmad.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\List\nvic.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBEndpointDescriptor.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_UDPHS.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBD_UDP.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pmc.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\tc.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_OTGHS.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBSetAddressRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pmc.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Exe\at91sam3u4_sram.out</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_cstartup_iar.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\pmc.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Resumed.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriverCb_CfgChanged.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGenericDescriptor.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGetDescriptorRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCLineCoding.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dbgu.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCDSerialDriver.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBEndpointDescriptor.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_memories.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBD_UDP.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\tc.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\pio_it.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGetDescriptorRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBSetAddressRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Resumed.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pmc.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\core_cm3.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\board_lowlevel.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriverCb_CfgChanged.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_cstartup_iar.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_OTGHS.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\main.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\pmc.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBInterfaceRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\kfifo.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\app.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pmc.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_UDP.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCLineCoding.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\List\USBD_UDPHS.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBInterfaceRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Exe\at91sam3u4_sram.out</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\dmad.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBGetDescriptorRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_UDP.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_UDPHS.o</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\led.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\kfifo.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pio.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\main.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\dbgu.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCDSerialDriver.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\usb.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBEndpointDescriptor.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\exceptions.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\CDCSetControlLineStateRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Exe\at91sam3u4_sram.bin</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\pio.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBFeatureRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\sine_table.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\app.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pio_it.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriverCb_CfgChanged.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\ssc.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\tc.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCLineCoding.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBFeatureRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBConfigurationDescriptor.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Suspended.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCSetControlLineStateRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDDriverCb_CfgChanged.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBInterfaceRequest.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\List\USBD_OTGHS.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\i2s.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriver.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\kfifo.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\exceptions.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\sine_table.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDDriverCb_CfgChanged.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBFeatureRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\main.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pio_it.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\uart.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\ssc.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDCallbacks_Suspended.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriverCb_CfgChanged.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\pio.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Suspended.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGenericDescriptor.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBInterfaceRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Exe\at91sam3u4_sram.bin</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCDSerialDriver.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBInterfaceRequest.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDCallbacks_Resumed.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\dma.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\trace.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dma.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Resumed.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\uart.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\core_cm3.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCSetControlLineStateRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDCallbacks_Initialized.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\app.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\i2s.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\trace.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGetDescriptorRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_memories.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGenericRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\tc.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\core_cm3.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_lowlevel.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\sine_table.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBSetConfigurationRequest.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\CDCDSerialDriver.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBGenericDescriptor.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_UDPHS.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\exceptions.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\usb.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\i2s.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGenericDescriptor.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\usb.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\trace.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\app.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBSetConfigurationRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBSetConfigurationRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\kfifo.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\exceptions.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\kfifo.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_UDP.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_cstartup_iar.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Reset.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\usb.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\ssc.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBFeatureRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pio.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBConfigurationDescriptor.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDCallbacks_Suspended.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriver.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Initialized.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\main.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\led.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\exceptions.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Reset.o</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\nvic.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\usart.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\CDCDSerialDriverDescriptors.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\CDCLineCoding.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBFeatureRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\board_lowlevel.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDCallbacks_Reset.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\board_cstartup_iar.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBInterfaceRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\usart.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBGenericRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriverCb_IfSettingChanged.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\led.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\led.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Reset.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\kfifo.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriverCb_IfSettingChanged.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\usart.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\sine_table.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBEndpointDescriptor.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBSetAddressRequest.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\core_cm3.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\tc.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Resumed.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\core_cm3.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\uart.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBFeatureRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\CDCLineCoding.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_OTGHS.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\ssc.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dmad.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriverCb_IfSettingChanged.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Initialized.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriver.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGenericRequest.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Suspended.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\trace.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDCallbacks_Initialized.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBGenericRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\board_cstartup_iar.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dma.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\dma.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_cstartup_iar.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\CDCDSerialDriverDescriptors.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBSetAddressRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDCallbacks_Reset.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\usart.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBEndpointDescriptor.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\led.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBSetConfigurationRequest.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBSetConfigurationRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDDriverCb_IfSettingChanged.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\uart.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\app.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_lowlevel.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\trace.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGenericDescriptor.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\sine_table.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\i2s.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGetDescriptorRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBGenericDescriptor.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCSetControlLineStateRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGenericRequest.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\CDCDSerialDriver.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\core_cm3.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\i2s.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\usb.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\exceptions.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_memories.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\trace.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCDSerialDriverDescriptors.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dmad.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\usb.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\CDCDSerialDriverDescriptors.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBConfigurationDescriptor.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBSetAddressRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBD_UDPHS.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBSetConfigurationRequest.pbi</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_OTGHS.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBDeviceDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBStringDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDP.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDPHS.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Initialized.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBDeviceQualifierDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Resumed.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\assert.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\led.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_CfgChanged.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverDescriptors.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_IfSettingChanged.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Suspended.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.h</file>
+      <file>$PROJ_DIR$\..\main.c</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\led.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCallbacks.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Reset.c</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\trace.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\utility\trace.c</file>
+      <file>$PROJ_DIR$\..\..\app\sine_table.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$PROJ_DIR$\..\..\app\app.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\..\..\app\usb.h</file>
+      <file>$PROJ_DIR$\..\..\app\kfifo.h</file>
+      <file>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.h</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\board_lowlevel.pbi</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDDriver.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dbgu.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pio_it.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBConfigurationDescriptor.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dma.o</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\List\board_memories.lst</file>
-      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\usart.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\ssc.lst</file>
       <file>$PROJ_DIR$\at91sam3u4_sram\Obj\nvic.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriverCb_IfSettingChanged.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDDriver.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dbgu.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\usart.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dmad.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\board_memories.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBConfigurationDescriptor.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pio_it.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Initialized.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBDCallbacks_Suspended.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\List\USBDDriver.lst</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\pio.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\USBGenericRequest.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_sram\Obj\dma.o</file>
     </outputs>
     <file>
-      <name>[ROOT_NODE]</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.c</name>
       <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 143</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\app\usb.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 210 213</file>
-        </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 160</file>
+          <file> 54</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 49 167</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 23 7 5 0 30 35 29 12 83 126 98 107 101 116 110 92 113 105 115 106 102 100 117 81 48 45 46 72 73 77 67 58 60 61 52 74 114 94 109 111 99</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 23 7 5 0 30 35 29 12 83 126 98 107 101 116 110 92 113 105 115 106 102 100 117 81 48 45 46 72 73 77 67 58 60 61 52 74 114 94 109 111 99</file>
+          <file> 7 212</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\app\sine_table.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 167 204</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 241</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 104</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 104</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\app\uart.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 191 122</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 183</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 23 7 5 0 35 29 74 114 98 107 101 116 110 92 113 102 94 12 83 126 105 115 81 117 109 99</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 23 7 5 0 35 29 74 114 98 107 101 116 110 92 113 102 94 12 83 126 105 115 81 117 109 99</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\app\i2s.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 211 181</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 196</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 7 5 0 23 30 111 12 83 126 98 107 101 116 110 92 113 105 115 25 117 106 102 100 72 46 48 45 73 77 67 58 60 61 52 74 114 94 29 112 97 109 99 108</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 7 5 0 23 30 111 12 83 126 98 107 101 116 110 92 113 105 115 25 117 106 102 100 72 46 48 45 73 77 67 58 60 61 52 74 114 94 29 112 97 109 99 108</file>
+          <file> 7 212</file>
         </tool>
       </inputs>
     </file>
@@ -1765,45 +1687,22 @@
       <name>$PROJ_DIR$\..\..\app\app.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 195 168</file>
+          <name>BICOMP</name>
+          <file> 87</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 215</file>
+          <name>ICCARM</name>
+          <file> 159 98</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 7 5 0 117 23 30 25 35 111 74 114 98 107 101 116 110 92 113 102 94 29 81 72 46 48 45 73 77 67 58 60 61 52 14 109 108 99</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 7 5 0 117 23 30 25 35 111 74 114 98 107 101 116 110 92 113 102 94 29 81 72 46 48 45 73 77 67 58 60 61 52 14 109 108 99</file>
+          <file> 15 8 13 52 27 45 25 21 244 230 64 237 225 233 60 241 53 63 236 50 29 216 185 212 186 202 213 220 190 5 209 187 204 43 243 242 240</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 232 203</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 254</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 7 5 0 17 33 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 7 5 0 17 33 23</file>
+          <file> 15 8 13 52 27 45 25 21 244 230 64 237 225 233 60 241 53 63 236 50 29 216 185 212 186 202 213 220 190 5 209 187 204 43 243 242 240</file>
         </tool>
       </inputs>
     </file>
@@ -1811,22 +1710,137 @@
       <name>$PROJ_DIR$\..\..\app\kfifo.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 218 155</file>
+          <name>BICOMP</name>
+          <file> 86</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 220</file>
+          <name>ICCARM</name>
+          <file> 131 101</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 103 98 107 101 116 110 92 113 102 106 100 12 7 5 0 83 126 105 115 109</file>
+          <name>BICOMP</name>
+          <file> 238 237 225 233 60 241 53 63 236 235 239 40 15 8 13 219 65 234 61 243</file>
         </tool>
         <tool>
+          <name>ICCARM</name>
+          <file> 238 237 225 233 60 241 53 63 236 235 239 40 15 8 13 219 65 234 61 243</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\uart.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 103 98 107 101 116 110 92 113 102 106 100 12 7 5 0 83 126 105 115 109</file>
+          <file> 108</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 138 158</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27 15 8 13 21 29 230 64 237 225 233 60 241 53 63 236 50 40 219 65 234 61 216 52 243 240</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27 15 8 13 21 29 230 64 237 225 233 60 241 53 63 236 50 40 219 65 234 61 216 52 243 240</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\i2s.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 164</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 171 100</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15 8 13 27 45 244 40 219 65 237 225 233 60 241 53 63 234 61 25 52 235 236 239 185 212 186 202 213 220 190 5 209 187 204 230 64 50 29 51 56 243 240 242</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15 8 13 27 45 244 40 219 65 237 225 233 60 241 53 63 234 61 25 52 235 236 239 185 212 186 202 213 220 190 5 209 187 204 230 64 50 29 51 56 243 240 242</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\sine_table.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 134</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 103 163</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 232</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 232</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\usb.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 118</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 178 172</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27 15 8 13 45 21 29 40 219 65 237 225 233 60 241 53 63 234 61 235 236 239 52 216 186 202 212 185 213 220 190 5 209 187 204 230 64 50 243 244 240</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27 15 8 13 45 21 29 40 219 65 237 225 233 60 241 53 63 234 61 235 236 239 52 216 186 202 212 185 213 220 190 5 209 187 204 230 64 50 243 244 240</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_lowlevel.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 245</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 79 160</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15 8 13 6 19 27</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15 8 13 6 19 27</file>
         </tool>
       </inputs>
     </file>
@@ -1834,45 +1848,22 @@
       <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_cstartup_iar.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 234 144</file>
+          <name>BICOMP</name>
+          <file> 148</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 222</file>
+          <name>ICCARM</name>
+          <file> 145 81</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 7 5 0 22 33</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 7 5 0 22 33</file>
+          <file> 15 8 13 35 19</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 230 173</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 150</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 41 84 114 98 107 101 116 110 92 113 102 94 74 7 5 0 23 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 41 84 114 98 107 101 116 110 92 113 102 94 74 7 5 0 23 29</file>
+          <file> 15 8 13 35 19</file>
         </tool>
       </inputs>
     </file>
@@ -1880,45 +1871,22 @@
       <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\board_memories.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 260 128</file>
+          <name>BICOMP</name>
+          <file> 174</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 199</file>
+          <name>ICCARM</name>
+          <file> 253 70</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 7 5 0 23</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 7 5 0 23</file>
+          <file> 15 8 13 27</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 187 259</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 189</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 97 7 5 0 84 114 98 107 101 116 110 92 113 102 94 74 23 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 97 7 5 0 84 114 98 107 101 116 110 92 113 102 94 74 23 29</file>
+          <file> 15 8 13 27</file>
         </tool>
       </inputs>
     </file>
@@ -1926,298 +1894,45 @@
       <name>$PROJ_DIR$\..\..\at91lib\peripherals\irq\nvic.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 134 227</file>
+          <name>BICOMP</name>
+          <file> 247</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 262</file>
+          <name>ICCARM</name>
+          <file> 66 128</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 7 5 0 12 83 126 98 107 101 116 110 92 113 105 115 22 74 23 114 102 94 29</file>
+          <name>BICOMP</name>
+          <file> 15 8 13 40 219 65 237 225 233 60 241 53 63 234 61 35 230 27 64 236 50 29</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 7 5 0 12 83 126 98 107 101 116 110 92 113 105 115 22 74 23 114 102 94 29</file>
+          <name>ICCARM</name>
+          <file> 15 8 13 40 219 65 237 225 233 60 241 53 63 234 61 35 230 27 64 236 50 29</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 165 156</file>
+          <name>BICOMP</name>
+          <file> 90</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 119</file>
+          <name>ICCARM</name>
+          <file> 140 58</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 23 7 5 0</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 23 7 5 0</file>
+          <file> 2 215 64 237 225 233 60 241 53 63 236 50 230 15 8 13 27 29</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 162 209</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 219</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 22</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 22</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 133 248</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 127</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 112 97 7 5 0 12 83 126 98 107 101 116 110 92 113 105 115 84 114 102 94 74 23 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 112 97 7 5 0 12 83 126 98 107 101 116 110 92 113 105 115 84 114 102 94 74 23 29</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 158 256</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 151</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 29 117 106 98 107 101 116 110 92 113 102 100 7 5 0 109 99 74 23 114 94</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 29 117 106 98 107 101 116 110 92 113 102 100 7 5 0 109 99 74 23 114 94</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 145 138</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 142</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14 7 5 0 84 114 98 107 101 116 110 92 113 102 94 74 23 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 14 7 5 0 84 114 98 107 101 116 110 92 113 102 94 74 23 29</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 172 139</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 201</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 12 7 5 0 83 126 98 107 101 116 110 92 113 105 115 81 117 109 25 99</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 12 7 5 0 83 126 98 107 101 116 110 92 113 105 115 81 117 109 25 99</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 132 257</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 169</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 30 23 7 5 0 12 83 126 98 107 101 116 110 92 113 105 115 84 114 102 94 74 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 30 23 7 5 0 12 83 126 98 107 101 116 110 92 113 105 115 84 114 102 94 74 29</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 236 261</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 228</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 35 7 5 0 74 23 114 98 107 101 116 110 92 113 102 94 29 84</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 35 7 5 0 74 23 114 98 107 101 116 110 92 113 102 94 29 84</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 247 171</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 184</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 111 7 5 0 74 23 114 98 107 101 116 110 92 113 102 94 29 25 97 112</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 111 7 5 0 74 23 114 98 107 101 116 110 92 113 102 94 29 25 97 112</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_OTGHS.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 180 140</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 245</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 45 46 75 80 77 67 7 5 0 58 60 61 52 23 74 114 98 107 101 116 110 92 113 102 94 29 81 59 14</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 48 45 46 75 80 77 67 7 5 0 58 60 61 52 23 74 114 98 107 101 116 110 92 113 102 94 29 81 59 14</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 235 153</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 179</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 55 46</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 55 46</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 243 121</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 141</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 68 46</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 68 46</file>
+          <file> 2 215 64 237 225 233 60 241 53 63 236 50 230 15 8 13 27 29</file>
         </tool>
       </inputs>
     </file>
@@ -2225,275 +1940,316 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBConfigurationDescriptor.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 258 175</file>
+          <name>BICOMP</name>
+          <file> 180</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 125</file>
+          <name>ICCARM</name>
+          <file> 254 122</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 58 60 61 45</file>
+          <name>BICOMP</name>
+          <file> 5 209 187 202</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 58 60 61 45</file>
+          <name>ICCARM</name>
+          <file> 5 209 187 202</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\drivers\dmad\dmad.c</name>
       <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 166 231</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 174</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 59 46</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 59 46</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 237 252</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 200</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 46</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 46</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCSetControlLineStateRequest.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 163 193</file>
-        </tool>
         <tool>
           <name>BICOMP</name>
           <file> 177</file>
         </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 93 252</file>
+        </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 57 46</file>
+          <name>BICOMP</name>
+          <file> 51 56 15 8 13 40 219 65 237 225 233 60 241 53 63 234 61 215 64 236 50 230 27 29</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 57 46</file>
+          <name>ICCARM</name>
+          <file> 51 56 15 8 13 40 219 65 237 225 233 60 241 53 63 234 61 215 64 236 50 230 27 29</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\tc\tc.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 217 216</file>
+          <name>BICOMP</name>
+          <file> 135</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 205</file>
+          <name>ICCARM</name>
+          <file> 59 72</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 69 46</file>
+          <name>BICOMP</name>
+          <file> 40 15 8 13 219 65 237 225 233 60 241 53 63 234 61 216 52 243 25 240</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 69 46</file>
+          <name>ICCARM</name>
+          <file> 40 15 8 13 219 65 237 225 233 60 241 53 63 234 61 216 52 243 25 240</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\dma\dma.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 130 198</file>
+          <name>BICOMP</name>
+          <file> 146</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 149</file>
+          <name>ICCARM</name>
+          <file> 147 262</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 50 46</file>
+          <name>BICOMP</name>
+          <file> 56 15 8 13 215 64 237 225 233 60 241 53 63 236 50 230 27 29</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 50 46</file>
+          <name>ICCARM</name>
+          <file> 56 15 8 13 215 64 237 225 233 60 241 53 63 236 50 230 27 29</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\boards\at91sam3u-ek\exceptions.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 229 124</file>
+          <name>BICOMP</name>
+          <file> 126</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 118</file>
+          <name>ICCARM</name>
+          <file> 102 173</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 73 77 67 7 5 0 58 60 61 45 52 71 46 36 13 27 40 39 26 11 51</file>
+          <name>BICOMP</name>
+          <file> 35</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 73 77 67 7 5 0 58 60 61 45 52 71 46 36 13 27 40 39 26 11 51</file>
+          <name>ICCARM</name>
+          <file> 35</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\dbgu\dbgu.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 242 135</file>
+          <name>BICOMP</name>
+          <file> 67</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 161</file>
+          <name>ICCARM</name>
+          <file> 57 250</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 45</file>
+          <name>BICOMP</name>
+          <file> 29 52 235 237 225 233 60 241 53 63 236 239 15 8 13 243 240 230 27 64 50</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 45</file>
+          <name>ICCARM</name>
+          <file> 29 52 235 237 225 233 60 241 53 63 236 239 15 8 13 243 240 230 27 64 50</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio_it.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 207 212</file>
+          <name>BICOMP</name>
+          <file> 107</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 148</file>
+          <name>ICCARM</name>
+          <file> 73 255</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 60</file>
+          <name>BICOMP</name>
+          <file> 45 27 15 8 13 40 219 65 237 225 233 60 241 53 63 234 61 215 64 236 50 230 29</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 60</file>
+          <name>ICCARM</name>
+          <file> 45 27 15 8 13 40 219 65 237 225 233 60 241 53 63 234 61 215 64 236 50 230 29</file>
         </tool>
       </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pmc\pmc.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 88</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 84 77</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 43 15 8 13 215 64 237 225 233 60 241 53 63 236 50 230 27 29</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 43 15 8 13 215 64 237 225 233 60 241 53 63 236 50 230 27 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\usart\usart.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 133</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 152 251</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21 15 8 13 230 27 64 237 225 233 60 241 53 63 236 50 29 215</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 21 15 8 13 230 27 64 237 225 233 60 241 53 63 236 50 29 215</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\pio\pio.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 260</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 110 121</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27 15 8 13</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27 15 8 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 119</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 246 55</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 244 15 8 13 230 27 64 237 225 233 60 241 53 63 236 50 29 25 56 51</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 244 15 8 13 230 27 64 237 225 233 60 241 53 63 236 50 29 25 56 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 92</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\at91sam3u4_sram\Exe\at91sam3u4_sram.out</name>
+      <outputs>
+        <tool>
+          <name>OBJCOPY</name>
+          <file> 114</file>
+        </tool>
+      </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriver.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 206 159</file>
+          <name>BICOMP</name>
+          <file> 68</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 131</file>
+          <name>ICCARM</name>
+          <file> 169 115</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 72 46 48 45 73 77 67 7 5 0 58 60 61 52 74 23 114 98 107 101 116 110 92 113 102 94 29 84 80 41 37 57</file>
+          <name>BICOMP</name>
+          <file> 185 212 186 202 213 220 190 15 8 13 5 209 187 204 230 27 64 237 225 233 60 241 53 63 236 50 29 215 223 2 1 7</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 72 46 48 45 73 77 67 7 5 0 58 60 61 52 74 23 114 98 107 101 116 110 92 113 102 94 29 84 80 41 37 57</file>
+          <name>ICCARM</name>
+          <file> 185 212 186 202 213 220 190 15 8 13 5 209 187 204 230 27 64 237 225 233 60 241 53 63 236 50 29 215 223 2 1 7</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Resumed.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_OTGHS.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 186 190</file>
+          <name>BICOMP</name>
+          <file> 141</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 146</file>
+          <name>ICCARM</name>
+          <file> 99 82</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 75 46 48 45 81</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 75 46 48 45 81</file>
+          <file> 186 202 212 199 223 220 190 15 8 13 5 209 187 204 27 230 64 237 225 233 60 241 53 63 236 50 29 216 208 43</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 244 192</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 202</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 126 98 107 101 116 110 92 113</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 126 98 107 101 116 110 92 113</file>
+          <file> 186 202 212 199 223 220 190 15 8 13 5 209 187 204 27 230 64 237 225 233 60 241 53 63 236 50 29 216 208 43</file>
         </tool>
       </inputs>
     </file>
@@ -2501,91 +2257,22 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDP.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 137 129</file>
+          <name>BICOMP</name>
+          <file> 95</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 221</file>
+          <name>ICCARM</name>
+          <file> 71 89</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 48 45 46 75 7 5 0 23 74 114 98 107 101 116 110 92 113 102 94 29 81</file>
-        </tool>
-        <tool>
           <name>BICOMP</name>
-          <file> 48 45 46 75 7 5 0 23 74 114 98 107 101 116 110 92 113 102 94 29 81</file>
+          <file> 186 202 212 199 15 8 13 27 230 64 237 225 233 60 241 53 63 236 50 29 216</file>
         </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\utility\trace.c</name>
-      <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 214 197</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 188</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 74 7 5 0 23 114 98 107 101 116 110 92 113 102 94 29 123</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 74 7 5 0 23 114 98 107 101 116 110 92 113 102 94 29 123</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 255 251</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 182</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 80 77 67 7 5 0 58 60 61 45 52 46 90 48 74 23 114 98 107 101 116 110 92 113 102 94 29 59 68 50 69 55 106 100</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 80 77 67 7 5 0 58 60 61 45 52 46 90 48 74 23 114 98 107 101 116 110 92 113 102 94 29 59 68 50 69 55 106 100</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 157 225</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 246</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 117 25 7 5 0 74 23 114 98 107 101 116 110 92 113 102 94 29 35 73 77 67 58 60 61 45 52 109 108 99 12 83 126 105 115</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 117 25 7 5 0 74 23 114 98 107 101 116 110 92 113 102 94 29 35 73 77 67 58 60 61 45 52 109 108 99 12 83 126 105 115</file>
+          <file> 186 202 212 199 15 8 13 27 230 64 237 225 233 60 241 53 63 236 50 29 216</file>
         </tool>
       </inputs>
     </file>
@@ -2593,22 +2280,22 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBD_UDPHS.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 152 136</file>
+          <name>BICOMP</name>
+          <file> 182</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 208</file>
+          <name>ICCARM</name>
+          <file> 91 96</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 117 48 45 46 75 80 77 67 7 5 0 58 60 61 52 23 74 114 98 107 101 116 110 92 113 102 94 29 81 59 73 109 99</file>
+          <name>BICOMP</name>
+          <file> 52 186 202 212 199 223 220 190 15 8 13 5 209 187 204 27 230 64 237 225 233 60 241 53 63 236 50 29 216 208 213 243 240</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 117 48 45 46 75 80 77 67 7 5 0 58 60 61 52 23 74 114 98 107 101 116 110 92 113 102 94 29 81 59 73 109 99</file>
+          <name>ICCARM</name>
+          <file> 52 186 202 212 199 223 220 190 15 8 13 5 209 187 204 27 230 64 237 225 233 60 241 53 63 236 50 29 216 208 213 243 240</file>
         </tool>
       </inputs>
     </file>
@@ -2616,68 +2303,252 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Initialized.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 194 250</file>
+          <name>BICOMP</name>
+          <file> 125</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 224</file>
+          <name>ICCARM</name>
+          <file> 143 256</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 75 46 48 45 7 5 0 12 83 126 98 107 101 116 110 92 113 105 115 117 109 99</file>
+          <name>BICOMP</name>
+          <file> 199 212 186 202 15 8 13 40 219 65 237 225 233 60 241 53 63 234 61 52 243 240</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 75 46 48 45 7 5 0 12 83 126 98 107 101 116 110 92 113 105 115 117 109 99</file>
+          <name>ICCARM</name>
+          <file> 199 212 186 202 15 8 13 40 219 65 237 225 233 60 241 53 63 234 61 52 243 240</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Suspended.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetAddressRequest.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 185 176</file>
+          <name>BICOMP</name>
+          <file> 75</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 253</file>
+          <name>ICCARM</name>
+          <file> 150 181</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 75 46 48 45 81</file>
+          <name>BICOMP</name>
+          <file> 192 212</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 75 46 48 45 81</file>
+          <name>ICCARM</name>
+          <file> 192 212</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\utility\led.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBEndpointDescriptor.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 226 239</file>
+          <name>BICOMP</name>
+          <file> 48</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 154</file>
+          <name>ICCARM</name>
+          <file> 153 69</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 81 7 5 0 23</file>
+          <name>BICOMP</name>
+          <file> 202</file>
         </tool>
         <tool>
+          <name>ICCARM</name>
+          <file> 202</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericRequest.c</name>
+      <outputs>
+        <tool>
           <name>BICOMP</name>
-          <file> 81 7 5 0 23</file>
+          <file> 168</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 144 261</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 212</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 212</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBInterfaceRequest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 116</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 85 113</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 206 212</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 206 212</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGenericDescriptor.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 112</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 166 162</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 209</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 209</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBGetDescriptorRequest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 74</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 94 165</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 191 212</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 191 212</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBSetConfigurationRequest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 183</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 155 156</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 189 212</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 189 212</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\cdc-serial\CDCDSerialDriverDescriptors.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 179</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 149 176</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 213 220 190 15 8 13 5 209 187 202 204 193 212 0 28 24 37 30 23 22 4</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 213 220 190 15 8 13 5 209 187 202 204 193 212 0 28 24 37 30 23 22 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\common\core\USBFeatureRequest.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 105</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 120 139</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 208 212</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 208 212</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Resumed.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 76</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 117 136</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 199 212 186 202 216</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 199 212 186 202 216</file>
         </tool>
       </inputs>
     </file>
@@ -2685,45 +2556,45 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_CfgChanged.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 178 147</file>
+          <name>BICOMP</name>
+          <file> 109</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 170</file>
+          <name>ICCARM</name>
+          <file> 104 80</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 90 74 7 5 0 23 114 98 107 101 116 110 92 113 102 94 29 81 48 45 46</file>
+          <name>BICOMP</name>
+          <file> 227 230 15 8 13 27 64 237 225 233 60 241 53 63 236 50 29 216 186 202 212</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 90 74 7 5 0 23 114 98 107 101 116 110 92 113 102 94 29 81 48 45 46</file>
+          <name>ICCARM</name>
+          <file> 227 230 15 8 13 27 64 237 225 233 60 241 53 63 236 50 29 216 186 202 212</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Reset.c</name>
+      <name>$PROJ_DIR$\..\..\at91lib\cmsis\core_cm3.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 233 223</file>
+          <name>BICOMP</name>
+          <file> 137</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 240</file>
+          <name>ICCARM</name>
+          <file> 78 170</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 75 46</file>
+          <name>BICOMP</name>
+          <file> 65 237 225 233 60 241 53 63</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 75 46</file>
+          <name>ICCARM</name>
+          <file> 65 237 225 233 60 241 53 63</file>
         </tool>
       </inputs>
     </file>
@@ -2731,33 +2602,162 @@
       <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriverCb_IfSettingChanged.c</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 120 238</file>
+          <name>BICOMP</name>
+          <file> 248</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 249</file>
+          <name>ICCARM</name>
+          <file> 157 132</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 90 74 7 5 0 23 114 98 107 101 116 110 92 113 102 94 29</file>
+          <name>BICOMP</name>
+          <file> 227 230 15 8 13 27 64 237 225 233 60 241 53 63 236 50 29</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 90 74 7 5 0 23 114 98 107 101 116 110 92 113 102 94 29</file>
+          <name>ICCARM</name>
+          <file> 227 230 15 8 13 27 64 237 225 233 60 241 53 63 236 50 29</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\at91sam3u4_sram\Exe\at91sam3u4_sram.out</name>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Suspended.c</name>
       <outputs>
         <tool>
-          <name>OBJCOPY</name>
-          <file> 164</file>
+          <name>BICOMP</name>
+          <file> 257</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 123 111</file>
         </tool>
       </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 199 212 186 202 216</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 199 212 186 202 216</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 259</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 106 83</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 52 25 15 8 13 230 27 64 237 225 233 60 241 53 63 236 50 29 21 213 220 190 5 209 187 202 204 243 242 240 40 219 65 234 61</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 52 25 15 8 13 230 27 64 237 225 233 60 241 53 63 236 50 29 21 213 220 190 5 209 187 202 204 243 242 240 40 219 65 234 61</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\utility\led.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 97</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 129 154</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 216 15 8 13 27</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 216 15 8 13 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDDriver.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 124</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 258 249</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 223 220 190 15 8 13 5 209 187 202 204 212 227 186 230 27 64 237 225 233 60 241 53 63 236 50 29 208 192 191 189 206 235 239</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 223 220 190 15 8 13 5 209 187 202 204 212 227 186 230 27 64 237 225 233 60 241 53 63 236 50 29 208 192 191 189 206 235 239</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\usb\device\core\USBDCallbacks_Reset.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 130</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 151 127</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 199 212</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 199 212</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\at91lib\utility\trace.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 175</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 142 161</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 230 15 8 13 27 64 237 225 233 60 241 53 63 236 50 29 62</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 230 15 8 13 27 64 237 225 233 60 241 53 63 236 50 29 62</file>
+        </tool>
+      </inputs>
     </file>
     <forcedrebuild>
       <name>[MULTI_TOOL]</name>

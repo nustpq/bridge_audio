@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.4]";
+char fw_version[] = "[FW:A:V3.5]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -282,13 +282,13 @@ static void Audio_Stop( void )
     SSC_Record_Stop();  
     delay_ms(50);
     
-//    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
-//    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
-//    delay_ms(50);
-// 
-//    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN ;
-//    delay_ms(50); 
-//    Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
+    delay_ms(50);
+ 
+    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN ;
+    delay_ms(50); 
+    Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
 //    
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
 //   
