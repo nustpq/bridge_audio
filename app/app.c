@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.63]";
+char fw_version[] = "[FW:A:V3.64]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -106,7 +106,7 @@ static unsigned int Stop_CMD_Miss_Counter = 0;
 unsigned int counter_play = 0;
 unsigned int counter_rec  = 0;
 
-
+unsigned int test_dump = 0 ;
 /*
 *********************************************************************************************************
 *                                    Init_GPIO()
@@ -327,7 +327,7 @@ static void Audio_Stop( void )
     debug_trans_counter4  = 0 ; 
     debug_usb_dma_IN      = 0 ;
     debug_usb_dma_OUT     = 0 ;
-     
+     test_dump = 0 ;
 }
 
 

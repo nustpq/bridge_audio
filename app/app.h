@@ -114,7 +114,7 @@ extern unsigned int counter_rec  ;
 
 
 
-
+extern unsigned int test_dump;
 extern volatile unsigned int debug_trans_counter1 ;
 extern volatile unsigned int debug_trans_counter2 ;  
 extern volatile unsigned int debug_trans_counter3 ;
