@@ -720,5 +720,7 @@ void SSC_Reset( void )
 //    AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;  
     
     BOARD_AT73C213_SSC->SSC_CR =   AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
-    
+    SSC_ConfigureTransmitter( BOARD_AT73C213_SSC,  tcmr.value,  tfmr.value   );
+    SSC_ConfigureReceiver(  BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   ); 
+
 }
