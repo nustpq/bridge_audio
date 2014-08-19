@@ -44,6 +44,7 @@
 #define  RULER_CMD_SET_AUDIO_CFG        0x01
 #define  RULER_CMD_START_AUDIO          0x02
 #define  RULER_CMD_STOP_AUDIO           0x03
+#define  RULER_CMD_RESET_AUDIO          0x10
 #define  RULER_CMD_GET_AUDIO_VERSION    0x0B
 
 #define CMD_STAT_SYNC1     0
@@ -125,6 +126,10 @@ void pcInt(  unsigned char ch )
                     break ;                
                 case RULER_CMD_STOP_AUDIO :
                     audio_cmd_index = AUDIO_CMD_STOP ; 
+                    state_mac = CMD_STAT_SYNC1;                     
+                    break ;  
+                case RULER_CMD_RESET_AUDIO :
+                    audio_cmd_index = AUDIO_CMD_RESET ; 
                     state_mac = CMD_STAT_SYNC1;                     
                     break ;  
                 case RULER_CMD_GET_AUDIO_VERSION  :

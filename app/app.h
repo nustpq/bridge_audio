@@ -42,7 +42,7 @@
 #define  AUDIO_CMD_STOP                 0x04
 #define  AUDIO_CMD_CFG                  0x05
 #define  AUDIO_CMD_VERSION              0x06
-
+#define  AUDIO_CMD_RESET                0x07
 //Error
 #define  ERR_USB_STATE                  250u
 #define  ERR_AUD_CFG                    251u
@@ -59,6 +59,7 @@ typedef struct {
 
 extern AUDIO_CFG  Audio_Configure[];
 extern unsigned char audio_cmd_index;
+ 
 extern unsigned char audio_cmd_ack;
 
 extern unsigned char usbBufferBulkOut[];
