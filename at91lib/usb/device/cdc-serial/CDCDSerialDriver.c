@@ -231,6 +231,7 @@ unsigned char CDCDSerialDriver_Read(void *data,
                                     TransferCallback callback,
                                     void *argument)
 {
+
     return USBD_Read(CDCDSerialDriverDescriptors_DATAOUT,
                      data,
                      size,

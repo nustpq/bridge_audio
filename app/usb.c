@@ -245,6 +245,7 @@ void UsbDataReceived(  unsigned int unused,
 {
     TRACE_INFO_NEW_WP("\r\n#BO:") ;
     //Play
+    
     if ( ! bulkout_enable ) {
         printf("\r\nstatus %d, bulkout_enable %d\r\n",status, bulkout_enable);
         return ;

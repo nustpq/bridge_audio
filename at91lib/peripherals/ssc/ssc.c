@@ -489,15 +489,13 @@ unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
     unsigned int srcAddress;
     unsigned int destAddress;
  
-    startSourceAddr =  (unsigned short*)(&ssc->SSC_RHR);
+    startSourceAddr = (unsigned short*)(&ssc->SSC_RHR);
     startDestAddr   = (unsigned short*)(buffer);
     srcAddress      = (unsigned int)startSourceAddr;    // Set the data start address
     destAddress     = (unsigned int)startDestAddr;
   
     // Clear any pending interrupts
     AT91C_BASE_HDMA->HDMA_EBCISR; //read EBCISR ????
-    
-
     
     
     // Set DMA channel config
