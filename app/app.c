@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.65]";
+char fw_version[] = "[FW:A:V3.66]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -410,25 +410,15 @@ void Audio_State_Control( void )
                 USART_WriteBuffer( AT91C_BASE_US0,(void *)fw_version, sizeof(fw_version) );   
             break;         
             
-            case AUDIO_CMD_RESET: 
-                  printf("Reset USB EP...");
-                
-        //        AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
-        //        AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
-        //
-        //        AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;  
-        //        AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_NAK_OUT ;
-        //        
-        //        AT91C_BASE_UDPHS->UDPHS_EPTRST =  1<<CDCDSerialDriverDescriptors_DATAOUT;
-        //        AT91C_BASE_UDPHS->UDPHS_EPTRST =  1<<CDCDSerialDriverDescriptors_DATAIN;
-                
-                    // Reset Endpoint Fifos
-                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
+            case AUDIO_CMD_RESET:                 
+                printf("\r\nReset USB EP...");                    
+                //Reset Endpoint Fifos
                 AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
-                
-                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA = AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
-                AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN;
-                       
+                AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
+                delay_ms(5);
+                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
+                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
+                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
                 printf("Done.\r\n");
             break;  
             
@@ -445,8 +435,7 @@ void Audio_State_Control( void )
             
      }
      
- 
-    audio_cmd_index     = AUDIO_CMD_IDLE ;     
+     audio_cmd_index = AUDIO_CMD_IDLE ;     
     
     
 }
