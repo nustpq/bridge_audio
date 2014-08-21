@@ -208,15 +208,13 @@ static unsigned int check_bulkout_data( unsigned char *pBuf, unsigned int length
 
 
 void Init_Bulk_FIFO( void )
-{
-   
+{   
     kfifo_t *pfifo;
     
     pfifo = &bulkout_fifo;
     kfifo_init_static(pfifo, FIFOBufferBulkOut, USB_OUT_BUFFER_SIZE);
     pfifo = &bulkin_fifo;
     kfifo_init_static(pfifo, FIFOBufferBulkIn, USB_IN_BUFFER_SIZE);
-
 
 }  
 
@@ -265,7 +263,8 @@ void UsbDataReceived(  unsigned int unused,
                                       (TransferCallback) UsbDataReceived,
                                       0);        
         } else { //usb out too fast                     
-            bulkout_start  = true ;                               
+            bulkout_start  = true ;
+            
         }     
         total_received += received ; 
      
@@ -343,8 +342,7 @@ void UsbDataTransmit(  unsigned int unused,
 */
 void USB_Init(void)
 {
-  
-    printf("\r\nInit USB ...");
+   printf("\r\nInit USB ...");
   
    // If there is on board power, switch it off 
 #ifdef PIN_USB_POWER_ENB

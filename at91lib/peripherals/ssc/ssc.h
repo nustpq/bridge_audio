@@ -100,7 +100,7 @@
 #define BOARD_SSC_DMA_FIFO_SIZE         (4*1024)
 
 /// SSC Linked list size
-#define MAX_SSC_LLI_SIZE                    16
+#define MAX_SSC_LLI_SIZE                    2
 
 //------------------------------------------------------------------------------
 
@@ -130,12 +130,21 @@ extern void SSC_DisableInterrupts(AT91S_SSC *ssc, unsigned int sources);
 extern void SSC_Write(AT91S_SSC *ssc, unsigned int frame);
 extern unsigned char SSC_WriteBuffer(AT91S_SSC *ssc,
                                             void *buffer,
+                                            unsigned char buffer_index,
                                             unsigned int length);
+unsigned char SSC_WriteBuffer_Start(  AT91S_SSC *ssc,
+                                     void *buffer,
+                                     void *buffer_next,
+                                     unsigned int length);
 extern unsigned int SSC_Read(AT91S_SSC *ssc);
 extern unsigned char SSC_ReadBuffer(AT91S_SSC *ssc,
                                            void *buffer,
+                                           unsigned char buffer_index,
                                            unsigned int length);
-
+extern unsigned char SSC_ReadBuffer_Start(  AT91S_SSC *ssc,
+                                     void *buffer,
+                                     void *buffer_next,
+                                     unsigned int length);
 extern void SSC_Init( unsigned int mclk );
 extern void SSC_Reset( void );
 extern void SSC_Channel_Set(unsigned char tx_ch_num, unsigned char rx_ch_num );

@@ -10,7 +10,7 @@ LimitSize=0
 ByteLimit=50
 [DebugChecksum]
 <<<<<<< HEAD
-Checksum=-1288129999
+Checksum=1407939342
 =======
 Checksum=1620594476
 >>>>>>> May_fixed_bug
@@ -38,8 +38,7 @@ Fmt8={W}0:value	4	0
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\..\at91lib\peripherals\ssc\ssc.c}.498.5" 0 0 1 "" 0 "" 0
-Count=1
+Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""

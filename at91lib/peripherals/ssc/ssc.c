@@ -50,6 +50,7 @@ RFMR rfmr ;
 //------------------------------------------------------------------------------
 #if defined(CHIP_SSC_DMA)
 static DmaLinkList  LLI_CH [MAX_SSC_LLI_SIZE];
+static DmaLinkList  LLI_CH2 [MAX_SSC_LLI_SIZE];
 #endif
 
 //------------------------------------------------------------------------------
@@ -63,6 +64,25 @@ static DmaLinkList  LLI_CH [MAX_SSC_LLI_SIZE];
 //         Internal Functions
 //------------------------------------------------------------------------------
 #if defined(CHIP_SSC_DMA)
+//void AT91F_Prepare_Multiple_Transfer(unsigned int Channel,
+//                                            unsigned int LLI_rownumber,
+//                                            unsigned int LLI_Last_Row,
+//                                            unsigned int From_add,
+//                                            unsigned int To_add,
+//                                            unsigned int Ctrla,
+//                                            unsigned int Ctrlb)
+//{
+//    LLI_CH[LLI_rownumber].sourceAddress =  From_add;
+//    LLI_CH[LLI_rownumber].destAddress   =  To_add;
+//    LLI_CH[LLI_rownumber].controlA =  Ctrla;
+//    LLI_CH[LLI_rownumber].controlB =  Ctrlb;
+//    if (LLI_Last_Row != LAST_ROW)
+//        LLI_CH[LLI_rownumber].descriptor =
+//             (unsigned int)&LLI_CH[LLI_rownumber + 1] + 0;
+//    else
+//        LLI_CH[LLI_rownumber].descriptor = 0;
+//}
+
 void AT91F_Prepare_Multiple_Transfer(unsigned int Channel,
                                             unsigned int LLI_rownumber,
                                             unsigned int LLI_Last_Row,
@@ -77,10 +97,12 @@ void AT91F_Prepare_Multiple_Transfer(unsigned int Channel,
     LLI_CH[LLI_rownumber].controlB =  Ctrlb;
     if (LLI_Last_Row != LAST_ROW)
         LLI_CH[LLI_rownumber].descriptor =
-             (unsigned int)&LLI_CH[LLI_rownumber + 1] + 0;
+             (unsigned int)&LLI_CH[1-LLI_rownumber] + 0;
     else
         LLI_CH[LLI_rownumber].descriptor = 0;
 }
+
+
 #endif
 
 //------------------------------------------------------------------------------
@@ -246,6 +268,7 @@ unsigned int SSC_Read(AT91S_SSC *ssc)
 /// \param length  Size of the data buffer.
 //------------------------------------------------------------------------------
 //modified for fast execution
+/*
 unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
                                      void *buffer,
                                      unsigned int length) 
@@ -294,183 +317,143 @@ unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
     return 0 ;
   
 }
+*/
 
 
-/*
-unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
+unsigned char SSC_WriteBuffer_Start(  AT91S_SSC *ssc,
                                      void *buffer,
+                                     void *buffer_next,
                                      unsigned int length)
 {
-#if !defined(CHIP_SSC_DMA)
-    // Check if first bank is free
-    if (ssc->SSC_TCR == 0) {
-
-        ssc->SSC_TPR = (unsigned int) buffer;
-        ssc->SSC_TCR = length;
-        ssc->SSC_PTCR = AT91C_PDC_TXTEN;
-        return 1;
-    }
-    // Check if second bank is free
-    else if (ssc->SSC_TNCR == 0) {
-
-        ssc->SSC_TNPR = (unsigned int) buffer;
-        ssc->SSC_TNCR = length;
-        return 1;
-    }
     
-    
-#else
-    
-    #if( 1 )
-    //Single buffer method
+    //LLI DMA method
     unsigned short* startSourceAddr;
+    unsigned short* startSourceAddr_next;
     unsigned short* startDestAddr;
     unsigned int srcAddress;
+    unsigned int srcAddress_next;
     unsigned int destAddress;
     unsigned int buffSize;
-    startSourceAddr = (unsigned short*)(buffer);
-    startDestAddr = (unsigned short*)(&ssc->SSC_THR);
-    srcAddress  = (unsigned int)startSourceAddr;    // Set the data start address
-    destAddress = (unsigned int)startDestAddr;
-    buffSize = length;
-   
-    if(buffSize > 0x8000){
-        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
-        buffSize = 0x8000;
-    }
-   
+
+    startSourceAddr      = (unsigned short*)(buffer);
+    startSourceAddr_next = (unsigned short*)(buffer_next);
+    startDestAddr        = (unsigned short*)(&ssc->SSC_THR);
+    srcAddress           = (unsigned int)startSourceAddr;    // Set the data start address
+    srcAddress_next      = (unsigned int)startSourceAddr_next;    // Set the data start address
+    destAddress          = (unsigned int)startDestAddr;
+    buffSize             = length;
+    
+//    if(buffSize > 0x8000){
+//        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
+//        buffSize = 0x8000;
+//    }
+
+    // Set DMA channel DSCR
+    //DMA_SetDescriptorAddr(BOARD_SSC_OUT_DMA_CHANNEL, (unsigned int)&LLI_CH[0]);
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_DSCR = (unsigned int)&LLI_CH[0] ;
+    
     // Clear any pending interrupts
-    DMA_GetStatus(); //read EBCISR
-    // Set DMA channel config
-    DMA_SetConfiguration(BOARD_SSC_OUT_DMA_CHANNEL, BOARD_SSC_OUT_DMA_HW_SRC_REQ_ID \
+    DMA_GetStatus();
+
+   
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA = \
+                                        ((length>>1) \
+                                        | AT91C_HDMA_SRC_WIDTH_HALFWORD \
+                                        | AT91C_HDMA_DST_WIDTH_HALFWORD \
+                                        | AT91C_HDMA_SCSIZE_1 \
+                                        | AT91C_HDMA_DCSIZE_1);
+    
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLB = \
+                                          AT91C_HDMA_DST_ADDRESS_MODE_FIXED \
+                                        | AT91C_HDMA_SRC_ADDRESS_MODE_INCR \
+                                        | AT91C_HDMA_FC_MEM2PER ;
+    
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CFG =  \
+                                         (BOARD_SSC_OUT_DMA_HW_SRC_REQ_ID \
                                         | BOARD_SSC_OUT_DMA_HW_DEST_REQ_ID \
                                         | AT91C_HDMA_SRC_H2SEL_SW \
                                         | AT91C_HDMA_DST_H2SEL_HW \
                                         | AT91C_HDMA_SOD_DISABLE \
                                         | AT91C_HDMA_FIFOCFG_LARGESTBURST); 
-    DMA_SetSourceAddr( BOARD_SSC_OUT_DMA_CHANNEL, srcAddress ) ;
-    DMA_SetDestinationAddr( BOARD_SSC_OUT_DMA_CHANNEL, destAddress);
-    DMA_SetControlRegAB( BOARD_SSC_OUT_DMA_CHANNEL, 
-                                         (buffSize>>1) \
-                                        | AT91C_HDMA_SRC_WIDTH_HALFWORD \
-                                        | AT91C_HDMA_DST_WIDTH_HALFWORD \
-                                        | AT91C_HDMA_SCSIZE_1 \
-                                        | AT91C_HDMA_DCSIZE_1,                                        
-                                        //| AT91C_HDMA_DST_DSCR_FETCH_FROM_MEM
-                                        AT91C_HDMA_DST_DSCR_FETCH_DISABLE \
-                                        | AT91C_HDMA_DST_ADDRESS_MODE_FIXED \
-                                        //| AT91C_HDMA_SRC_DSCR_FETCH_FROM_MEM
-                                        | AT91C_HDMA_SRC_DSCR_FETCH_DISABLE \
-                                        | AT91C_HDMA_SRC_ADDRESS_MODE_INCR \
-                                        | AT91C_HDMA_FC_MEM2PER );
+        
+    LLI_CH[0].sourceAddress =  srcAddress;
+    LLI_CH[0].destAddress   =  destAddress;
+    LLI_CH[0].controlA      =  \
+                               ((length>>1) \
+                             | AT91C_HDMA_SRC_WIDTH_HALFWORD \
+                             | AT91C_HDMA_DST_WIDTH_HALFWORD \
+                             | AT91C_HDMA_SCSIZE_1 \
+                             | AT91C_HDMA_DCSIZE_1);
+    LLI_CH[0].controlB      =   \
+                               AT91C_HDMA_DST_ADDRESS_MODE_FIXED \
+                             | AT91C_HDMA_SRC_ADDRESS_MODE_INCR \
+                             | AT91C_HDMA_FC_MEM2PER ;
+    LLI_CH[0].descriptor    =  (unsigned int)&LLI_CH[1] + 0;
+  
+    LLI_CH[1].sourceAddress =  srcAddress_next;
+    LLI_CH[1].destAddress   =  destAddress;
+    LLI_CH[1].controlA      =  \
+                               ((length>>1) \
+                             | AT91C_HDMA_SRC_WIDTH_HALFWORD \
+                             | AT91C_HDMA_DST_WIDTH_HALFWORD \
+                             | AT91C_HDMA_SCSIZE_1 \
+                             | AT91C_HDMA_DCSIZE_1);
+    LLI_CH[1].controlB      =   \
+                               AT91C_HDMA_DST_ADDRESS_MODE_FIXED \
+                             | AT91C_HDMA_SRC_ADDRESS_MODE_INCR \
+                             | AT91C_HDMA_FC_MEM2PER ;
+    LLI_CH[1].descriptor    =  (unsigned int)&LLI_CH[0] + 0;    
+        
+    return 0;
+    
+}
 
-    
-    #else   
-    
-    
+
+unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
+                                     void *buffer,
+                                     unsigned char buffer_index,
+                                     unsigned int length)
+{
+   
     //LLI DMA method
     unsigned short* startSourceAddr;
     unsigned short* startDestAddr;
     unsigned int srcAddress;
     unsigned int destAddress;
     unsigned int buffSize;
-    unsigned int LLI_rownumber = 0;
 
     startSourceAddr = (unsigned short*)(buffer);
-    startDestAddr = (unsigned short*)(&ssc->SSC_THR);
-    srcAddress  = (unsigned int)startSourceAddr;    // Set the data start address
-    destAddress = (unsigned int)startDestAddr;
-    buffSize = length;
-    if(buffSize > 0x8000){
-        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
-        buffSize = 0x8000;
-    }
-
-    // Set DMA channel DSCR
-    DMA_SetDescriptorAddr(BOARD_SSC_OUT_DMA_CHANNEL, (unsigned int)&LLI_CH[0]);
-
-    // Clear any pending interrupts
-    DMA_GetStatus();
-
-    //Set DMA channel control B
-    DMA_SetSourceBufferMode(BOARD_SSC_OUT_DMA_CHANNEL, DMA_TRANSFER_LLI,
-                            (AT91C_HDMA_SRC_ADDRESS_MODE_INCR >> 24));
-    DMA_SetDestBufferMode(BOARD_SSC_OUT_DMA_CHANNEL, DMA_TRANSFER_LLI,
-                            (AT91C_HDMA_DST_ADDRESS_MODE_FIXED >> 28));
-    DMA_SetFlowControl(BOARD_SSC_OUT_DMA_CHANNEL, AT91C_HDMA_FC_MEM2PER >> 21);
-
-    // Set DMA channel config
-    DMA_SetConfiguration(BOARD_SSC_OUT_DMA_CHANNEL, BOARD_SSC_DMA_HW_SRC_REQ_ID \
-                                        | BOARD_SSC_DMA_HW_DEST_REQ_ID \
-                                        | AT91C_HDMA_SRC_H2SEL_SW \
-                                        | AT91C_HDMA_DST_H2SEL_HW \
-                                        | AT91C_HDMA_SOD_DISABLE \
-                                        | AT91C_HDMA_FIFOCFG_LARGESTBURST);
-
-    // Set link list
+    startDestAddr   = (unsigned short*)(&ssc->SSC_THR);
     
-    while(srcAddress < ((unsigned int)(startSourceAddr + buffSize)))
-    {
-        if(((unsigned int)(startSourceAddr + buffSize)) - srcAddress <= (BOARD_SSC_DMA_FIFO_SIZE) )
-        {
-            AT91F_Prepare_Multiple_Transfer(BOARD_SSC_OUT_DMA_CHANNEL, LLI_rownumber, LAST_ROW,
-                                        srcAddress,
-                                        destAddress,
-                                        
-                                        (((((unsigned int)(startSourceAddr + buffSize))
-                                                - srcAddress)/2)
-                                                  | AT91C_HDMA_SRC_WIDTH_HALFWORD
-                                                  | AT91C_HDMA_DST_WIDTH_HALFWORD
-                                                  | AT91C_HDMA_SCSIZE_1
-                                                  | AT91C_HDMA_DCSIZE_1
-                                                      ),
-                                        
-                                        ( //| AT91C_HDMA_DST_DSCR_FETCH_FROM_MEM
-                                         AT91C_HDMA_DST_DSCR_FETCH_DISABLE
-                                        | AT91C_HDMA_DST_ADDRESS_MODE_FIXED
-                                        | AT91C_HDMA_SRC_DSCR_FETCH_FROM_MEM
-                                        //| AT91C_HDMA_SRC_DSCR_FETCH_DISABLE
-                                        | AT91C_HDMA_SRC_ADDRESS_MODE_INCR
-                                        | AT91C_HDMA_FC_MEM2PER));
-        }
-        else
-        {
-            AT91F_Prepare_Multiple_Transfer(BOARD_SSC_OUT_DMA_CHANNEL, LLI_rownumber, 0,
-                                        srcAddress,
-                                        destAddress,
-                                        
-                                        ((BOARD_SSC_DMA_FIFO_SIZE)/2
-                                            | AT91C_HDMA_SRC_WIDTH_HALFWORD
-                                            | AT91C_HDMA_DST_WIDTH_HALFWORD
-                                            | AT91C_HDMA_SCSIZE_1
-                                            | AT91C_HDMA_DCSIZE_1
-                                                ),
-                                        
-                                        ( //| AT91C_HDMA_DST_DSCR_FETCH_FROM_MEM
-                                        AT91C_HDMA_DST_DSCR_FETCH_DISABLE
-                                        | AT91C_HDMA_DST_ADDRESS_MODE_FIXED
-                                        | AT91C_HDMA_SRC_DSCR_FETCH_FROM_MEM
-                                        //| AT91C_HDMA_SRC_DSCR_FETCH_DISABLE
-                                        | AT91C_HDMA_SRC_ADDRESS_MODE_INCR
-                                        | AT91C_HDMA_FC_MEM2PER));
-
-        }
-
-        srcAddress += BOARD_SSC_DMA_FIFO_SIZE;
-
-        
-        LLI_rownumber++;
-    }
-    #endif
+    srcAddress      = (unsigned int)startSourceAddr;   
+    destAddress     = (unsigned int)startDestAddr;
+    buffSize        = length;
     
-#endif
+//    if(buffSize > 0x8000){
+//        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
+//        buffSize = 0x8000;
+//    }
+           
+    LLI_CH[buffer_index].sourceAddress =  srcAddress;
+    LLI_CH[buffer_index].destAddress   =  destAddress;
+    LLI_CH[buffer_index].controlA      =  \
+                                        ((length>>1) \
+                                        | AT91C_HDMA_SRC_WIDTH_HALFWORD \
+                                        | AT91C_HDMA_DST_WIDTH_HALFWORD \
+                                        | AT91C_HDMA_SCSIZE_1 \
+                                        | AT91C_HDMA_DCSIZE_1);
+    LLI_CH[buffer_index].controlB      = \
+                                          AT91C_HDMA_DST_ADDRESS_MODE_FIXED \
+                                        | AT91C_HDMA_SRC_ADDRESS_MODE_INCR \
+                                        | AT91C_HDMA_FC_MEM2PER ;
+    LLI_CH[buffer_index].descriptor    = length == 0 ? 0 : ((unsigned int)&LLI_CH[1-buffer_index] + 0);
     
-    // No free banks
     return 0;
+    
 }
-*/
 
-
+                                
+                                
 //------------------------------------------------------------------------------
 /// Reads data coming from a SSC peripheral receiver and stores it into the
 /// provided buffer. Returns true if the buffer has been queued for reception;
@@ -480,6 +463,7 @@ unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
 /// \param length  Size in bytes of the data buffer.
 //------------------------------------------------------------------------------
 //modified for fast execution
+/*
 unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
                                     void *buffer,
                                     unsigned int length)
@@ -529,80 +513,138 @@ unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
   
   
 }
+*/
 
-/*
-unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
-                                    void *buffer,
-                                    unsigned int length)
+unsigned char SSC_ReadBuffer_Start(  AT91S_SSC *ssc,
+                                     void *buffer,
+                                     void *buffer_next,
+                                     unsigned int length)
 {
-#if !defined(CHIP_SSC_DMA)
-    // Check if the first bank is free
-    if (ssc->SSC_RCR == 0) {
-
-        ssc->SSC_RPR = (unsigned int) buffer;
-        ssc->SSC_RCR = length;
-        ssc->SSC_PTCR = AT91C_PDC_RXTEN;
-        return 1;
-    }
-    // Check if second bank is free
-    else if (ssc->SSC_RNCR == 0) {
-
-        ssc->SSC_RNPR = (unsigned int) buffer;
-        ssc->SSC_RNCR = length;
-        return 1;
-    }
-
-#else
     
-    //Single buffer method
+    //LLI DMA method
+    unsigned short* startSourceAddr;
+    unsigned short* startDestAddr;
+    unsigned short* startDestAddr_next;
+    unsigned int srcAddress;
+    unsigned int destAddress_next;
+    unsigned int destAddress;
+    unsigned int buffSize;
+
+    startSourceAddr    = (unsigned short*)(&ssc->SSC_RHR);
+    startDestAddr      = (unsigned short*)(buffer);
+    startDestAddr_next = (unsigned short*)(buffer_next);
+    
+    srcAddress        = (unsigned int)startSourceAddr;    // Set the data start address
+    destAddress_next  = (unsigned int)startDestAddr_next;    
+    destAddress       = (unsigned int)startDestAddr;
+    buffSize          = length;
+    
+//    if(buffSize > 0x8000){
+//        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
+//        buffSize = 0x8000;
+//    }
+
+    // Set DMA channel DSCR    
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_DSCR = (unsigned int)&LLI_CH2[0] ;
+    
+    // Clear any pending interrupts
+    DMA_GetStatus();
+   
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_CTRLA = \
+                                        ((length>>1) \
+                                        | AT91C_HDMA_SRC_WIDTH_HALFWORD \
+                                        | AT91C_HDMA_DST_WIDTH_HALFWORD \
+                                        | AT91C_HDMA_SCSIZE_1 \
+                                        | AT91C_HDMA_DCSIZE_1);  
+    
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_CTRLB = \
+                                          AT91C_HDMA_DST_ADDRESS_MODE_INCR \
+                                        | AT91C_HDMA_SRC_ADDRESS_MODE_FIXED \
+                                        | AT91C_HDMA_FC_PER2MEM ;  
+    
+    AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_CFG = \
+                                         (BOARD_SSC_IN_DMA_HW_SRC_REQ_ID \
+                                        | BOARD_SSC_IN_DMA_HW_DEST_REQ_ID \
+                                        | AT91C_HDMA_SRC_H2SEL_HW \
+                                        | AT91C_HDMA_DST_H2SEL_SW \
+                                        | AT91C_HDMA_SOD_DISABLE \
+                                        | AT91C_HDMA_FIFOCFG_LARGESTBURST);       
+    
+    LLI_CH2[0].sourceAddress =  srcAddress;
+    LLI_CH2[0].destAddress   =  destAddress;
+    LLI_CH2[0].controlA      =  \
+                               ((length>>1) \
+                               | AT91C_HDMA_SRC_WIDTH_HALFWORD \
+                               | AT91C_HDMA_DST_WIDTH_HALFWORD \
+                               | AT91C_HDMA_SCSIZE_1 \
+                               | AT91C_HDMA_DCSIZE_1);     
+    LLI_CH2[0].controlB      =    \
+                                 AT91C_HDMA_DST_ADDRESS_MODE_INCR \
+                               | AT91C_HDMA_SRC_ADDRESS_MODE_FIXED \
+                               | AT91C_HDMA_FC_PER2MEM ; 
+    LLI_CH2[0].descriptor    =  (unsigned int)&LLI_CH2[1] + 0;
+  
+    LLI_CH2[1].sourceAddress =  srcAddress;
+    LLI_CH2[1].destAddress   =  destAddress_next;
+    LLI_CH2[1].controlA      =  \
+                                ((length>>1) \
+                              | AT91C_HDMA_SRC_WIDTH_HALFWORD \
+                              | AT91C_HDMA_DST_WIDTH_HALFWORD \
+                              | AT91C_HDMA_SCSIZE_1 \
+                              | AT91C_HDMA_DCSIZE_1); 
+    LLI_CH2[1].controlB      =    \
+                                AT91C_HDMA_DST_ADDRESS_MODE_INCR \
+                              | AT91C_HDMA_SRC_ADDRESS_MODE_FIXED \
+                              | AT91C_HDMA_FC_PER2MEM ; 
+    LLI_CH2[1].descriptor    =  (unsigned int)&LLI_CH2[0] + 0;    
+        
+    return 0;
+    
+}
+
+
+unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
+                                     void *buffer,
+                                     unsigned char buffer_index,
+                                     unsigned int length)
+{
+    
+    //LLI DMA method
     unsigned short* startSourceAddr;
     unsigned short* startDestAddr;
     unsigned int srcAddress;
     unsigned int destAddress;
     unsigned int buffSize;
-    startSourceAddr =  (unsigned short*)(&ssc->SSC_RHR);
-    startDestAddr = (unsigned short*)(buffer);
-    srcAddress  = (unsigned int)startSourceAddr;    // Set the data start address
-    destAddress = (unsigned int)startDestAddr;
-    buffSize = length;
-    
-    if(buffSize > 0x8000){
-        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
-        buffSize = 0x8000;
-    }
 
-    // Clear any pending interrupts
-    DMA_GetStatus(); //read EBCISR ????
- 
-    // Set DMA channel config
-    DMA_SetConfiguration(BOARD_SSC_IN_DMA_CHANNEL, BOARD_SSC_IN_DMA_HW_SRC_REQ_ID \
-                                        | BOARD_SSC_IN_DMA_HW_DEST_REQ_ID \
-                                        | AT91C_HDMA_SRC_H2SEL_HW \
-                                        | AT91C_HDMA_DST_H2SEL_SW \
-                                        | AT91C_HDMA_SOD_DISABLE \
-                                        | AT91C_HDMA_FIFOCFG_LARGESTBURST);  
-    DMA_SetSourceAddr( BOARD_SSC_IN_DMA_CHANNEL, srcAddress ) ;
-    DMA_SetDestinationAddr( BOARD_SSC_IN_DMA_CHANNEL, destAddress);
-    DMA_SetControlRegAB( BOARD_SSC_IN_DMA_CHANNEL, \
-                                         (buffSize>>1) \
+    startDestAddr   = (unsigned short*)(buffer);
+    startSourceAddr = (unsigned short*)(&ssc->SSC_RHR);
+    
+    srcAddress      = (unsigned int)startSourceAddr;    // Set the data start address
+    destAddress     = (unsigned int)startDestAddr;
+    buffSize        = length;
+    
+//    if(buffSize > 0x8000){
+//        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
+//        buffSize = 0x8000;
+//    }
+           
+    LLI_CH2[buffer_index].sourceAddress =  srcAddress;
+    LLI_CH2[buffer_index].destAddress   =  destAddress;
+    LLI_CH2[buffer_index].controlA      = \
+                                        ((length>>1) \
                                         | AT91C_HDMA_SRC_WIDTH_HALFWORD \
                                         | AT91C_HDMA_DST_WIDTH_HALFWORD \
                                         | AT91C_HDMA_SCSIZE_1 \
-                                        | AT91C_HDMA_DCSIZE_1,                                        
-                                        //| AT91C_HDMA_DST_DSCR_FETCH_FROM_MEM
-                                        AT91C_HDMA_DST_DSCR_FETCH_DISABLE \
-                                        | AT91C_HDMA_DST_ADDRESS_MODE_INCR \
-                                        //| AT91C_HDMA_SRC_DSCR_FETCH_FROM_MEM
-                                        | AT91C_HDMA_SRC_DSCR_FETCH_DISABLE \
+                                        | AT91C_HDMA_DCSIZE_1); 
+    LLI_CH2[buffer_index].controlB      =  \
+                                          AT91C_HDMA_DST_ADDRESS_MODE_INCR \
                                         | AT91C_HDMA_SRC_ADDRESS_MODE_FIXED \
-                                        | AT91C_HDMA_FC_PER2MEM );  
-      
+                                        | AT91C_HDMA_FC_PER2MEM ; 
+    LLI_CH2[buffer_index].descriptor    =  length == 0 ? 0 : ((unsigned int)&LLI_CH2[1-buffer_index] + 0);
     
-#endif
-    // No free bank
     return 0;
+    
 }
-*/
 
  
  
@@ -709,16 +751,13 @@ void SSC_Init( unsigned int mclk )
 
 void SSC_Reset( void )
 {
-//    // Disable SSC peripheral clock
-//    AT91C_BASE_PMC->PMC_PCDR = 1 << BOARD_AT73C213_SSC_ID;
-//    AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;  
-//
-//    // Enable SSC peripheral clock
-//    AT91C_BASE_PMC->PMC_PCER = 1 << BOARD_AT73C213_SSC_ID;
-//    AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;  
     
-    BOARD_AT73C213_SSC->SSC_CR =   AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
+    BOARD_AT73C213_SSC->SSC_CR = AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
+    
     SSC_ConfigureTransmitter( BOARD_AT73C213_SSC,  tcmr.value,  tfmr.value   );
-    SSC_ConfigureReceiver(  BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   ); 
-
+    SSC_ConfigureReceiver(    BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   ); 
+    
+    DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
+    DMAD_Initialize(BOARD_SSC_OUT_DMA_CHANNEL);
+    
 }

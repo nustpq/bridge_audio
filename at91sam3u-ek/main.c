@@ -45,8 +45,7 @@
 int main( void )
 {
 
-    TRACE_CONFIGURE( DBGU_STANDARD, 115200, BOARD_MCK );
-    
+    TRACE_CONFIGURE( DBGU_STANDARD, 115200, BOARD_MCK );    
     printf("\r\n--------------------------------------------------\r\n");
     printf("-- iSAM Audio Bridge Project  --\r\n");
     printf("-- HW version: %s --\r\n", BOARD_NAME);
@@ -69,9 +68,9 @@ int main( void )
     USB_Init();
     I2S_Init();
 
-    while(1) {  
+    while(1) {
       
-        //Debug_Info(); 
+        Debug_Info(); 
         Check_UART_CMD();
         Audio_State_Control();
         DBGUART_Service();

@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.67]";
+char fw_version[] = "[FW:A:V3.68]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -84,7 +84,7 @@ volatile bool bulkin_enable    = false ;
 volatile bool bulkin_start     = true;
 volatile bool bulkout_start    = true;
 volatile bool bulkout_trigger  = false ;
-volatile bool flag_stop         = false ;
+volatile bool flag_stop        = false ;
 
 volatile unsigned int bulkout_empt = 0;
 volatile unsigned int debug_trans_counter1 = 0 ;
@@ -195,8 +195,10 @@ static void Audio_Start_Rec( void )
 {  
     Init_Rec_Setting();
     SSC_Record_Start();
-    bulkin_start   = true ;        
-    bulkin_enable  = true ;   
+    bulkin_start   = true ;      
+    bulkin_enable  = true ;
+
+    delay_ms(1);
     SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable AT91C_SSC_RXEN 
       
 }
@@ -219,6 +221,7 @@ static void Audio_Start_Play( void )
     Init_Play_Setting();   
     SSC_Play_Start(); 
     bulkout_enable  = true ;
+    delay_ms(1);
     SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN  
        
 }
@@ -246,6 +249,8 @@ static void Audio_Start_Play_Rec( void )
       
     bulkin_enable   = true ; 
     bulkout_enable  = true ;
+    
+    delay_us(50);
     SSC_EnableBoth(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN aAT91C_SSC_RXEN   
     
 }
@@ -269,17 +274,18 @@ static void Audio_Stop( void )
 #ifdef METHOD_BY_RESET_MCU             
     printf("\r\n Got command to reset MCU...MCM_RESET_CMD");                                   
     while(1) {
-        AT91C_BASE_RSTC->RSTC_RCR = 0xa5000005 ; //reset MCU     
+        AT91C_BASE_RSTC->RSTC_RCR = 0xA5000005 ; //reset MCU     
     }       
 #endif  
      
     printf( "\r\nStop Play & Rec...\r\n"); 
-    flag_stop        = true ;  
+    flag_stop        = true ; 
+  
     delay_ms(10); //wait until DMA interruption done.
     //printf( "\r\nflag_stop Done\r\n");    
     bulkin_enable    = false ;
-    bulkout_enable   = false ; 
-    
+    bulkout_enable   = false ;
+
     SSC_Play_Stop();  
     SSC_Record_Stop();  
     delay_ms(10);
@@ -307,9 +313,11 @@ static void Audio_Stop( void )
 //    delay_ms(50);    
 //    AT91C_BASE_UDPHS->UDPHS_EPTRST =  1<<CDCDSerialDriverDescriptors_DATAOUT;
           
-    //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);    
-    I2S_Init();  
-    SSC_Reset();     
+    //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);   
+        
+    //I2S_Init();  
+    SSC_Reset(); 
+    
     delay_ms(10); 
     
     Init_Bulk_FIFO();    
