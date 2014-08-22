@@ -334,12 +334,13 @@ void SSC_Play_Start(void)
     DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
     DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
     // Fill DMA buffer
+    
     SSC_WriteBuffer_Start(AT91C_BASE_SSC0, (void *)I2SBuffersOut[0], (void *)I2SBuffersOut[1],i2s_play_buffer_size);
     //i2s_buffer_out_index ^= 1;     
     
     DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0)  );
     DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
-   //SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN   
+    //SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN   
       
 }
 
@@ -364,12 +365,13 @@ void SSC_Record_Start(void)
     DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );
     DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
     // Fill DMA buffer
+    
     SSC_ReadBuffer_Start(AT91C_BASE_SSC0, (void *)I2SBuffersIn[0], (void *)I2SBuffersIn[1], i2s_rec_buffer_size);
     //i2s_buffer_in_index ^= 1;    
     
     DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
     DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
-    //SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN      
+    //SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN     
 }
 
 

@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.68]";
+char fw_version[] = "[FW:A:V3.69]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -198,7 +198,7 @@ static void Audio_Start_Rec( void )
     bulkin_start   = true ;      
     bulkin_enable  = true ;
 
-    delay_ms(1);
+    delay_us(50);
     SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable AT91C_SSC_RXEN 
       
 }
@@ -221,7 +221,7 @@ static void Audio_Start_Play( void )
     Init_Play_Setting();   
     SSC_Play_Start(); 
     bulkout_enable  = true ;
-    delay_ms(1);
+    delay_us(50);
     SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN  
        
 }
