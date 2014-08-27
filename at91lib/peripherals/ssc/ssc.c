@@ -751,13 +751,14 @@ void SSC_Init( unsigned int mclk )
 
 void SSC_Reset( void )
 {
+  
     
     BOARD_AT73C213_SSC->SSC_CR = AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
     
     SSC_ConfigureTransmitter( BOARD_AT73C213_SSC,  tcmr.value,  tfmr.value   );
     SSC_ConfigureReceiver(    BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   ); 
     
-    DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
+  DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
     DMAD_Initialize(BOARD_SSC_OUT_DMA_CHANNEL);
     
 }

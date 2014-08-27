@@ -59,7 +59,8 @@ int main( void )
     Timer1_Init();
     SysTick_Init();
     UART_Init();
-     
+    //Init_Bus_Matix();
+ 
 #ifdef METHOD_BY_RESET_MCU
     USART_Write( AT91C_BASE_US0, 0, 0 ); //Send ACK
     delay_ms(1000);

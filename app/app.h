@@ -107,6 +107,7 @@ void SSC_Record_Start(void);
 void SSC_Play_Stop(void);
 void SSC_Record_Stop(void);
 void Init_I2S_Buffer( void );
+extern void Init_Bus_Matix();
 
 extern char fw_version[];
 
