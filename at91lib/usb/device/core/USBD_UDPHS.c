@@ -65,7 +65,7 @@
 #define SHIFT_INTERUPT    8
 
 /// Compile option, use DMA. Remove this define for not use DMA.
-#define DMA
+//#define DMA
 
 /// Max size of the FMA FIFO
 #define DMA_MAX_FIFO_SIZE     65536
