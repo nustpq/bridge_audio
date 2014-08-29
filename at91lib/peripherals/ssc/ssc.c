@@ -374,7 +374,7 @@ unsigned char SSC_WriteBuffer_Start(  AT91S_SSC *ssc,
                                         | AT91C_HDMA_SRC_H2SEL_SW \
                                         | AT91C_HDMA_DST_H2SEL_HW \
                                         | AT91C_HDMA_SOD_DISABLE \
-                                        | AT91C_HDMA_FIFOCFG_LARGESTBURST); 
+                                        | AT91C_HDMA_FIFOCFG_ENOUGHSPACE); 
         
     LLI_CH[0].sourceAddress =  srcAddress;
     LLI_CH[0].destAddress   =  destAddress;
@@ -568,7 +568,7 @@ unsigned char SSC_ReadBuffer_Start(  AT91S_SSC *ssc,
                                         | AT91C_HDMA_SRC_H2SEL_HW \
                                         | AT91C_HDMA_DST_H2SEL_SW \
                                         | AT91C_HDMA_SOD_DISABLE \
-                                        | AT91C_HDMA_FIFOCFG_LARGESTBURST);       
+                                        | AT91C_HDMA_FIFOCFG_ENOUGHSPACE);       
     
     LLI_CH2[0].sourceAddress =  srcAddress;
     LLI_CH2[0].destAddress   =  destAddress;
@@ -751,14 +751,14 @@ void SSC_Init( unsigned int mclk )
 
 void SSC_Reset( void )
 {
-  
-    
     BOARD_AT73C213_SSC->SSC_CR = AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
-    
+       
     SSC_ConfigureTransmitter( BOARD_AT73C213_SSC,  tcmr.value,  tfmr.value   );
     SSC_ConfigureReceiver(    BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   ); 
     
-  DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
+    DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
     DMAD_Initialize(BOARD_SSC_OUT_DMA_CHANNEL);
     
 }
+
+
