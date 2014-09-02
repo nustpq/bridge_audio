@@ -208,18 +208,22 @@ void HDMA_IrqHandler(void)
     unsigned int status;  
     unsigned int temp;
 
-    //status = DMA_GetMaskedStatus();   
-    status = AT91C_BASE_HDMA->HDMA_EBCISR;
-    status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
-        
+    status = DMA_GetMaskedStatus();   
+    //status = AT91C_BASE_HDMA->HDMA_EBCISR;
+    //status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
+    
+//    if( flag_stop )  {
+//        return;
+//    }
+      
    // delay_us(50);  
-      if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) {   //play 
+    if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) {   //play 
        
         TRACE_INFO_NEW_WP("-SO-") ;              
         temp = kfifo_get_data_size(&bulkout_fifo);        
         TRACE_INFO_NEW_WP("\n\r[%d, %d]",temp,error_bulkout_empt);
         
-     if( (i2s_play_buffer_size<<PLAY_BUF_DLY_N) <= (temp<<1)) { //play buffer delay (2^PLAY_BUF_DLY_N) ms       
+        if( (i2s_play_buffer_size<<PLAY_BUF_DLY_N) <= (temp<<1)) { //play buffer delay (2^PLAY_BUF_DLY_N) ms       
             bulkout_trigger = true; //1st buffered enough data will trigger SSC Out           
         }        
 
@@ -237,8 +241,7 @@ void HDMA_IrqHandler(void)
                     bulkout_empt = 0;
                 }
                 TRACE_INFO_NEW_WP( "\r\n ##IN2: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
-            }  
-                        
+            }                        
              
             kfifo_get(&bulkout_fifo, (unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ;
             TRACE_INFO_NEW_WP( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
@@ -366,7 +369,7 @@ void SSC_Record_Start(void)
     
     DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
     DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
-    //SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN     
+    //SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN    
 }
 
 
@@ -385,8 +388,10 @@ void SSC_Play_Stop(void)
 {
     
     SSC_DisableTransmitter(AT91C_BASE_SSC0);    
-    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
+
     DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) ); 
+    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
+        
     DMA_ClearAutoMode(BOARD_SSC_OUT_DMA_CHANNEL);
 
 }
@@ -407,8 +412,10 @@ void SSC_Record_Stop(void)
 {  
     
     SSC_DisableReceiver(AT91C_BASE_SSC0); 
+   
+    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );  
     DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
-    DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );   
+     
     DMA_ClearAutoMode(BOARD_SSC_IN_DMA_CHANNEL);
 
 }
@@ -431,11 +438,15 @@ void I2S_Init( void )
     printf("\r\nInit I2S ..."); 
     
     PIO_Configure(&SSC_Pins, 1); 
+    //DMAD_Power_Onoff(0);
     
     IRQ_DisableIT(BOARD_AT73C213_SSC_ID);
     IRQ_DisableIT(AT91C_ID_HDMA);
     
     SSC_Init( MCK ); 
+    
+    //DMAD_Power_Onoff(1);
+    //Reset_DMAC_Reg();
     
     // Initialize DMA controller.    
     DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);

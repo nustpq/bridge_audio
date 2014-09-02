@@ -87,6 +87,7 @@
 #define DMA_ENA                  (1 << 0)
 #define DMA_DIS                  (1 << 0)
 #define DMA_SUSP                 (1 << 8)
+#define DMA_EMPT                 (1 << 16)     
 #define DMA_KEEPON               (1 << 24)
      
 #define DMA_EN                   (1 << 0)
@@ -188,4 +189,7 @@ extern void DMA_SetFlowControl(unsigned char channel,
 
 extern void DMA_SetControlRegAB( unsigned char channel, unsigned int reg_A, unsigned int reg_B );
 
+extern unsigned char Reset_DMAC_Reg( void );
+
+extern void DMA_Stop(unsigned int channel);
 #endif //#ifndef DMA_H

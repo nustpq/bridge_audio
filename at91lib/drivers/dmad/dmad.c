@@ -156,6 +156,8 @@ void DMAD_Initialize(unsigned char channel)
     
 }
  
+
+
 //------------------------------------------------------------------------------
 /// Configure the DMA transfer buffer by giving transfer mode, it could be single 
 /// buffer or multi-buffer(LLI/auto-reload/contiguous buffers) with or without 
@@ -293,4 +295,14 @@ unsigned char DMAD_IsFinished(unsigned char channel)
         DMA_DisableChannel(channel);
         return 1;
     }
+}
+
+unsigned char DMAD_Power_Onoff( unsigned char onoff )
+{
+    if( onoff == 0 ) {
+        AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;  
+    } else {
+        AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA; 
+    }
+    
 }

@@ -151,6 +151,7 @@ extern void SSC_Channel_Set(unsigned char tx_ch_num, unsigned char rx_ch_num );
 extern void SSC_Channel_Set_Rx( unsigned char rx_ch_num );
 extern void SSC_Channel_Set_Tx( unsigned char tx_ch_num );
 
+extern void Stop_DMA( void );
 
 typedef union __TCMR
 {

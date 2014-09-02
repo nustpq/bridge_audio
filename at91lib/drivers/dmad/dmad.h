@@ -152,5 +152,6 @@ extern unsigned char DMAD_BufferTransfer(unsigned char channel,
 
 extern unsigned char DMAD_IsFinished(unsigned char channel);
 
+extern unsigned char DMAD_Power_Onoff( unsigned char onoff );
 #endif //#ifndef DMAD_H
 

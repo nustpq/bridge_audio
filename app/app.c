@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.6c]";
+char fw_version[] = "[FW:A:V3.6d]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -235,9 +235,9 @@ static void Audio_Start_Play( void )
     Init_I2S_Buffer();   
     Init_Play_Setting();   
     SSC_Play_Start(); 
-    bulkout_enable  = true ;
+    bulkout_enable  = true ;    
     SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN  
-       
+    
 }
 
 
@@ -292,28 +292,28 @@ static void Audio_Stop( void )
 #endif  
      
     printf( "\r\nStop Play & Rec...\r\n"); 
-    flag_stop        = true ;   
+    flag_stop        = true ; 
+    //Stop_DMA();  
     delay_ms(50); //wait until DMA interruption done.
     //printf( "\r\nflag_stop Done\r\n");    
     bulkin_enable    = false ;
     bulkout_enable   = false ;
-
-    SSC_Play_Stop();  
+    delay_ms(50);    
     SSC_Record_Stop();  
-    delay_ms(50);
-   
-    printf("\r\nReset USB EP...");                    
-
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
-    delay_ms(10);
+    SSC_Play_Stop();
+  
+    delay_ms(50);   
+    /*
+    printf("\r\nReset USB EP...");
 
     //Reset Endpoint Fifos
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
-   
-    delay_ms(50);
+    delay_ms(10);
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
+    delay_ms(20);
     
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
@@ -331,10 +331,10 @@ static void Audio_Stop( void )
           
     //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);   
         
-    I2S_Init();  
-    //SSC_Reset(); 
+    //I2S_Init();  
+    SSC_Reset(); 
     
-    delay_ms(50); 
+    delay_ms(20); 
     
     Init_Bulk_FIFO();    
     LED_Clear( USBD_LEDUDATA );
@@ -362,6 +362,7 @@ static void Audio_Stop( void )
     debug_usb_dma_OUT     = 0 ;
     
     test_dump = 0 ;
+  */  
 }
 
 
@@ -448,11 +449,44 @@ void Audio_State_Control( void )
                 //Reset Endpoint Fifos
                 AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
                 AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
-                delay_ms(5);
+                delay_ms(50);
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
                 printf("Done.\r\n");
+                delay_ms(50); 
+                    
+    //I2S_Init();  
+    SSC_Reset(); 
+    
+    delay_ms(50); 
+    
+    Init_Bulk_FIFO();    
+    LED_Clear( USBD_LEDUDATA );
+    
+    bulkin_start    = true ; 
+    bulkout_start   = true ;    
+    bulkout_trigger = false ;     
+    flag_stop       = false ;
+    bulkout_empt    = 0;  
+    
+    //reset debug counters
+    BO_free_size_max      = 0 ;
+    BI_free_size_min      = 100 ; 
+    total_received        = 0 ;
+    total_transmit        = 0 ;
+    error_bulkout_full    = 0 ;
+    error_bulkout_empt    = 0 ;
+    error_bulkin_full     = 0 ;
+    error_bulkin_empt     = 0 ;    
+    debug_trans_counter1  = 0 ;
+    debug_trans_counter2  = 0 ;
+    debug_trans_counter3  = 0 ;
+    debug_trans_counter4  = 0 ; 
+    debug_usb_dma_IN      = 0 ;
+    debug_usb_dma_OUT     = 0 ;
+    
+    test_dump = 0 ;
                 
             break;  
             

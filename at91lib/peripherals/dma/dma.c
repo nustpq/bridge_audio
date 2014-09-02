@@ -61,6 +61,7 @@ void DMA_Enable(void)
 void DMA_Disable(void)
 {
     AT91C_BASE_HDMA->HDMA_EN = ~(AT91C_HDMA_ENABLE);
+    
 }
 
 //-----------------------------------------------------------------------------
@@ -131,6 +132,31 @@ void DMA_DisableChannel(unsigned int channel)
     
 }
 
+void DMA_Stop(unsigned int channel)
+{
+    ASSERT(channel < DMA_CHANNEL_NUM, "this channel does not exist");
+    AT91C_BASE_HDMA->HDMA_CHER = DMA_SUSP << channel;
+    while(!( (AT91C_BASE_HDMA->HDMA_CHSR ) & (DMA_EMPT << channel) ));//wait
+    AT91C_BASE_HDMA->HDMA_CHDR = DMA_DIS << channel;
+    AT91C_BASE_HDMA->HDMA_CHDR = DMA_SUSP << channel;
+    
+}
+
+unsigned char Reset_DMAC_Reg( void )
+{
+    AT91C_BASE_HDMA->HDMA_CREQ     = 0;
+    AT91C_BASE_HDMA->HDMA_LAST     = 0;    
+    AT91C_BASE_HDMA->HDMA_EBCIDR   = 0xFFFFFFFF;
+    AT91C_BASE_HDMA->HDMA_CHDR     = 0x0F;
+    AT91C_BASE_HDMA->HDMA_CH[1].HDMA_CTRLA  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[1].HDMA_CTRLB  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[2].HDMA_CTRLA  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[2].HDMA_CTRLB  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[1].HDMA_CFG    = 0x01000000;
+    AT91C_BASE_HDMA->HDMA_CH[2].HDMA_CFG    = 0x01000000;
+    
+    
+}
 //------------------------------------------------------------------------------
 /// Resume DMAC channel from an stall state.
 /// \param channel Particular channel number.
