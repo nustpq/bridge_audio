@@ -63,7 +63,7 @@
 //------------------------------------------------------------------------------
 //         Global functions
 //------------------------------------------------------------------------------
-#define DBGUART_FIFO_SIZE     4096//8192    
+#define DBGUART_FIFO_SIZE     4096    
 #define DBGUART_BUFFER_SIZE   32
 #define DBGUART_SEND_LEN      32
      

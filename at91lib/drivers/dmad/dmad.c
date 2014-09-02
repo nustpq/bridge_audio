@@ -145,6 +145,7 @@ void DMAD_Initialize(unsigned char channel)
     DMA_DisableIt(flag);
     // Enable DMA.
     DMA_Enable();
+    
 //#if !defined(cortexm3)
 //    IRQ_ConfigureIT(AT91C_ID_HDMA, 0, DMAD_Handler);
 //    IRQ_EnableIT(AT91C_ID_HDMA);
@@ -306,3 +307,4 @@ unsigned char DMAD_Power_Onoff( unsigned char onoff )
     }
     
 }
+

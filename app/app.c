@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.6d]";
+char fw_version[] = "[FW:A:V3.6e]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -293,27 +293,25 @@ static void Audio_Stop( void )
      
     printf( "\r\nStop Play & Rec...\r\n"); 
     flag_stop        = true ; 
+    bulkin_enable    = false ;
+    bulkout_enable   = false ;
     //Stop_DMA();  
     delay_ms(50); //wait until DMA interruption done.
     //printf( "\r\nflag_stop Done\r\n");    
-    bulkin_enable    = false ;
-    bulkout_enable   = false ;
-    delay_ms(50);    
+   
     SSC_Record_Stop();  
-    SSC_Play_Stop();
-  
+    SSC_Play_Stop();  
     delay_ms(50);   
-    /*
+    
     printf("\r\nReset USB EP...");
-
     //Reset Endpoint Fifos
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
     delay_ms(10);
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF; //AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
-    delay_ms(20);
+    delay_ms(50);
     
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
@@ -332,9 +330,8 @@ static void Audio_Stop( void )
     //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);   
         
     //I2S_Init();  
-    SSC_Reset(); 
-    
-    delay_ms(20); 
+    SSC_Reset();    
+    delay_ms(50); 
     
     Init_Bulk_FIFO();    
     LED_Clear( USBD_LEDUDATA );
@@ -362,7 +359,7 @@ static void Audio_Stop( void )
     debug_usb_dma_OUT     = 0 ;
     
     test_dump = 0 ;
-  */  
+   
 }
 
 

@@ -144,19 +144,28 @@ void DMA_Stop(unsigned int channel)
 
 unsigned char Reset_DMAC_Reg( void )
 {
+    
     AT91C_BASE_HDMA->HDMA_CREQ     = 0;
     AT91C_BASE_HDMA->HDMA_LAST     = 0;    
     AT91C_BASE_HDMA->HDMA_EBCIDR   = 0xFFFFFFFF;
     AT91C_BASE_HDMA->HDMA_CHDR     = 0x0F;
+    
     AT91C_BASE_HDMA->HDMA_CH[1].HDMA_CTRLA  = 0;
     AT91C_BASE_HDMA->HDMA_CH[1].HDMA_CTRLB  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[1].HDMA_SADDR  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[1].HDMA_DADDR  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[1].HDMA_DSCR   = 0;
+    AT91C_BASE_HDMA->HDMA_CH[1].HDMA_CFG    = 0x01000000;
+    
     AT91C_BASE_HDMA->HDMA_CH[2].HDMA_CTRLA  = 0;
     AT91C_BASE_HDMA->HDMA_CH[2].HDMA_CTRLB  = 0;
-    AT91C_BASE_HDMA->HDMA_CH[1].HDMA_CFG    = 0x01000000;
-    AT91C_BASE_HDMA->HDMA_CH[2].HDMA_CFG    = 0x01000000;
-    
+    AT91C_BASE_HDMA->HDMA_CH[2].HDMA_SADDR  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[2].HDMA_DADDR  = 0;
+    AT91C_BASE_HDMA->HDMA_CH[2].HDMA_DSCR   = 0;    
+    AT91C_BASE_HDMA->HDMA_CH[2].HDMA_CFG    = 0x01000000;    
     
 }
+
 //------------------------------------------------------------------------------
 /// Resume DMAC channel from an stall state.
 /// \param channel Particular channel number.

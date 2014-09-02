@@ -208,15 +208,53 @@ void HDMA_IrqHandler(void)
     unsigned int status;  
     unsigned int temp;
 
-    status = DMA_GetMaskedStatus();   
-    //status = AT91C_BASE_HDMA->HDMA_EBCISR;
-    //status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
+    //status = DMA_GetMaskedStatus();   
+    status = AT91C_BASE_HDMA->HDMA_EBCISR;
+    status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
     
 //    if( flag_stop )  {
 //        return;
 //    }
       
    // delay_us(50);  
+
+////////////////////////////////////////////////////////////////////////////////
+
+    if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record
+    
+        TRACE_INFO_NEW_WP("-SI-") ;      
+        //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);   //bulkin tes data for debug 
+        if ( i2s_rec_buffer_size > kfifo_get_free_space( &bulkin_fifo ) ) { //if rec fifo buf full    
+            kfifo_release(&bulkin_fifo, i2s_rec_buffer_size);       //discard oldest data for newest data  
+            error_bulkin_full++; //bulkin fifo full        
+        }
+        if( error_bulkin_full ) {//force record data to fixed line to alert user record error...  
+             memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x10,i2s_rec_buffer_size);  
+        }
+//        if( test_dump++ == 0 ) {
+//            memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x20,i2s_rec_buffer_size); 
+//        }
+        //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);
+        kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
+        
+        SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_buffer_in_index, flag_stop ? 0 : i2s_rec_buffer_size);                      
+        i2s_buffer_in_index ^= 1; 
+        
+        if ( bulkin_enable && bulkin_start && (!flag_stop) && ( (USBDATAEPSIZE<<1) <= kfifo_get_data_size(&bulkin_fifo)) ) {
+            TRACE_INFO_NEW_WP("-LBI-") ;  
+            bulkin_start = false ;
+            error_bulkin_empt++;
+            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
+            CDCDSerialDriver_Write(  usbBufferBulkIn,
+                                     USBDATAEPSIZE,
+                                    (TransferCallback) UsbDataTransmit,
+                                     0); 
+        }
+                           
+    } 
+
+////////////////////////////////////////////////////////////////////////////////
+
     if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) {   //play 
        
         TRACE_INFO_NEW_WP("-SO-") ;              
@@ -272,42 +310,6 @@ void HDMA_IrqHandler(void)
       
     } 
     
-////////////////////////////////////////////////////////////////////////////////
-
-    if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record
-    
-        TRACE_INFO_NEW_WP("-SI-") ;      
-        //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);   //bulkin tes data for debug 
-        if ( i2s_rec_buffer_size > kfifo_get_free_space( &bulkin_fifo ) ) { //if rec fifo buf full    
-            kfifo_release(&bulkin_fifo, i2s_rec_buffer_size);       //discard oldest data for newest data  
-            error_bulkin_full++; //bulkin fifo full        
-        }
-        if( error_bulkin_full ) {//force record data to fixed line to alert user record error...  
-             memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x10,i2s_rec_buffer_size);  
-        }
-//        if( test_dump++ == 0 ) {
-//            memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x20,i2s_rec_buffer_size); 
-//        }
-        //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);
-        kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
-        
-        SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_buffer_in_index, flag_stop ? 0 : i2s_rec_buffer_size);                      
-        i2s_buffer_in_index ^= 1; 
-        
-        if ( bulkin_enable && bulkin_start && (!flag_stop) && ( (USBDATAEPSIZE<<1) <= kfifo_get_data_size(&bulkin_fifo)) ) {
-            TRACE_INFO_NEW_WP("-LBI-") ;  
-            bulkin_start = false ;
-            error_bulkin_empt++;
-            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
-            CDCDSerialDriver_Write(  usbBufferBulkIn,
-                                     USBDATAEPSIZE,
-                                    (TransferCallback) UsbDataTransmit,
-                                     0); 
-        }
-                           
-    } 
-    
- 
  
 }
 
@@ -333,7 +335,7 @@ void SSC_Play_Start(void)
     DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
     // Fill DMA buffer
     
-    SSC_WriteBuffer_Start(AT91C_BASE_SSC0, (void *)I2SBuffersOut[0], (void *)I2SBuffersOut[1],i2s_play_buffer_size);
+    SSC_WriteBuffer_Start(AT91C_BASE_SSC0, (void *)I2SBuffersOut[0], (void *)I2SBuffersOut[1], i2s_play_buffer_size);
     //i2s_buffer_out_index ^= 1;     
     
     DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0)  );
