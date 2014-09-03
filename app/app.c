@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.6e]";
+char fw_version[] = "[FW:A:V3.6f]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -296,12 +296,12 @@ static void Audio_Stop( void )
     bulkin_enable    = false ;
     bulkout_enable   = false ;
     //Stop_DMA();  
-    delay_ms(50); //wait until DMA interruption done.
+    delay_ms(10); //wait until DMA interruption done.
     //printf( "\r\nflag_stop Done\r\n");    
    
     SSC_Record_Stop();  
     SSC_Play_Stop();  
-    delay_ms(50);   
+    delay_ms(10);   
     
     printf("\r\nReset USB EP...");
     //Reset Endpoint Fifos
@@ -311,7 +311,7 @@ static void Audio_Stop( void )
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF; //AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
-    delay_ms(50);
+    delay_ms(10);
     
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
@@ -331,7 +331,7 @@ static void Audio_Stop( void )
         
     //I2S_Init();  
     SSC_Reset();    
-    delay_ms(50); 
+    //delay_ms(50); 
     
     Init_Bulk_FIFO();    
     LED_Clear( USBD_LEDUDATA );

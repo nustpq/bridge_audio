@@ -759,47 +759,7 @@ void SSC_Reset( void )
     BOARD_AT73C213_SSC->SSC_IDR = 0xFFFF;
     BOARD_AT73C213_SSC->SSC_CR  = AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
     BOARD_AT73C213_SSC->SSC_CMR = 0;   
-    
-      tcmr.cks    = 1 ;   // TK pin
-    rcmr.cks    = 2 ;   // RK pin
-    tcmr.cko    = 0 ;   // input only
-    rcmr.cko    = 0 ;   // input only  
-    
-    tcmr.cki    = 0;  // 0: falling egde send
-    rcmr.cki    = 1;  // 1: rising edge lock  
-    tcmr.start  = 4;  // 4: falling edge trigger for low left, 5: rising edge trigger for high left,
-    rcmr.start  = 4; 
-    
-    tcmr.sttdly = 1;
-    rcmr.sttdly = 1;   
-    tcmr.period = 0;  // period ;  slave not use
-    rcmr.period = 0;  // period ;  slave not use
-    
-    tcmr.ckg    = 0 ; //slave not use
-    rcmr.ckg    = 0 ; //slave not use
-       
-    tfmr.fsos   = 0 ; //input only
-    rfmr.fsos   = 0 ; //input only
-    
-    tfmr.datnb  = 5 ; //6 slot TDM
-    rfmr.datnb  = 5 ;   
-    tfmr.datlen = 31 ; //32bits
-    rfmr.datlen = 31 ;
-    
-    tfmr.fslen  = 0 ; //frame sync is not used
-    rfmr.fslen  = 0 ; //frame sync is not used
-       
-    tfmr.fsedge = 1 ;
-    rfmr.fsedge = 1 ;
-          
-    tfmr.msbf   = 1 ;
-    rfmr.msbf   = 1 ;   
-
-    tfmr.datdef = 0 ;
-    tfmr.fsden  = 0 ;
-    
-    rfmr.loop   = 0 ; 
-    
+        
     SSC_ConfigureTransmitter( BOARD_AT73C213_SSC,  tcmr.value,  tfmr.value   );
     SSC_ConfigureReceiver(    BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   ); 
  
