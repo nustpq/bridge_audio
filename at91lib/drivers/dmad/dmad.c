@@ -298,13 +298,5 @@ unsigned char DMAD_IsFinished(unsigned char channel)
     }
 }
 
-unsigned char DMAD_Power_Onoff( unsigned char onoff )
-{
-    if( onoff == 0 ) {
-        AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;  
-    } else {
-        AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA; 
-    }
-    
-}
+
 

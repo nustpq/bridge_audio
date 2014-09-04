@@ -47,7 +47,7 @@
 #define  ERR_USB_STATE                  250u
 #define  ERR_AUD_CFG                    251u
 #define  ERR_CMD_TYPE                   252u
-
+#define  ERR_CH_ZERO                    253u
 
 typedef struct {
   

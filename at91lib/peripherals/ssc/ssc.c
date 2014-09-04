@@ -333,7 +333,7 @@ unsigned char SSC_WriteBuffer_Start(  AT91S_SSC *ssc,
     unsigned int srcAddress;
     unsigned int srcAddress_next;
     unsigned int destAddress;
-    unsigned int buffSize;
+    //unsigned int buffSize;
 
     startSourceAddr      = (unsigned short*)(buffer);
     startSourceAddr_next = (unsigned short*)(buffer_next);
@@ -341,7 +341,7 @@ unsigned char SSC_WriteBuffer_Start(  AT91S_SSC *ssc,
     srcAddress           = (unsigned int)startSourceAddr;    // Set the data start address
     srcAddress_next      = (unsigned int)startSourceAddr_next;    // Set the data start address
     destAddress          = (unsigned int)startDestAddr;
-    buffSize             = length;
+    //buffSize             = length;
     
 //    if(buffSize > 0x8000){
 //        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
@@ -420,14 +420,14 @@ unsigned char SSC_WriteBuffer(  AT91S_SSC *ssc,
     unsigned short* startDestAddr;
     unsigned int srcAddress;
     unsigned int destAddress;
-    unsigned int buffSize;
+    //unsigned int buffSize;
 
     startSourceAddr = (unsigned short*)(buffer);
     startDestAddr   = (unsigned short*)(&ssc->SSC_THR);
     
     srcAddress      = (unsigned int)startSourceAddr;   
     destAddress     = (unsigned int)startDestAddr;
-    buffSize        = length;
+    //buffSize        = length;
     
 //    if(buffSize > 0x8000){
 //        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
@@ -528,7 +528,7 @@ unsigned char SSC_ReadBuffer_Start(  AT91S_SSC *ssc,
     unsigned int srcAddress;
     unsigned int destAddress_next;
     unsigned int destAddress;
-    unsigned int buffSize;
+    //unsigned int buffSize;
 
     startSourceAddr    = (unsigned short*)(&ssc->SSC_RHR);
     startDestAddr      = (unsigned short*)(buffer);
@@ -537,7 +537,7 @@ unsigned char SSC_ReadBuffer_Start(  AT91S_SSC *ssc,
     srcAddress        = (unsigned int)startSourceAddr;    // Set the data start address
     destAddress_next  = (unsigned int)startDestAddr_next;    
     destAddress       = (unsigned int)startDestAddr;
-    buffSize          = length;
+    //buffSize          = length;
     
 //    if(buffSize > 0x8000){
 //        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
@@ -614,14 +614,14 @@ unsigned char SSC_ReadBuffer(  AT91S_SSC *ssc,
     unsigned short* startDestAddr;
     unsigned int srcAddress;
     unsigned int destAddress;
-    unsigned int buffSize;
+    //unsigned int buffSize;
 
     startDestAddr   = (unsigned short*)(buffer);
     startSourceAddr = (unsigned short*)(&ssc->SSC_RHR);
     
     srcAddress      = (unsigned int)startSourceAddr;    // Set the data start address
     destAddress     = (unsigned int)startDestAddr;
-    buffSize        = length;
+    //buffSize        = length;
     
 //    if(buffSize > 0x8000){
 //        TRACE_WARNING("SSC DMA, size too big %d\n\r", buffSize);
@@ -698,8 +698,8 @@ void SSC_Init( unsigned int mclk )
                     mclk 
                  );    
       
-    tcmr.cks    = 1 ;   // TK pin
-    rcmr.cks    = 1 ;   // RK pin
+    tcmr.cks    = 1 ;   // tx use TK pin
+    rcmr.cks    = 1 ;   // rx use TK pin, as RK pin for sync
     tcmr.cko    = 0 ;   // input only
     rcmr.cko    = 0 ;   // input only  
     
@@ -752,30 +752,19 @@ void SSC_Init( unsigned int mclk )
 void SSC_Reset( void )
 { 
     
-//    AT91C_BASE_PMC->PMC_PCDR = 1 << BOARD_AT73C213_SSC_ID;
-//    delay_ms(1);
-//    AT91C_BASE_PMC->PMC_PCER = 1 << BOARD_AT73C213_SSC_ID;
-    BOARD_AT73C213_SSC->SSC_SR;
-    BOARD_AT73C213_SSC->SSC_IDR = 0xFFFF;
+    //BOARD_AT73C213_SSC->SSC_SR;
+    //BOARD_AT73C213_SSC->SSC_IDR = 0xFFFF;
     BOARD_AT73C213_SSC->SSC_CR  = AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
-    BOARD_AT73C213_SSC->SSC_CMR = 0;   
+    //BOARD_AT73C213_SSC->SSC_CMR = 0;   
         
     SSC_ConfigureTransmitter( BOARD_AT73C213_SSC,  tcmr.value,  tfmr.value   );
     SSC_ConfigureReceiver(    BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   ); 
  
-    
-//    AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;
-//    delay_ms(1);
-//    AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;
-    Reset_DMAC_Reg();     
+    //Reset_DMAC_Reg();     
     DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
     DMAD_Initialize(BOARD_SSC_OUT_DMA_CHANNEL);
     
 }
 
-void Stop_DMA( void )
-{
-    DMA_Stop(BOARD_SSC_OUT_DMA_CHANNEL);
-    DMA_Stop(BOARD_SSC_IN_DMA_CHANNEL);
-}                                
+                              
 

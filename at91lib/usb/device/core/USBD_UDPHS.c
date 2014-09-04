@@ -742,7 +742,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
 void UDPD_IrqHandler(void)
 {
     unsigned int  status;
-    unsigned char numIT;
+    //unsigned char numIT;
     static unsigned int usb_frame_counter = 0 ;
    
     /*
