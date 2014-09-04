@@ -132,15 +132,6 @@ void DMA_DisableChannel(unsigned int channel)
     
 }
 
-void DMA_Stop(unsigned int channel)
-{
-    ASSERT(channel < DMA_CHANNEL_NUM, "this channel does not exist");
-    AT91C_BASE_HDMA->HDMA_CHER = DMA_SUSP << channel;
-    while(!( (AT91C_BASE_HDMA->HDMA_CHSR ) & (DMA_EMPT << channel) ));//wait
-    AT91C_BASE_HDMA->HDMA_CHDR = DMA_DIS << channel;
-    AT91C_BASE_HDMA->HDMA_CHDR = DMA_SUSP << channel;
-    
-}
 
 unsigned char Reset_DMAC_Reg( void )
 {

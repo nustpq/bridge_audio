@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.6g]";
+char fw_version[] = "[FW:A:V3.7]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -97,6 +97,7 @@ volatile unsigned int debug_usb_dma_OUT = 0;
 extern unsigned int debug_stall_counter;
 //extern unsigned int debug_trans_counter1,debug_trans_counter2;
 extern kfifo_t dbguart_fifo;
+extern const Pin SSC_Sync_Pin;
 
 static unsigned int BO_free_size_max = 0;
 static unsigned int BI_free_size_min = 100; 
@@ -106,10 +107,8 @@ static unsigned int Stop_CMD_Miss_Counter = 0;
 
 unsigned int counter_play = 0;
 unsigned int counter_rec  = 0;
+unsigned int test_dump    = 0 ;
 
-unsigned int test_dump = 0 ;
-
-extern const Pin pinSync[];
 
 
 void Init_Bus_Matix( void )
@@ -160,17 +159,20 @@ void Init_GPIO( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static void Init_Play_Setting( void )
+static unsigned char Init_Play_Setting( void )
 {
     unsigned short sample_rate ; //not support 44.1khz now
     unsigned char  channels_play;
-
+    
     channels_play = Audio_Configure[1].channel_num ;
+    if( channels_play == 0 ) { 
+        return ERR_CH_ZERO ; 
+    }    
     sample_rate   = Audio_Configure[1].sample_rate ;
     printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...\r\n",counter_play++,channels_play,sample_rate);  
     i2s_play_buffer_size = sample_rate / 1000 * channels_play * 2 * 2;  
-    SSC_Channel_Set_Tx( channels_play );  
-    
+    SSC_Channel_Set_Tx( channels_play ); 
+    return 0;
 }
 
 
@@ -185,17 +187,20 @@ static void Init_Play_Setting( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static void Init_Rec_Setting( void )
+static unsigned char Init_Rec_Setting( void )
 {
     unsigned short sample_rate ; //not support 44.1kHz now
     unsigned char  channels_rec;
     
     channels_rec = Audio_Configure[0].channel_num ;
+    if( channels_rec == 0 ) { 
+        return ERR_CH_ZERO ; 
+    }  
     sample_rate  = Audio_Configure[0].sample_rate ; 
     printf( "\r\nStart [%dth]Rec [%dCH - %dHz]...\r\n",counter_rec++,channels_rec,sample_rate);     
     i2s_rec_buffer_size  = sample_rate / 1000 * channels_rec  * 2 * 2; 
     SSC_Channel_Set_Rx( channels_rec ); 
-     
+    return 0;
 }
 
 
@@ -210,18 +215,21 @@ static void Init_Rec_Setting( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static void Audio_Start_Rec( void )
+static unsigned char Audio_Start_Rec( void )
 {  
-    Init_Rec_Setting();
-    SSC_Record_Start();
-    //bulkin_start   = true ;      
+    unsigned char err;
+    err = Init_Rec_Setting();
+    if( err != 0 ) {
+        return err;
+    }
+    SSC_Record_Start();     
     bulkin_enable  = true ;
     
-    while(   PIO_Get(&pinSync[0]) ) ;
-    while( ! PIO_Get(&pinSync[0]) ) ; 
+    while(   PIO_Get(&SSC_Sync_Pin) ) ;
+    while( ! PIO_Get(&SSC_Sync_Pin) ) ;     
+    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable AT91C_SSC_RXEN
     
-    SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable AT91C_SSC_RXEN 
-      
+    return 0;  
 }
 
 
@@ -236,51 +244,22 @@ static void Audio_Start_Rec( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static void Audio_Start_Play( void )
+static unsigned char Audio_Start_Play( void )
 {  
+    unsigned char err;
     Init_I2S_Buffer();   
-    Init_Play_Setting();   
+    err = Init_Play_Setting(); 
+    if( err != 0 ) {
+        return err;
+    }
     SSC_Play_Start(); 
     bulkout_enable  = true ;
-        
-    while(   PIO_Get(&pinSync[0]) ) ;
-    while( ! PIO_Get(&pinSync[0]) ) ;
     
+    while(   PIO_Get(&SSC_Sync_Pin) ) ;
+    while( ! PIO_Get(&SSC_Sync_Pin) ) ;    
     SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN  
-
-}
-
-
-/*
-*********************************************************************************************************
-*                                    Audio_Start_Play_Rec()
-*
-* Description :  Start USB data transfer for both playing & recording.
-* Argument(s) :  None.
-* Return(s)   :  None.
-*
-* Note(s)     : None.
-*********************************************************************************************************
-*/
-static void Audio_Start_Play_Rec( void )
-{     
-    Init_I2S_Buffer(); 
-    Init_Play_Setting();
-    Init_Rec_Setting(); 
-
-    SSC_Play_Start();
-    bulkout_enable  = true ; 
-    SSC_EnableTransmitter(AT91C_BASE_SSC0);
-    
-    delay_ms(1);
-    
-    SSC_Record_Start();
-    bulkin_enable   = true ;
-    SSC_EnableReceiver(AT91C_BASE_SSC0);  
-    
-     
-   // SSC_EnableBoth(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN aAT91C_SSC_RXEN   
-    
+  
+    return 0;
 }
 
 
@@ -307,17 +286,16 @@ static void Audio_Stop( void )
 #endif  
      
     printf( "\r\nStop Play & Rec...\r\n"); 
-    flag_stop        = true ;   
-    //Stop_DMA();  
-    delay_ms(50); //wait until DMA interruption done.
+    flag_stop        = true ;     
+    delay_ms(10); //wait until DMA interruption done.
  
     bulkin_enable    = false ;
     bulkout_enable   = false ;    
-    delay_ms(50);  
+    delay_ms(10);  
     
     SSC_Play_Stop();  
     SSC_Record_Stop();     
-    delay_ms(50);   
+    delay_ms(10);   
   
     printf("\r\nReset USB EP...");
     //Reset Endpoint Fifos
@@ -327,27 +305,24 @@ static void Audio_Stop( void )
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF; //AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
-    delay_ms(50);
+    delay_ms(10);
     
+////////////////////////////////////////////////////////////////////////////////    
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
 //    delay_ms(50);
-// 
 //    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN ;
 //    delay_ms(50); 
-    //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );
-//    
+    //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );   
     //AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
 //   
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_NAK_OUT ;
 //    delay_ms(50);    
-//    AT91C_BASE_UDPHS->UDPHS_EPTRST =  1<<CDCDSerialDriverDescriptors_DATAOUT;
-          
+//    AT91C_BASE_UDPHS->UDPHS_EPTRST =  1<<CDCDSerialDriverDescriptors_DATAOUT;          
     //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);   
-        
-    //I2S_Init();  
-    SSC_Reset();    
-    //delay_ms(50); 
+////////////////////////////////////////////////////////////////////////////////
+    
+    SSC_Reset(); //I2S_Init();    
     
     Init_Bulk_FIFO();    
     LED_Clear( USBD_LEDUDATA );
@@ -372,9 +347,8 @@ static void Audio_Stop( void )
     debug_trans_counter3  = 0 ;
     debug_trans_counter4  = 0 ; 
     debug_usb_dma_IN      = 0 ;
-    debug_usb_dma_OUT     = 0 ;
-    
-    test_dump = 0 ;
+    debug_usb_dma_OUT     = 0 ;    
+    test_dump             = 0 ;
    
 }
 
@@ -417,7 +391,7 @@ void Audio_State_Control( void )
                     Stop_CMD_Miss_Counter++;
                 } 
                 state_check = 1;            
-                Audio_Start_Rec();                
+                err = Audio_Start_Rec();                
             break;
 
             case AUDIO_CMD_START_PLAY :                
@@ -426,7 +400,7 @@ void Audio_State_Control( void )
                     Stop_CMD_Miss_Counter++;
                 } 
                 state_check = 2;     
-                Audio_Start_Play();               
+                err = Audio_Start_Play();               
             break;
             
             case AUDIO_CMD_START_PALYREC :                
@@ -434,11 +408,12 @@ void Audio_State_Control( void )
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 3;
-                //Audio_Start_Play_Rec();                 
-                Audio_Start_Play();
-                delay_ms(1);                
-                Audio_Start_Rec(); 
+                state_check = 3;                         
+                err = Audio_Start_Play();
+                if( err == 0 ) {                    
+                  delay_ms(1);  //make sure play and rec enter interruption in turns 2ms              
+                  err = Audio_Start_Rec(); 
+                }
             break;
 
             case AUDIO_CMD_STOP :   
@@ -467,40 +442,7 @@ void Audio_State_Control( void )
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
                 printf("Done.\r\n");
-                delay_ms(50); 
-                    
-    //I2S_Init();  
-    SSC_Reset(); 
-    
-    delay_ms(50); 
-    
-    Init_Bulk_FIFO();    
-    LED_Clear( USBD_LEDUDATA );
-    
-    bulkin_start    = true ; 
-    bulkout_start   = true ;    
-    bulkout_trigger = false ;     
-    flag_stop       = false ;
-    bulkout_empt    = 0;  
-    
-    //reset debug counters
-    BO_free_size_max      = 0 ;
-    BI_free_size_min      = 100 ; 
-    total_received        = 0 ;
-    total_transmit        = 0 ;
-    error_bulkout_full    = 0 ;
-    error_bulkout_empt    = 0 ;
-    error_bulkin_full     = 0 ;
-    error_bulkin_empt     = 0 ;    
-    debug_trans_counter1  = 0 ;
-    debug_trans_counter2  = 0 ;
-    debug_trans_counter3  = 0 ;
-    debug_trans_counter4  = 0 ; 
-    debug_usb_dma_IN      = 0 ;
-    debug_usb_dma_OUT     = 0 ;
-    
-    test_dump = 0 ;
-                
+                delay_ms(10);                 
             break;  
             
             default:         
@@ -514,10 +456,8 @@ void Audio_State_Control( void )
      if( audio_cmd_index != AUDIO_CMD_VERSION ) {       
          USART_Write( AT91C_BASE_US0, err, 0 ); //ACK
             
-     }
-     
-     audio_cmd_index = AUDIO_CMD_IDLE ;     
-    
+     }     
+     audio_cmd_index = AUDIO_CMD_IDLE ;      
     
 }
 

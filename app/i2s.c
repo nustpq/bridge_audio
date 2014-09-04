@@ -47,8 +47,8 @@
 #include "usb.h"
 
 
-const Pin SSC_Pins  = PINS_SSC_TX;
-const Pin pinSync[] = { PIN_SSC_RF };
+const Pin SSC_Pins       = PINS_SSC_TX;
+const Pin SSC_Sync_Pin   = PIN_SSC_RF;
 //void Demo_Sine_Gen( unsigned char *pdata, unsigned int size, unsigned int REC_SR_Set );
 
 
@@ -210,15 +210,6 @@ void HDMA_IrqHandler(void)
 
     status = DMA_GetMaskedStatus();   
 
-    
-//    if( flag_stop )  {
-//        return;
-//    }
-      
- //delay_us(50);  
-
-////////////////////////////////////////////////////////////////////////////////
-
     if( status & ( 1 << BOARD_SSC_IN_DMA_CHANNEL) ) { //record
     
         TRACE_INFO_NEW_WP("-SI-") ;      
@@ -338,8 +329,7 @@ void SSC_Play_Start(void)
     //i2s_buffer_out_index ^= 1;     
     
     DMA_EnableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0)  );
-    DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
-    //SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable aAT91C_SSC_TXEN   
+    DMA_EnableChannel(BOARD_SSC_OUT_DMA_CHANNEL); 
       
 }
 
@@ -370,7 +360,7 @@ void SSC_Record_Start(void)
     
     DMA_EnableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0)  );
     DMA_EnableChannel(BOARD_SSC_IN_DMA_CHANNEL);    
-    //SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable aAT91C_SSC_RXEN    
+     
 }
 
 
@@ -388,11 +378,9 @@ void SSC_Record_Start(void)
 void SSC_Play_Stop(void)
 {
     
-    SSC_DisableTransmitter(AT91C_BASE_SSC0);    
-
+    SSC_DisableTransmitter(AT91C_BASE_SSC0);   
     DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) ); 
-    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);
-        
+    DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);        
     DMA_ClearAutoMode(BOARD_SSC_OUT_DMA_CHANNEL);
 
 }
@@ -412,13 +400,12 @@ void SSC_Play_Stop(void)
 void SSC_Record_Stop(void)
 {  
     
-    SSC_DisableReceiver(AT91C_BASE_SSC0); 
-   
+    SSC_DisableReceiver(AT91C_BASE_SSC0);    
     DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );  
-    DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL); 
-     
+    DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);      
     DMA_ClearAutoMode(BOARD_SSC_IN_DMA_CHANNEL);
-
+// test_a++;
+// test_b=0;
 }
 
 
@@ -440,18 +427,13 @@ void I2S_Init( void )
     
     printf("\r\nInit I2S ..."); 
     
-    PIO_Configure(&SSC_Pins, 1);
-    
-    PIO_Configure(&pinSync[0], 1) ;
-    //DMAD_Power_Onoff(0);
+    PIO_Configure(&SSC_Pins, 1);    
+    PIO_Configure(&SSC_Sync_Pin, 1) ;  
     
     IRQ_DisableIT(BOARD_AT73C213_SSC_ID);
     IRQ_DisableIT(AT91C_ID_HDMA);
     
-    SSC_Init( MCK ); 
-    
-    //DMAD_Power_Onoff(1);
-    //Reset_DMAC_Reg();
+    SSC_Init( MCK );  
     
     // Initialize DMA controller.    
     DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
