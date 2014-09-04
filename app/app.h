@@ -32,7 +32,7 @@
 
 #define UART_PRIORITY       4
 #define USB_PRIORITY        3
-#define HDMA_PRIORITY       0 //SSC must have highest priority
+#define HDMA_PRIORITY       2 //SSC must have highest priority
 
 
 #define  AUDIO_CMD_IDLE                 0x00

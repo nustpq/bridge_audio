@@ -33,7 +33,6 @@
 #include "kfifo.h"
 
 
-
 // Note: 
 // The fifo size must be 2^n length.
 

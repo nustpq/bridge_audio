@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.6f]";
+char fw_version[] = "[FW:A:V3.6g]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -109,6 +109,7 @@ unsigned int counter_rec  = 0;
 
 unsigned int test_dump = 0 ;
 
+extern const Pin pinSync[];
 
 
 void Init_Bus_Matix( void )
@@ -136,9 +137,10 @@ void Init_Bus_Matix( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
+
 void Init_GPIO( void )
-{
-    //PIO_InitializeInterrupts( PIO_PRIORITY );     
+{     
+    //PIO_InitializeInterrupts( PIO_PRIORITY ); 
     LED_Configure(USBD_LEDPOWER);
     LED_Configure(USBD_LEDUDATA);    
     LED_Set(USBD_LEDPOWER); 
@@ -212,8 +214,12 @@ static void Audio_Start_Rec( void )
 {  
     Init_Rec_Setting();
     SSC_Record_Start();
-    bulkin_start   = true ;      
+    //bulkin_start   = true ;      
     bulkin_enable  = true ;
+    
+    while(   PIO_Get(&pinSync[0]) ) ;
+    while( ! PIO_Get(&pinSync[0]) ) ; 
+    
     SSC_EnableReceiver(AT91C_BASE_SSC0);    //enable AT91C_SSC_RXEN 
       
 }
@@ -235,9 +241,13 @@ static void Audio_Start_Play( void )
     Init_I2S_Buffer();   
     Init_Play_Setting();   
     SSC_Play_Start(); 
-    bulkout_enable  = true ;    
-    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN  
+    bulkout_enable  = true ;
+        
+    while(   PIO_Get(&pinSync[0]) ) ;
+    while( ! PIO_Get(&pinSync[0]) ) ;
     
+    SSC_EnableTransmitter(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN  
+
 }
 
 
@@ -259,12 +269,17 @@ static void Audio_Start_Play_Rec( void )
     Init_Rec_Setting(); 
 
     SSC_Play_Start();
+    bulkout_enable  = true ; 
+    SSC_EnableTransmitter(AT91C_BASE_SSC0);
+    
+    delay_ms(1);
+    
     SSC_Record_Start();
-      
-    bulkin_enable   = true ; 
-    bulkout_enable  = true ;
-  
-    SSC_EnableBoth(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN aAT91C_SSC_RXEN   
+    bulkin_enable   = true ;
+    SSC_EnableReceiver(AT91C_BASE_SSC0);  
+    
+     
+   // SSC_EnableBoth(AT91C_BASE_SSC0); //enable AT91C_SSC_TXEN aAT91C_SSC_RXEN   
     
 }
 
@@ -292,17 +307,18 @@ static void Audio_Stop( void )
 #endif  
      
     printf( "\r\nStop Play & Rec...\r\n"); 
-    flag_stop        = true ; 
-    bulkin_enable    = false ;
-    bulkout_enable   = false ;
+    flag_stop        = true ;   
     //Stop_DMA();  
-    delay_ms(10); //wait until DMA interruption done.
-    //printf( "\r\nflag_stop Done\r\n");    
-   
-    SSC_Record_Stop();  
-    SSC_Play_Stop();  
-    delay_ms(10);   
+    delay_ms(50); //wait until DMA interruption done.
+ 
+    bulkin_enable    = false ;
+    bulkout_enable   = false ;    
+    delay_ms(50);  
     
+    SSC_Play_Stop();  
+    SSC_Record_Stop();     
+    delay_ms(50);   
+  
     printf("\r\nReset USB EP...");
     //Reset Endpoint Fifos
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
@@ -311,7 +327,7 @@ static void Audio_Stop( void )
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF; //AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
-    delay_ms(10);
+    delay_ms(50);
     
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
@@ -446,7 +462,7 @@ void Audio_State_Control( void )
                 //Reset Endpoint Fifos
                 AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
                 AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
-                delay_ms(50);
+                delay_ms(10);
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;

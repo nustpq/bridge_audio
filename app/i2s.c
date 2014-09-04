@@ -48,7 +48,7 @@
 
 
 const Pin SSC_Pins  = PINS_SSC_TX;
-
+const Pin pinSync[] = { PIN_SSC_RF };
 //void Demo_Sine_Gen( unsigned char *pdata, unsigned int size, unsigned int REC_SR_Set );
 
 
@@ -208,15 +208,14 @@ void HDMA_IrqHandler(void)
     unsigned int status;  
     unsigned int temp;
 
-    //status = DMA_GetMaskedStatus();   
-    status = AT91C_BASE_HDMA->HDMA_EBCISR;
-    status &= AT91C_BASE_HDMA->HDMA_EBCIMR;
+    status = DMA_GetMaskedStatus();   
+
     
 //    if( flag_stop )  {
 //        return;
 //    }
       
-   // delay_us(50);  
+ //delay_us(50);  
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -333,8 +332,8 @@ void SSC_Play_Start(void)
     //disable BTC and CBTC int 
     DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
     DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
-    // Fill DMA buffer
-    
+    //Fill DMA buffer
+ 
     SSC_WriteBuffer_Start(AT91C_BASE_SSC0, (void *)I2SBuffersOut[0], (void *)I2SBuffersOut[1], i2s_play_buffer_size);
     //i2s_buffer_out_index ^= 1;     
     
@@ -434,12 +433,16 @@ void SSC_Record_Stop(void)
 * Note(s)     : None.
 *********************************************************************************************************
 */
+
+
 void I2S_Init( void )
 {  
     
     printf("\r\nInit I2S ..."); 
     
-    PIO_Configure(&SSC_Pins, 1); 
+    PIO_Configure(&SSC_Pins, 1);
+    
+    PIO_Configure(&pinSync[0], 1) ;
     //DMAD_Power_Onoff(0);
     
     IRQ_DisableIT(BOARD_AT73C213_SSC_ID);

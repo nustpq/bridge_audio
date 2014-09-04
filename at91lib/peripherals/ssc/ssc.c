@@ -353,7 +353,7 @@ unsigned char SSC_WriteBuffer_Start(  AT91S_SSC *ssc,
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_DSCR = (unsigned int)&LLI_CH[0] ;
     
     // Clear any pending interrupts
-    DMA_GetStatus();
+    //DMA_GetStatus();
 
    
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_OUT_DMA_CHANNEL].HDMA_CTRLA = \
@@ -548,7 +548,7 @@ unsigned char SSC_ReadBuffer_Start(  AT91S_SSC *ssc,
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_DSCR = (unsigned int)&LLI_CH2[0] ;
     
     // Clear any pending interrupts
-    DMA_GetStatus();
+    //DMA_GetStatus();
    
     AT91C_BASE_HDMA->HDMA_CH[BOARD_SSC_IN_DMA_CHANNEL].HDMA_CTRLA = \
                                         ((length>>1) \
@@ -699,7 +699,7 @@ void SSC_Init( unsigned int mclk )
                  );    
       
     tcmr.cks    = 1 ;   // TK pin
-    rcmr.cks    = 2 ;   // RK pin
+    rcmr.cks    = 1 ;   // RK pin
     tcmr.cko    = 0 ;   // input only
     rcmr.cko    = 0 ;   // input only  
     
@@ -752,9 +752,9 @@ void SSC_Init( unsigned int mclk )
 void SSC_Reset( void )
 { 
     
-    AT91C_BASE_PMC->PMC_PCDR = 1 << BOARD_AT73C213_SSC_ID;
-    delay_ms(1);
-    AT91C_BASE_PMC->PMC_PCER = 1 << BOARD_AT73C213_SSC_ID;
+//    AT91C_BASE_PMC->PMC_PCDR = 1 << BOARD_AT73C213_SSC_ID;
+//    delay_ms(1);
+//    AT91C_BASE_PMC->PMC_PCER = 1 << BOARD_AT73C213_SSC_ID;
     BOARD_AT73C213_SSC->SSC_SR;
     BOARD_AT73C213_SSC->SSC_IDR = 0xFFFF;
     BOARD_AT73C213_SSC->SSC_CR  = AT91C_SSC_RXDIS | AT91C_SSC_TXDIS | AT91C_SSC_SWRST;
@@ -764,9 +764,9 @@ void SSC_Reset( void )
     SSC_ConfigureReceiver(    BOARD_AT73C213_SSC,  rcmr.value , rfmr.value   ); 
  
     
-    AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;
-    delay_ms(1);
-    AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;
+//    AT91C_BASE_PMC->PMC_PCDR = 1 << AT91C_ID_HDMA;
+//    delay_ms(1);
+//    AT91C_BASE_PMC->PMC_PCER = 1 << AT91C_ID_HDMA;
     Reset_DMAC_Reg();     
     DMAD_Initialize(BOARD_SSC_IN_DMA_CHANNEL);
     DMAD_Initialize(BOARD_SSC_OUT_DMA_CHANNEL);
