@@ -118,13 +118,13 @@ void fill_buf_debug( unsigned char *pChar, unsigned int size)
     unsigned int i;
     unsigned short  *pInt;
     pInt = (unsigned short *)pChar;
-//    for( i = 0; i< (size>>1);  ) { 
-//       *(pInt+i++) =  0x1100 + test_a;      
-//       *(pInt+i++) =  0x2200 + test_a; 
-//       *(pInt+i++) =  0x3300 + test_a; 
-//       *(pInt+i++) =  0x4400 + test_a;     
-//       *(pInt+i++) =  0x5500 + test_a; 
-//       *(pInt+i++) =  0x6600 + test_a;  
+    for( i = 0; i< (size>>1);  ) { 
+       *(pInt+i++) =  0x1100 + test_a;      
+       *(pInt+i++) =  0x2200 + test_a; 
+       *(pInt+i++) =  0x3300 + test_a; 
+       *(pInt+i++) =  0x4400 + test_a;     
+       *(pInt+i++) =  0x5500 + test_a; 
+       *(pInt+i++) =  0x6600 + test_a;  
 //       *(pInt+i++) =  0x7700 + test_a; 
 //       *(pInt+i++) =  0x8800 + test_a; 
 //       *(pInt+i++) =  0x9900 + test_a;      
@@ -135,12 +135,13 @@ void fill_buf_debug( unsigned char *pChar, unsigned int size)
 //       *(pInt+i++) =  0xee00 + test_a;  
 //       *(pInt+i++) =  0xff00 + test_a; 
 //       *(pInt+i++) =  0x0000 + test_a; 
-//    }
-// //test_a++;
-    for( i = 0; i< (size>>1); i++ ) { 
-       *(pInt+i) =   test_a + test_b++; 
     }
+ test_a++;
     
+//    for( i = 0; i< (size>>1); i++ ) { 
+//       *(pInt+i) =   test_a + test_b++; 
+//    }
+//    
     
 }
 
@@ -224,7 +225,7 @@ void HDMA_IrqHandler(void)
 //        if( test_dump++ == 0 ) {
 //            memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x20,i2s_rec_buffer_size); 
 //        }
-        //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);
+        fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);
         kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
         
         SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_buffer_in_index, flag_stop ? 0 : i2s_rec_buffer_size);                      
@@ -404,8 +405,10 @@ void SSC_Record_Stop(void)
     DMA_DisableIt( 1 << (BOARD_SSC_IN_DMA_CHANNEL + 0) );  
     DMA_DisableChannel(BOARD_SSC_IN_DMA_CHANNEL);      
     DMA_ClearAutoMode(BOARD_SSC_IN_DMA_CHANNEL);
-// test_a++;
-// test_b=0;
+ //test_a=0;
+ test_b++;
+  test_a=test_b;
+    
 }
 
 
