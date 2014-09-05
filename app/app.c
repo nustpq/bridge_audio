@@ -21,7 +21,7 @@
 *                                      iSAM Audio Bridge Board
 *
 * Filename      : app.c
-* Version       : V1.0.0
+* Version       : V2.0.0
 * Programmer(s) : PQ
 *********************************************************************************************************
 * Note(s)       :
@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.7]";
+char fw_version[] = "[FW:A:V3.8a]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -69,8 +69,8 @@ volatile unsigned char i2s_buffer_out_index = 0;
 volatile unsigned char i2s_buffer_in_index  = 0;
 
 AUDIO_CFG  Audio_Configure[2]; //[0]: rec config. [1]: play config.
-unsigned char audio_cmd_index     = AUDIO_CMD_IDLE ; 
- 
+unsigned char audio_cmd_index   = AUDIO_CMD_IDLE ; 
+unsigned char usb_data_padding  = 0; //add for usb BI/BO padding for first package
 
 kfifo_t bulkout_fifo;
 kfifo_t bulkin_fifo;
@@ -85,6 +85,7 @@ volatile bool bulkin_start     = true;
 volatile bool bulkout_start    = true;
 volatile bool bulkout_trigger  = false ;
 volatile bool flag_stop        = false ;
+volatile bool bulkout_padding_ok  = false ;
 
 volatile unsigned int bulkout_empt = 0;
 volatile unsigned int debug_trans_counter1 = 0 ;
@@ -147,6 +148,53 @@ void Init_GPIO( void )
   
 }
 
+/*
+*********************************************************************************************************
+*                                  First_Pack_Check_BO()
+*
+* Description :  Check if first USB bulk out package is same as padding data.
+* Argument(s) :  None.
+* Return(s)   :  true -- check ok.
+*                false -- check failed.
+*
+* Note(s)     :  None.
+*********************************************************************************************************
+*/
+bool First_Pack_Check_BO( unsigned int bytes_counter )
+{
+    
+    unsigned int i;
+    
+    for( i = 0; i < bytes_counter ; i++ )   {
+        if( usb_data_padding != usbBufferBulkOut[i]) {
+            return false;
+        }
+    }
+    return true; 
+
+}
+
+
+/*
+*********************************************************************************************************
+*                                First_Pack_Padding_BI()
+*
+* Description :  Padding the first USB bulk in package.
+* Argument(s) :  None.
+* Return(s)   :  None.
+*
+* Note(s)     :  Must be called after reset FIFO and before start audio.
+*********************************************************************************************************
+*/
+static void First_Pack_Padding_BI( void )
+{
+    
+    memset( (unsigned char *)I2SBuffersIn[0], 0, USBDATAEPSIZE );
+    kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ;
+    memset( (unsigned char *)I2SBuffersIn[0], usb_data_padding, USBDATAEPSIZE );
+    kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ; 
+}
+
 
 /*
 *********************************************************************************************************
@@ -156,7 +204,7 @@ void Init_GPIO( void )
 * Argument(s) :  None.
 * Return(s)   :  None.
 *
-* Note(s)     : None.
+* Note(s)     :  None.
 *********************************************************************************************************
 */
 static unsigned char Init_Play_Setting( void )
@@ -164,14 +212,15 @@ static unsigned char Init_Play_Setting( void )
     unsigned short sample_rate ; //not support 44.1khz now
     unsigned char  channels_play;
     
-    channels_play = Audio_Configure[1].channel_num ;
+    channels_play = Audio_Configure[1].channel_num ;    
+    sample_rate   = Audio_Configure[1].sample_rate ;
+    printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...Padding[0x%X]...\r\n",counter_play++,channels_play,sample_rate, usb_data_padding);  
     if( channels_play == 0 ) { 
         return ERR_CH_ZERO ; 
-    }    
-    sample_rate   = Audio_Configure[1].sample_rate ;
-    printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...\r\n",counter_play++,channels_play,sample_rate);  
+    }
     i2s_play_buffer_size = sample_rate / 1000 * channels_play * 2 * 2;  
     SSC_Channel_Set_Tx( channels_play ); 
+    
     return 0;
 }
 
@@ -193,13 +242,16 @@ static unsigned char Init_Rec_Setting( void )
     unsigned char  channels_rec;
     
     channels_rec = Audio_Configure[0].channel_num ;
+    sample_rate  = Audio_Configure[0].sample_rate ; 
+    printf( "\r\nStart [%dth]Rec [%dCH - %dHz]...Padding[0x%X]...\r\n",counter_rec++,channels_rec,sample_rate, usb_data_padding);  
     if( channels_rec == 0 ) { 
         return ERR_CH_ZERO ; 
     }  
-    sample_rate  = Audio_Configure[0].sample_rate ; 
-    printf( "\r\nStart [%dth]Rec [%dCH - %dHz]...\r\n",counter_rec++,channels_rec,sample_rate);     
     i2s_rec_buffer_size  = sample_rate / 1000 * channels_rec  * 2 * 2; 
-    SSC_Channel_Set_Rx( channels_rec ); 
+    SSC_Channel_Set_Rx( channels_rec );
+    
+    First_Pack_Padding_BI();
+    
     return 0;
 }
 
@@ -330,9 +382,10 @@ static void Audio_Stop( void )
     bulkin_start    = true ; 
     bulkout_start   = true ;    
     bulkout_trigger = false ;     
-    flag_stop       = false ;
+    flag_stop       = false ;    
     bulkout_empt    = 0;  
-    
+    bulkout_padding_ok  = false ;
+        
     //reset debug counters
     BO_free_size_max      = 0 ;
     BI_free_size_min      = 100 ; 
@@ -365,7 +418,7 @@ static void Audio_Stop( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static unsigned char state_check  = 0; //avoid re-start issue in case of not stop previous start 
+unsigned char audio_state_check  = AUDIO_STATE_STOP; //1. avoid re-start issue in case of not stop previous start; 2. for play&rec sync 
 
 void Audio_State_Control( void )
 {    
@@ -386,29 +439,29 @@ void Audio_State_Control( void )
         switch( audio_cmd_index ) {
             
             case AUDIO_CMD_START_REC :                
-                if( state_check != 0 ) {
+                if( audio_state_check != AUDIO_STATE_STOP ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 1;            
+                audio_state_check = AUDIO_STATE_REC;            
                 err = Audio_Start_Rec();                
             break;
 
             case AUDIO_CMD_START_PLAY :                
-                if( state_check != 0 ) {
+                if( audio_state_check != AUDIO_STATE_STOP ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 2;     
+                audio_state_check = AUDIO_STATE_PLAY;     
                 err = Audio_Start_Play();               
             break;
             
             case AUDIO_CMD_START_PALYREC :                
-                if( state_check != 0 ) {
+                if( audio_state_check != AUDIO_STATE_STOP ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 3;                         
+                audio_state_check = AUDIO_STATE_PLAYREC;                         
                 err = Audio_Start_Play();
                 if( err == 0 ) {                    
                   delay_ms(1);  //make sure play and rec enter interruption in turns 2ms              
@@ -417,7 +470,7 @@ void Audio_State_Control( void )
             break;
 
             case AUDIO_CMD_STOP :   
-                state_check = 0;               
+                audio_state_check = AUDIO_STATE_STOP;               
                 Audio_Stop();          
             break;   
         

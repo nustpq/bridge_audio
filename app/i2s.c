@@ -191,6 +191,9 @@ void dump_buf_debug( unsigned char *pChar, unsigned int size)
     } 
   
 }
+
+
+
 /*
 *********************************************************************************************************
 *                                    HDMA_IrqHandler()
@@ -225,7 +228,10 @@ void HDMA_IrqHandler(void)
 //            memset((unsigned char *)I2SBuffersIn[i2s_buffer_in_index],0x20,i2s_rec_buffer_size); 
 //        }
         //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);
-        kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
+        
+        //if( bulkout_trigger || (audio_state_check != AUDIO_STATE_PLAYREC) ) { //sync play and rec, but results in dead loop in some application case
+          kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
+        //}
         
         SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_buffer_in_index, flag_stop ? 0 : i2s_rec_buffer_size);                      
         i2s_buffer_in_index ^= 1; 
@@ -269,26 +275,26 @@ void HDMA_IrqHandler(void)
                     bulkout_empt = 0;
                 }
                 TRACE_INFO_NEW_WP( "\r\n ##IN2: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
-            }                        
-             
+            }            
             kfifo_get(&bulkout_fifo, (unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ;
             TRACE_INFO_NEW_WP( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
-
              
-       } else {  //play buf empty , send silence : 0x00
+       } else {  //play buf empty , send silence : 0x00           
             memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
             error_bulkout_empt++; //bulkout fifo empty error                
             if( bulkout_trigger ) {               
                 bulkout_empt++;           
             }
-        }    
+            
+       }  
+        
 //     if(test_dump++ == 1000) {
 //        dump_buf_debug((void *)I2SBuffersOut[i2s_buffer_out_index],i2s_play_buffer_size);   
 //     }
-        SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_buffer_out_index, flag_stop ? 0 : i2s_play_buffer_size);             
-        i2s_buffer_out_index ^= 1;     
+       SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_buffer_out_index, flag_stop ? 0 : i2s_play_buffer_size);             
+       i2s_buffer_out_index ^= 1;     
         
-        if ( bulkout_enable && bulkout_start && (!flag_stop) && ((USBDATAEPSIZE<<1) <= kfifo_get_free_space(&bulkout_fifo)) ) { //
+       if ( bulkout_enable && bulkout_start && (!flag_stop) && ((USBDATAEPSIZE<<1) <= kfifo_get_free_space(&bulkout_fifo)) ) { //
             TRACE_INFO_NEW_WP("-LBO-") ;         
             bulkout_start = false ;
             error_bulkout_full++;
@@ -296,10 +302,9 @@ void HDMA_IrqHandler(void)
                                      USBDATAEPSIZE,
                                      (TransferCallback) UsbDataReceived,
                                      0);
-        }
+       }
       
-    } 
-    
+   }    
  
 }
 

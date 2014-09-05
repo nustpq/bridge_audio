@@ -29,7 +29,6 @@
 //
 //#define PIO_PRIORITY        7
 //#define TIMER_PRIORITY      6
-
 #define UART_PRIORITY       4
 #define USB_PRIORITY        3
 #define HDMA_PRIORITY       2 //SSC must have highest priority
@@ -43,11 +42,22 @@
 #define  AUDIO_CMD_CFG                  0x05
 #define  AUDIO_CMD_VERSION              0x06
 #define  AUDIO_CMD_RESET                0x07
+
+#define  AUDIO_STATE_STOP               0x00
+#define  AUDIO_STATE_PLAY               0x01
+#define  AUDIO_STATE_REC                0x02
+#define  AUDIO_STATE_PLAYREC            0x03
+
 //Error
 #define  ERR_USB_STATE                  250u
 #define  ERR_AUD_CFG                    251u
 #define  ERR_CMD_TYPE                   252u
 #define  ERR_CH_ZERO                    253u
+
+//ERROR CODE from 0 ~ 244 reserved for Audio MCU
+
+
+
 
 typedef struct {
   
@@ -59,7 +69,8 @@ typedef struct {
 
 extern AUDIO_CFG  Audio_Configure[];
 extern unsigned char audio_cmd_index;
- 
+extern unsigned char usb_data_padding; 
+
 extern unsigned char audio_cmd_ack;
 
 extern unsigned char usbBufferBulkOut[];
@@ -78,7 +89,7 @@ extern volatile unsigned char i2s_buffer_in_index;
 extern volatile unsigned int i2s_play_buffer_size ;
 extern volatile unsigned int i2s_rec_buffer_size ;
 
-
+extern unsigned char audio_state_check;
 extern unsigned char  sample_index;
 
 extern volatile bool bulkin_start;
@@ -87,6 +98,7 @@ extern volatile bool bulkout_enable;
 extern volatile bool bulkin_enable;
 extern volatile bool bulkout_trigger;
 extern volatile bool flag_stop;
+extern volatile bool bulkout_padding_ok;
 extern kfifo_t bulkout_fifo;
 extern kfifo_t bulkin_fifo;
 
@@ -107,6 +119,8 @@ void SSC_Record_Start(void);
 void SSC_Play_Stop(void);
 void SSC_Record_Stop(void);
 void Init_I2S_Buffer( void );
+bool First_Pack_Check_BO( unsigned int bytes_counter );
+
 extern void Init_Bus_Matix();
 
 extern char fw_version[];

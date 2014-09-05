@@ -52,7 +52,8 @@
 #define CMD_STAT_FLAG      2
 #define CMD_STAT_CMD1      3
 #define CMD_STAT_CMD2      4
-#define CMD_STAT_DATA      5
+#define CMD_STAT_CMD3      5
+#define CMD_STAT_DATA      6
 
 #define CMD_DATA_SYNC1     0xEB
 #define CMD_DATA_SYNC2     0x90
@@ -152,7 +153,13 @@ void pcInt(  unsigned char ch )
         case CMD_STAT_CMD2 :  
              audio_cmd_index = ch;
              PcCmdCounter    = 0;
-             state_mac       = CMD_STAT_SYNC1 ;
+             state_mac       = CMD_STAT_CMD3 ;
+          
+        break ;
+        
+        case CMD_STAT_CMD3 :  
+             usb_data_padding = ch;           
+             state_mac        = CMD_STAT_SYNC1 ;
           
         break ;
         
