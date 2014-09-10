@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.8a]";
+char fw_version[] = "[FW:A:V3.8]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -160,12 +160,12 @@ void Init_GPIO( void )
 * Note(s)     :  None.
 *********************************************************************************************************
 */
-bool First_Pack_Check_BO( unsigned int bytes_counter )
+__ramfunc bool First_Pack_Check_BO( unsigned int bytes_counter )
 {
     
     unsigned int i;
     
-    for( i = 0; i < bytes_counter ; i++ )   {
+    for( i = 0; i < 16 ; i++ )   {
         if( usb_data_padding != usbBufferBulkOut[i]) {
             return false;
         }
@@ -191,6 +191,8 @@ static void First_Pack_Padding_BI( void )
     
     memset( (unsigned char *)I2SBuffersIn[0], 0, USBDATAEPSIZE );
     kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ;
+    kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ;
+
     memset( (unsigned char *)I2SBuffersIn[0], usb_data_padding, USBDATAEPSIZE );
     kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ; 
 }
@@ -214,7 +216,7 @@ static unsigned char Init_Play_Setting( void )
     
     channels_play = Audio_Configure[1].channel_num ;    
     sample_rate   = Audio_Configure[1].sample_rate ;
-    printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...Padding[0x%X]...\r\n",counter_play++,channels_play,sample_rate, usb_data_padding);  
+    printf( "\r\n\r\nStart [%dth]Play[%dCH - %dHz] ...Padding[0x%X]...\r\n",counter_play++,channels_play,sample_rate, usb_data_padding);  
     if( channels_play == 0 ) { 
         return ERR_CH_ZERO ; 
     }
@@ -243,7 +245,7 @@ static unsigned char Init_Rec_Setting( void )
     
     channels_rec = Audio_Configure[0].channel_num ;
     sample_rate  = Audio_Configure[0].sample_rate ; 
-    printf( "\r\nStart [%dth]Rec [%dCH - %dHz]...Padding[0x%X]...\r\n",counter_rec++,channels_rec,sample_rate, usb_data_padding);  
+    printf( "\r\nStart [%dth]Rec [%dCH - %dHz] ...Padding[0x%X]...\r\n",counter_rec++,channels_rec,sample_rate, usb_data_padding);  
     if( channels_rec == 0 ) { 
         return ERR_CH_ZERO ; 
     }  
@@ -270,6 +272,7 @@ static unsigned char Init_Rec_Setting( void )
 static unsigned char Audio_Start_Rec( void )
 {  
     unsigned char err;
+    Init_Bulk_In_FIFO();
     err = Init_Rec_Setting();
     if( err != 0 ) {
         return err;
@@ -299,7 +302,8 @@ static unsigned char Audio_Start_Rec( void )
 static unsigned char Audio_Start_Play( void )
 {  
     unsigned char err;
-    Init_I2S_Buffer();   
+    Init_I2S_Buffer();
+    Init_Bulk_Out_FIFO();
     err = Init_Play_Setting(); 
     if( err != 0 ) {
         return err;
@@ -349,30 +353,15 @@ static void Audio_Stop( void )
     SSC_Record_Stop();     
     delay_ms(10);   
   
-    printf("\r\nReset USB EP...");
+//    printf("\r\nReset USB EP...");
     //Reset Endpoint Fifos
-    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
-    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
-    delay_ms(10);
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF; //AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
-    delay_ms(10);
-    
-////////////////////////////////////////////////////////////////////////////////    
-//    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
-//    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
-//    delay_ms(50);
-//    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN ;
-//    delay_ms(50); 
-    //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAIN );   
-    //AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_TOGGLESQ ;
-//   
-//    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA  = AT91C_UDPHS_NAK_OUT ;
-//    delay_ms(50);    
-//    AT91C_BASE_UDPHS->UDPHS_EPTRST =  1<<CDCDSerialDriverDescriptors_DATAOUT;          
-    //Reset_USBHS_HDMA( CDCDSerialDriverDescriptors_DATAOUT);   
-////////////////////////////////////////////////////////////////////////////////
+//    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
+//    AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
+//    delay_ms(10);
+//    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
+//    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF; //AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
+//    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
+//    delay_ms(10);
     
     SSC_Reset(); //I2S_Init();    
     

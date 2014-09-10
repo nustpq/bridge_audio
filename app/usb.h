@@ -24,7 +24,8 @@ extern void UsbDataTransmit(  unsigned int unused,
 
 void Usb_Init(void);
 void Init_Bulk_FIFO( void );
- 
+void Init_Bulk_In_FIFO( void );
+void Init_Bulk_Out_FIFO( void );
                             
                               
 #endif

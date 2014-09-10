@@ -219,6 +219,24 @@ void Init_Bulk_FIFO( void )
 }  
 
 
+void Init_Bulk_In_FIFO( void )
+{   
+    kfifo_t *pfifo;
+
+    pfifo = &bulkin_fifo;
+    kfifo_init_static(pfifo, FIFOBufferBulkIn, USB_IN_BUFFER_SIZE);
+
+}
+
+
+void Init_Bulk_Out_FIFO( void )
+{   
+    kfifo_t *pfifo;
+    
+    pfifo = &bulkout_fifo;
+    kfifo_init_static(pfifo, FIFOBufferBulkOut, USB_OUT_BUFFER_SIZE);
+
+}
 
 
 /*

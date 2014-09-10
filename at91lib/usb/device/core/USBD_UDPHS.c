@@ -572,7 +572,7 @@ static void UDPHS_EndpointHandler( unsigned char bEndpoint )
     // STALL sent
     if( AT91C_UDPHS_STALL_SNT == (status & AT91C_UDPHS_STALL_SNT) ) {
 
-        TRACE_WARNING_WP( "Sta 0x%X [%d] ", status, bEndpoint);
+        printf( "\r\n======Sta 0x%X [%d] \r\n", status, bEndpoint);
         debug_stall_counter++;
         // Acknowledge the stall flag
         AT91C_BASE_UDPHS->UDPHS_EPT[bEndpoint].UDPHS_EPTCLRSTA = AT91C_UDPHS_STALL_SNT;
@@ -742,7 +742,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
 void UDPD_IrqHandler(void)
 {
     unsigned int  status;
-    //unsigned char numIT;
+    unsigned char numIT;
     static unsigned int usb_frame_counter = 0 ;
    
     /*
@@ -887,7 +887,7 @@ void UDPD_IrqHandler(void)
                 UDPHS_EndpointHandler( 0 );
             }
             else {
-/////////////////////////////////////////////////////////////////////                
+///////////////////////////////////////////////////////////////////////                
                 // Check if endpoint has a pending interrupt
                 if ((status & (1 << SHIFT_DMA << 1)) != 0) { 
                         UDPHS_DmaHandler(1);                    
@@ -896,7 +896,7 @@ void UDPD_IrqHandler(void)
                 if ((status & (1 << SHIFT_DMA << 2)) != 0) { 
                         UDPHS_DmaHandler(2);                    
                 }
-/////////////////                
+///////////////////                
 /*
                 numIT = 1;
                 while((status&(0x7E<<SHIFT_DMA)) != 0) {
@@ -920,7 +920,7 @@ void UDPD_IrqHandler(void)
                     }
                     numIT++;
                 }
-*/               
+ */            
 ////////////////////////////////////////////////////////////////////                          
                 
             }
@@ -1417,8 +1417,8 @@ unsigned char USBD_Stall( unsigned char bEndpoint )
         return USBD_STATUS_LOCKED;
     }
 
-    TRACE_DEBUG_WP("Stall%d ", bEndpoint);
-
+    //TRACE_DEBUG_WP("Stall%d ", bEndpoint);
+    printf("\r\n======Stall%d \r\n", bEndpoint);
     AT91C_BASE_UDPHS->UDPHS_EPT[bEndpoint].UDPHS_EPTSETSTA = AT91C_UDPHS_FRCESTALL;
 
     return USBD_STATUS_SUCCESS;

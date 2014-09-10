@@ -262,19 +262,21 @@ void HDMA_IrqHandler(void)
         }        
 
         if ( (i2s_play_buffer_size <= temp) && bulkout_trigger ) { //play until buf have enough data  
-            if( bulkout_empt ) {
-                TRACE_INFO_NEW_WP( "\r\n ##IN1: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
-                if( bulkout_empt > bulkout_fifo.size ) {
-                    bulkout_empt -= bulkout_fifo.size;
+            if( bulkout_empt != 0 ) { //almost won't happen
+                unsigned int bulkout_empt_len = bulkout_empt * i2s_play_buffer_size ;
+                printf( "\r\n ##bulkout_empt: %d",bulkout_empt);
+                printf( "\r\n ##IN1: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
+                if( bulkout_empt_len > bulkout_fifo.size ) {
+                    bulkout_empt_len -= bulkout_fifo.size;
                     kfifo_release(&bulkout_fifo, bulkout_fifo.size);
                     memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
                     bulkout_empt++;
                     error_bulkout_empt++;
                 } else {
-                    kfifo_release(&bulkout_fifo, bulkout_empt);
+                    kfifo_release(&bulkout_fifo, bulkout_empt_len);
                     bulkout_empt = 0;
                 }
-                TRACE_INFO_NEW_WP( "\r\n ##IN2: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
+                printf( "\r\n ##IN2: %d, OUT: %d\r\n",bulkout_fifo.in, bulkout_fifo.out);
             }            
             kfifo_get(&bulkout_fifo, (unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ;
             TRACE_INFO_NEW_WP( "\r\n ##IN: %d, OUT: %d",bulkout_fifo.in, bulkout_fifo.out);
@@ -288,9 +290,9 @@ void HDMA_IrqHandler(void)
             
        }  
         
-//     if(test_dump++ == 1000) {
-//        dump_buf_debug((void *)I2SBuffersOut[i2s_buffer_out_index],i2s_play_buffer_size);   
-//     }
+     if(test_dump++%4 == 0) {
+        //dump_buf_debug((void *)I2SBuffersOut[i2s_buffer_out_index],32);//i2s_play_buffer_size>);   
+     }
        SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_buffer_out_index, flag_stop ? 0 : i2s_play_buffer_size);             
        i2s_buffer_out_index ^= 1;     
         
@@ -329,7 +331,7 @@ void SSC_Play_Start(void)
     DMA_DisableIt( 1 << (BOARD_SSC_OUT_DMA_CHANNEL + 0) );
     DMA_DisableChannel(BOARD_SSC_OUT_DMA_CHANNEL);    
     //Fill DMA buffer
- 
+    
     SSC_WriteBuffer_Start(AT91C_BASE_SSC0, (void *)I2SBuffersOut[0], (void *)I2SBuffersOut[1], i2s_play_buffer_size);
     //i2s_buffer_out_index ^= 1;     
     
