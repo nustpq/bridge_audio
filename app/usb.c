@@ -298,6 +298,7 @@ void UsbDataTransmit(  unsigned int unused,
                               unsigned int remaining )
 {
     TRACE_INFO_NEW_WP("\r\n#BI:") ;
+            
     //Record    
     if ( ! bulkin_enable ) {
         printf("\r\nstatus %d, bulkin_enable %d\r\n",status, bulkin_enable);
@@ -308,7 +309,8 @@ void UsbDataTransmit(  unsigned int unused,
        
         if ( USBDATAEPSIZE <= kfifo_get_data_size(  &bulkin_fifo )  ) { //enouth data to send to PC
            
-            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE);              
+            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
+        
             CDCDSerialDriver_Write( usbBufferBulkIn,
                                     USBDATAEPSIZE,
                                     (TransferCallback) UsbDataTransmit,

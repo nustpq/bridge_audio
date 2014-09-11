@@ -33,6 +33,7 @@
 
 #include "USBDCallbacks.h"
 
+extern volatile unsigned char Toggle_PID_BI ;
 //------------------------------------------------------------------------------
 //         Exported function
 //------------------------------------------------------------------------------
@@ -43,5 +44,6 @@
 void USBDCallbacks_Reset(void)
 {
     // Does nothing
+    Toggle_PID_BI = 0; //reset PID
 }
 

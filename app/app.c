@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.7]";
+char fw_version[] = "[FW:A:V3.8]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -86,6 +86,8 @@ volatile bool bulkout_start    = true;
 volatile bool bulkout_trigger  = false ;
 volatile bool flag_stop        = false ;
 
+volatile unsigned char Toggle_PID_BI    = 0;
+
 volatile unsigned int bulkout_empt = 0;
 volatile unsigned int debug_trans_counter1 = 0 ;
 volatile unsigned int debug_trans_counter2 = 0 ;  
@@ -109,7 +111,7 @@ unsigned int counter_play = 0;
 unsigned int counter_rec  = 0;
 unsigned int test_dump    = 0 ;
 
-
+extern unsigned char Check_Toggle_State( void );
 
 void Init_Bus_Matix( void )
 {
@@ -222,7 +224,11 @@ static unsigned char Audio_Start_Rec( void )
     if( err != 0 ) {
         return err;
     }
-    SSC_Record_Start();     
+    SSC_Record_Start();  
+    if( Toggle_PID_BI ) { //send padding package if PC Driver expect DATA1 Token
+         //memset((unsigned char *)I2SBuffersIn[0],0x55,i2s_rec_buffer_size);  
+         kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ;
+    }
     bulkin_enable  = true ;
     
     while( !PIO_Get(&SSC_Sync_Pin) ) ;
@@ -287,25 +293,24 @@ static void Audio_Stop( void )
      
     printf( "\r\nStop Play & Rec...\r\n"); 
     flag_stop        = true ;     
-    delay_ms(10); //wait until DMA interruption done.
- 
+    delay_ms(20); //wait until DMA interruption done. 
     bulkin_enable    = false ;
     bulkout_enable   = false ;    
-    delay_ms(10);  
-    
+    delay_ms(10);             
     SSC_Play_Stop();  
     SSC_Record_Stop();     
     delay_ms(10);   
-  
+    
     printf("\r\nReset USB EP...");
+    Toggle_PID_BI =  Check_Toggle_State( );
     //Reset Endpoint Fifos
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
-    delay_ms(10);
+    delay_ms(50);
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF; //AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
-    delay_ms(10);
+    delay_ms(50);
     
 ////////////////////////////////////////////////////////////////////////////////    
 //    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;  
@@ -349,7 +354,7 @@ static void Audio_Stop( void )
     debug_usb_dma_IN      = 0 ;
     debug_usb_dma_OUT     = 0 ;    
     test_dump             = 0 ;
-   
+
 }
 
 
@@ -433,7 +438,8 @@ void Audio_State_Control( void )
             break;         
             
             case AUDIO_CMD_RESET:                 
-                printf("\r\nReset USB EP...");                    
+                printf("\r\nReset USB EP...");   
+                Toggle_PID_BI =  Check_Toggle_State( );
                 //Reset Endpoint Fifos
                 AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
                 AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
@@ -442,7 +448,9 @@ void Audio_State_Control( void )
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
                 AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
                 printf("Done.\r\n");
-                delay_ms(10);                 
+                delay_ms(10); 
+                printf("\r\nReset USB EP...");
+    
             break;  
             
             default:         
@@ -487,7 +495,7 @@ void Debug_Info( void )
         if( Check_SysTick_State() == 0 ) { 
               return;
         }
-        printf("\rWaitting for USB trans start [lost %d stop]...",Stop_CMD_Miss_Counter);
+        printf("\rWait for USB trans start [lost %d stop][Next PID %d]...",Stop_CMD_Miss_Counter,Toggle_PID_BI);
         return ; 
     }
     

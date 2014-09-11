@@ -90,6 +90,8 @@ extern volatile bool flag_stop;
 extern kfifo_t bulkout_fifo;
 extern kfifo_t bulkin_fifo;
 
+
+extern volatile unsigned char Toggle_PID_BI ;
 extern volatile unsigned int bulkout_empt;
 
 extern void Debug_Info( void );

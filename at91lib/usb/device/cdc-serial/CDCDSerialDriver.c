@@ -255,6 +255,8 @@ unsigned char CDCDSerialDriver_Write(void *data,
                                      TransferCallback callback,
                                      void *argument)
 {
+    
+    
     return USBD_Write(CDCDSerialDriverDescriptors_DATAIN,
                       data,
                       size,

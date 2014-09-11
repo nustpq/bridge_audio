@@ -428,13 +428,25 @@ static void UDPHS_DisableEndpoints( void )
     }
 }
 
+
+unsigned char Check_Toggle_State( void )
+{
+    
+  unsigned char state  = 0;  
+  unsigned int  status = AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSTA;
+
+  if( status & AT91C_UDPHS_TOGGLESQ_STA_01 ) {
+      state = 1;
+  }              
+  return state;
+    
+}
 //------------------------------------------------------------------------------
 /// Endpoint interrupt handler.
 /// Handle IN/OUT transfers, received SETUP packets and STALLing
 /// \param bEndpoint Index of endpoint
 //------------------------------------------------------------------------------
 unsigned int debug_stall_counter = 0;
-
 
 static void UDPHS_EndpointHandler( unsigned char bEndpoint )
 {
@@ -742,7 +754,7 @@ static void UDPHS_DmaHandler( unsigned char bEndpoint )
 void UDPD_IrqHandler(void)
 {
     unsigned int  status;
-    //unsigned char numIT;
+    unsigned char numIT;
     static unsigned int usb_frame_counter = 0 ;
    
     /*

@@ -234,13 +234,12 @@ void HDMA_IrqHandler(void)
             TRACE_INFO_NEW_WP("-LBI-") ;  
             bulkin_start = false ;
             error_bulkin_empt++;
-            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE); 
+            kfifo_get(&bulkin_fifo, usbBufferBulkIn, USBDATAEPSIZE);            
             CDCDSerialDriver_Write(  usbBufferBulkIn,
                                      USBDATAEPSIZE,
                                     (TransferCallback) UsbDataTransmit,
-                                     0); 
-        }
-                           
+                                     0);            
+        }                           
     } 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -296,11 +295,8 @@ void HDMA_IrqHandler(void)
                                      USBDATAEPSIZE,
                                      (TransferCallback) UsbDataReceived,
                                      0);
-        }
-      
+        }      
     } 
-    
- 
 }
 
 
