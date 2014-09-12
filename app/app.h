@@ -93,7 +93,7 @@ extern kfifo_t bulkin_fifo;
 
 extern volatile unsigned char Toggle_PID_BI ;
 extern volatile unsigned int bulkout_empt;
-
+extern volatile bool         flag_bulkout_empt;
 extern void Debug_Info( void );
 extern void Usb_Init(void);
 extern void Init_Buffer( void );

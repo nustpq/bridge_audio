@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V3.8]";
+char fw_version[] = "[FW:A:V3.9]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -89,6 +89,7 @@ volatile bool flag_stop        = false ;
 volatile unsigned char Toggle_PID_BI    = 0;
 
 volatile unsigned int bulkout_empt = 0;
+volatile bool         flag_bulkout_empt = false;
 volatile unsigned int debug_trans_counter1 = 0 ;
 volatile unsigned int debug_trans_counter2 = 0 ;  
 volatile unsigned int debug_trans_counter3 = 0 ;
@@ -332,11 +333,12 @@ static void Audio_Stop( void )
     Init_Bulk_FIFO();    
     LED_Clear( USBD_LEDUDATA );
     
-    bulkin_start    = true ; 
-    bulkout_start   = true ;    
-    bulkout_trigger = false ;     
-    flag_stop       = false ;
-    bulkout_empt    = 0;  
+    bulkin_start      = true ; 
+    bulkout_start     = true ;    
+    bulkout_trigger   = false ;     
+    flag_stop         = false ;
+    flag_bulkout_empt = false;
+    bulkout_empt      = 0;  
     
     //reset debug counters
     BO_free_size_max      = 0 ;

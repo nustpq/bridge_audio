@@ -2,7 +2,7 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1928034861</fileChecksum>
+  <fileChecksum>3565218557</fileChecksum>
   <configuration>
     <name>at91sam3u4_flash</name>
     <outputs>
@@ -282,6 +282,11 @@
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBDCallbacks_Initialized.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\USBEndpointDescriptor.pbi</file>
       <file>$PROJ_DIR$\at91sam3u4_flash\Obj\nvic.o</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\List\alert_table.lst</file>
+      <file>$PROJ_DIR$\..\..\app\alert_table.h</file>
+      <file>$PROJ_DIR$\..\..\app\alert_table.c</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\alert_table.pbi</file>
+      <file>$PROJ_DIR$\at91sam3u4_flash\Obj\alert_table.o</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\..\..\at91lib\usb\common\cdc\CDCLineCoding.c</name>
@@ -1388,7 +1393,30 @@
       <inputs>
         <tool>
           <name>ILINK</name>
-          <file> 44 213 118 108 245 263 133 124 215 214 107 84 268 260 139 211 230 259 275 225 182 251 249 175 144 153 255 132 117 69 136 248 157 160 210 142 125 116 207 150 155 138 170 91 261 224 216 166 203 181 226 239</file>
+          <file> 44 280 213 118 108 245 263 133 124 215 214 107 84 268 260 139 211 230 259 275 225 182 251 249 175 144 153 255 132 117 69 136 248 157 160 210 142 125 116 207 150 155 138 170 91 261 224 216 166 203 181 226 239</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\app\alert_table.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 279</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 276 280</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 277</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 277</file>
         </tool>
       </inputs>
     </file>
@@ -2647,6 +2675,10 @@
         </tool>
       </outputs>
     </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>ILINK</tool>
+    </forcedrebuild>
   </configuration>
 </project>
 
