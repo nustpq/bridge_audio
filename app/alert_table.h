@@ -11,9 +11,9 @@
 //-----------       Created with 010 Editor        -----------
 //------         www.sweetscape.com/010editor/          ------
 //
-// File    : F:\alert.wav
+// File    : F:\alert.wav "Cuolecuole,play buffer kongle!"
 // Address : 0 (0x0)
-// Size    : 96000 (0x17700)
+// Size    : 96000 (0x17700) = 1s @48kHz,16bit,mono
 //------------------------------------------------------------
 const unsigned char alert_table[96000] = {
     0x04, 0x00, 0x0F, 0x00, 0x14, 0x00, 0x0E, 0x00,

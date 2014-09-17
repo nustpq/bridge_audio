@@ -237,7 +237,7 @@ void HDMA_IrqHandler(void)
         SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_buffer_in_index, flag_stop ? 0 : i2s_rec_buffer_size);                      
         i2s_buffer_in_index ^= 1; 
         
-        if ( bulkin_enable && bulkin_start && (!flag_stop) && ( (USBDATAEPSIZE<<1) <= kfifo_get_data_size(&bulkin_fifo)) ) {
+        if ( bulkin_enable && bulkin_start && (!flag_stop) && ( (USBDATAEPSIZE<<0) <= kfifo_get_data_size(&bulkin_fifo)) ) {
             TRACE_INFO_NEW_WP("-LBI-") ;  
             bulkin_start = false ;
             error_bulkin_empt++;
@@ -323,7 +323,7 @@ void HDMA_IrqHandler(void)
        SSC_WriteBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersOut[i2s_buffer_out_index], i2s_buffer_out_index, flag_stop ? 0 : i2s_play_buffer_size);             
        i2s_buffer_out_index ^= 1;     
         
-       if ( bulkout_enable && bulkout_start && (!flag_stop) && ((USBDATAEPSIZE<<1) <= kfifo_get_free_space(&bulkout_fifo)) ) { //
+       if ( bulkout_enable && bulkout_start && (!flag_stop) && ((USBDATAEPSIZE<<0) <= kfifo_get_free_space(&bulkout_fifo)) ) { //
             TRACE_INFO_NEW_WP("-LBO-") ;         
             bulkout_start = false ;
             error_bulkout_full++;

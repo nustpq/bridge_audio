@@ -31,7 +31,7 @@
 //#define TIMER_PRIORITY      6
 
 #define UART_PRIORITY       4
-#define USB_PRIORITY        3
+#define USB_PRIORITY        2
 #define HDMA_PRIORITY       2 //SSC must have highest priority
 
 

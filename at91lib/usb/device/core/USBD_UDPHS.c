@@ -957,7 +957,7 @@ void UDPD_IrqHandler(void)
     }
     */
     
-    if( (usb_frame_counter++ & 0x3F) == 0 ) {         
+    if( (usb_frame_counter++ & 0xFF) == 0 ) {         
         LED_TOGGLE_DATA; //LED_Toggle(USBD_LEDUDATA);  
     }
     
