@@ -257,7 +257,7 @@ void HDMA_IrqHandler(void)
         temp = kfifo_get_data_size(&bulkout_fifo);        
         TRACE_INFO_NEW_WP("\n\r[%d, %d]",temp,error_bulkout_empt);
         
-        if( (i2s_play_buffer_size<<PLAY_BUF_DLY_N) <= (temp<<1)) { //play buffer delay (2^PLAY_BUF_DLY_N) ms       
+        if( (i2s_play_buffer_size<<PlayPreBuffer) <= (temp<<1)) { //play buffer delay (2^PLAY_BUF_DLY_N) ms       
             bulkout_trigger = true; //1st buffered enough data will trigger SSC Out           
         }        
 
@@ -292,7 +292,7 @@ void HDMA_IrqHandler(void)
       if ( bulkout_trigger ) {  
             if( i2s_play_buffer_size <= temp ) {
                 kfifo_get(&bulkout_fifo, (unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ;                
-                if( bulkout_empt != 0 ) {
+                if( bulkout_empt != 0 ) { // if empty did happened at least once
                     flag_bulkout_empt = true;
                 }
             } else {
@@ -302,7 +302,7 @@ void HDMA_IrqHandler(void)
            
       } else {
           memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
-          error_bulkout_empt++; //first bulkout fifo empty error  is OK   
+          error_bulkout_empt++; //first bulkout fifo empty error is OK   
            
       }
       

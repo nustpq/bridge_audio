@@ -51,7 +51,7 @@ int main( void )
     printf("-- HW version: %s --\r\n", BOARD_NAME);
     printf("-- SW version: %s --\r\n", fw_version);
     printf("   BOARD_MCK = %dMHz\r\n", BOARD_MCK/1000000);
-    printf("   USBEPSize = %d B, PlayPreBuffer = %d ms\r\n", USBDATAEPSIZE, 1<<PLAY_BUF_DLY_N);
+    printf("   USBEPSize = %d B, PlayPreBuffer = %d ms\r\n", USBDATAEPSIZE, 1<<PlayPreBuffer);
     printf("-- Compiled: %s %s by PQ--\r\n", __DATE__, __TIME__);
     printf("--------------------------------------------------\r\n");
     

@@ -23,7 +23,7 @@
 #define USB_OUT_BUFFER_SIZE  16384  //2^14=16384  //USB audio data, size MUST be 2^n .
 #define USB_IN_BUFFER_SIZE   16384  //2^14=16384  //USB audio data, size MUST be 2^n .
 
-#define PLAY_BUF_DLY_N       5  //delay 2^6=64 ms
+#define PLAY_BUF_DLY_N       6  //delay 2^6=64 ms
 // A programmable priority level of 0-15 for each interrupt. A higher level corresponds to a lower 
 // priority, so level 0 is the highest interrupt priority
 //
@@ -116,6 +116,7 @@ extern char fw_version[];
 extern unsigned int counter_play ;
 extern unsigned int counter_rec  ;
 
+extern unsigned char PlayPreBuffer;
 
 
 extern unsigned int test_dump;

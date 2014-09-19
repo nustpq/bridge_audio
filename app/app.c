@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V4.0]";
+char fw_version[] = "[FW:A:V4.1]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -70,7 +70,8 @@ volatile unsigned char i2s_buffer_in_index  = 0;
 
 AUDIO_CFG  Audio_Configure[2]; //[0]: rec config. [1]: play config.
 unsigned char audio_cmd_index     = AUDIO_CMD_IDLE ; 
- 
+
+unsigned char PlayPreBuffer   = PLAY_BUF_DLY_N ;
 
 kfifo_t bulkout_fifo;
 kfifo_t bulkin_fifo;
@@ -429,8 +430,12 @@ void Audio_State_Control( void )
             break;   
         
             case AUDIO_CMD_CFG:
+                if( Audio_Configure[1].sample_rate == 48000 ) {
+                    PlayPreBuffer -= 1; //for 48k case, reduce PlayPreBuffer or bufer not enough
+                    printf("\r\nFor 48k, Set PlayPreBuffer = %d ms\r\n", 1<<PlayPreBuffer);
+                }
                 temp = Audio_Configure[1].sample_rate / 1000 *  Audio_Configure[1].channel_num * 2;
-                if( (temp << PLAY_BUF_DLY_N) > USB_OUT_BUFFER_SIZE ) { //play pre-buffer must not exceed whole play buffer
+                if( (temp << PlayPreBuffer) > USB_OUT_BUFFER_SIZE ) { //play pre-buffer must not exceed whole play buffer
                     err = ERR_AUD_CFG;
                 }
             break;
@@ -470,7 +475,6 @@ void Audio_State_Control( void )
      audio_cmd_index = AUDIO_CMD_IDLE ;      
     
 }
-
 
 /*
 *********************************************************************************************************
