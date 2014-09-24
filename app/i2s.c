@@ -67,10 +67,11 @@ void Init_I2S_Buffer( void )
 {
   
 #if( false )   //debug use
+    
     unsigned int i;
     unsigned short  *pInt;
     pInt = (unsigned short *)I2SBuffersOut[0] ;
-    for( i = 0; i< (I2S_BUFFER_SIZE>>1);  ) {        
+    for( i = 0; i< (I2S_OUT_BUFFER_SIZE>>1);  ) {        
        *(pInt+i++) = 0x1111 ;      
        *(pInt+i++) = 0x3333 ;
        *(pInt+i++) = 0x5555 ;
@@ -79,7 +80,7 @@ void Init_I2S_Buffer( void )
        *(pInt+i++) = 0x0000 ;   
     }   
     pInt = (unsigned short *)I2SBuffersOut[1] ;
-    for( i = 0; i< (I2S_BUFFER_SIZE>>1);  ) {        
+    for( i = 0; i< (I2S_IN_BUFFER_SIZE>>1);  ) {        
        *(pInt+i++) = 0x1111 ;      
        *(pInt+i++) = 0x3333 ;
        *(pInt+i++) = 0x5555 ;
@@ -90,8 +91,8 @@ void Init_I2S_Buffer( void )
     
 #else  
     
-    //Demo_Sine_Gen(I2SBuffersIn[0], I2S_BUFFER_SIZE, 48000);    
-    memset((unsigned char *)I2SBuffersOut, 0, I2S_BUFFER_SIZE<<1); 
+    //Demo_Sine_Gen(I2SBuffersIn[0], I2S_IN_BUFFER_SIZE, 48000);    
+    memset((unsigned char *)I2SBuffersOut, 0, I2S_OUT_BUFFER_SIZE<<1);
    
     
 #endif
@@ -231,9 +232,9 @@ void HDMA_IrqHandler(void)
 //        }
         //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);
         // Alert_Sound_Gen( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size,  Audio_Configure[1].sample_rate);
-  
-        kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
-        
+       // if( bulkout_trigger ) { //sync play&rec
+            kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
+       // }
         SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_buffer_in_index, flag_stop ? 0 : i2s_rec_buffer_size);                      
         i2s_buffer_in_index ^= 1; 
         
@@ -292,7 +293,7 @@ void HDMA_IrqHandler(void)
       if ( bulkout_trigger ) {  
             if( i2s_play_buffer_size <= temp ) {
                 kfifo_get(&bulkout_fifo, (unsigned char *)I2SBuffersOut[i2s_buffer_out_index], i2s_play_buffer_size) ;                
-                if( bulkout_empt != 0 ) {
+                if( bulkout_empt != 0 ) { // if empty did happened at least once
                     flag_bulkout_empt = true;
                 }
             } else {
@@ -302,7 +303,7 @@ void HDMA_IrqHandler(void)
            
       } else {
           memset((unsigned char *)I2SBuffersOut[i2s_buffer_out_index],0x00,i2s_play_buffer_size); //can pop sound gene          
-          error_bulkout_empt++; //first bulkout fifo empty error  is OK   
+          error_bulkout_empt++; //first bulkout fifo empty error is OK   
            
       }
       

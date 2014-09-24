@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V4.0]";
+char fw_version[] = "[FW:A:V4.2]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -62,15 +62,15 @@ unsigned char FIFOBufferBulkOut[USB_OUT_BUFFER_SIZE];
 unsigned char FIFOBufferBulkIn[USB_IN_BUFFER_SIZE];  
 
 //Buffer Level 3:  Double-buffer for I2S data : MAX 48*2*8*2 = 1536 B
-unsigned char I2SBuffersOut[2][I2S_BUFFER_SIZE]; // Play
-unsigned char I2SBuffersIn[2][I2S_BUFFER_SIZE];  // Record
+unsigned char I2SBuffersOut[2][I2S_OUT_BUFFER_SIZE]; // Play
+unsigned char I2SBuffersIn[2][I2S_IN_BUFFER_SIZE];  // Record
 // Current I2S buffer index.
 volatile unsigned char i2s_buffer_out_index = 0;
 volatile unsigned char i2s_buffer_in_index  = 0;
 
 AUDIO_CFG  Audio_Configure[2]; //[0]: rec config. [1]: play config.
 unsigned char audio_cmd_index     = AUDIO_CMD_IDLE ; 
- 
+
 
 kfifo_t bulkout_fifo;
 kfifo_t bulkin_fifo;
@@ -397,7 +397,8 @@ void Audio_State_Control( void )
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
                 } 
-                state_check = 1;            
+                state_check = 1;
+                bulkout_trigger = true; //trigger paly&rec sync
                 err = Audio_Start_Rec();                
             break;
 
@@ -470,7 +471,6 @@ void Audio_State_Control( void )
      audio_cmd_index = AUDIO_CMD_IDLE ;      
     
 }
-
 
 /*
 *********************************************************************************************************

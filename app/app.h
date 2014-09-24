@@ -18,12 +18,13 @@
 
 //Softpack Version
 #define MCK                  BOARD_MCK
-#define I2S_BUFFER_SIZE      1536//768   //audio data transfered per frame, Max 48kHz:   48*2*8*2=1536
+#define I2S_IN_BUFFER_SIZE   1536   //audio data transfered per frame, Max 48kHz:   48*2*8*2=1536
+#define I2S_OUT_BUFFER_SIZE  768    //Max 48kHz:   48*2*4*2=768
 #define USBDATAEPSIZE        BOARD_USB_ENDPOINTS_MAXPACKETSIZE( CDCDSerialDriverDescriptors_DATAIN ) //512
-#define USB_OUT_BUFFER_SIZE  16384  //2^14=16384  //USB audio data, size MUST be 2^n .
-#define USB_IN_BUFFER_SIZE   16384  //2^14=16384  //USB audio data, size MUST be 2^n .
+#define USB_OUT_BUFFER_SIZE  32768//16384  //2^14=16384  //USB audio data, size MUST be 2^n .
+#define USB_IN_BUFFER_SIZE   8192//16384  //2^14=16384  //USB audio data, size MUST be 2^n .
 
-#define PLAY_BUF_DLY_N       5  //delay 2^6=64 ms
+#define PLAY_BUF_DLY_N       6  //delay 2^6=64 ms
 // A programmable priority level of 0-15 for each interrupt. A higher level corresponds to a lower 
 // priority, so level 0 is the highest interrupt priority
 //
@@ -68,8 +69,8 @@ extern unsigned char usbBufferBulkIn[];
 extern unsigned char FIFOBufferBulkOut[];
 extern unsigned char FIFOBufferBulkIn[]; 
 
-extern unsigned char I2SBuffersOut[2][I2S_BUFFER_SIZE]; 
-extern unsigned char I2SBuffersIn[2][I2S_BUFFER_SIZE]; 
+extern unsigned char I2SBuffersOut[2][I2S_OUT_BUFFER_SIZE]; 
+extern unsigned char I2SBuffersIn[2][I2S_IN_BUFFER_SIZE]; 
 
 extern volatile unsigned char i2s_buffer_out_index;
 extern volatile unsigned char i2s_buffer_in_index;
