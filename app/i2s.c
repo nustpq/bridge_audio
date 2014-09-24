@@ -232,9 +232,9 @@ void HDMA_IrqHandler(void)
 //        }
         //fill_buf_debug( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index],i2s_rec_buffer_size);
         // Alert_Sound_Gen( (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size,  Audio_Configure[1].sample_rate);
-       // if( bulkout_trigger ) { //sync play&rec
+        if( bulkout_trigger ) { //sync play&rec
             kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[i2s_buffer_in_index], i2s_rec_buffer_size) ;
-       // }
+        }
         SSC_ReadBuffer(AT91C_BASE_SSC0, (void *)I2SBuffersIn[i2s_buffer_in_index], i2s_buffer_in_index, flag_stop ? 0 : i2s_rec_buffer_size);                      
         i2s_buffer_in_index ^= 1; 
         
