@@ -10,7 +10,11 @@ LimitSize=0
 ByteLimit=50
 [DebugChecksum]
 <<<<<<< HEAD
-Checksum=840298007
+<<<<<<< HEAD
+Checksum=1659114822
+=======
+Checksum=-105934952
+>>>>>>> sync_method
 =======
 Checksum=1620594476
 >>>>>>> May_fixed_bug

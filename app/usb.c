@@ -250,7 +250,14 @@ void UsbDataReceived(  unsigned int unused,
     }
     if ( status == USBD_STATUS_SUCCESS ) {     
         //while( received > kfifo_get_free_space( &bulkout_fifo ) ) ; //wait if buf is full   
-        kfifo_put(&bulkout_fifo, usbBufferBulkOut, received);
+        if( bulkout_padding_ok ) {
+            kfifo_put(&bulkout_fifo, usbBufferBulkOut, received);
+            
+        } else {
+            bulkout_padding_ok = First_Pack_Check_BO( received ); 
+            
+        }        
+        
 //        if( check_buf_debug(usbBufferBulkOut, received) ) {
 //                printf("\r\n Check USB BI buf err : \r\n");
 //                dump_buf_debug(usbBufferBulkOut, received );
@@ -317,6 +324,7 @@ void UsbDataTransmit(  unsigned int unused,
                                     0);       
         } else {                    
             bulkin_start  = true ;  
+            
         }              
         total_transmit += transmit ; 
      
@@ -325,7 +333,8 @@ void UsbDataTransmit(  unsigned int unused,
                                 USBDATAEPSIZE,
                                 (TransferCallback) UsbDataTransmit,
                                 0);  
-        TRACE_WARNING( "\r\nERROR : UsbDataTransmit: Rr-transfer hit\r\n" );           
+        TRACE_WARNING( "\r\nERROR : UsbDataTransmit: Rr-transfer hit\r\n" );  
+        
     }    
     
 }

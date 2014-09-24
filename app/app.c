@@ -21,7 +21,7 @@
 *                                      iSAM Audio Bridge Board
 *
 * Filename      : app.c
-* Version       : V1.0.0
+* Version       : V2.0.0
 * Programmer(s) : PQ
 *********************************************************************************************************
 * Note(s)       :
@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V4.3]";
+char fw_version[] = "[FW:A:V4.4]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -70,6 +70,7 @@ volatile unsigned char i2s_buffer_in_index  = 0;
 
 AUDIO_CFG  Audio_Configure[2]; //[0]: rec config. [1]: play config.
 unsigned char audio_cmd_index     = AUDIO_CMD_IDLE ; 
+unsigned char usb_data_padding  = 0; //add for usb BI/BO padding for first package
 
 
 kfifo_t bulkout_fifo;
@@ -85,7 +86,7 @@ volatile bool bulkin_start     = true;
 volatile bool bulkout_start    = true;
 volatile bool bulkout_trigger  = false ;
 volatile bool flag_stop        = false ;
-
+volatile bool bulkout_padding_ok  = false ;
 volatile unsigned char Toggle_PID_BI    = 0;
 
 volatile unsigned int bulkout_empt = 0;
@@ -150,6 +151,49 @@ void Init_GPIO( void )
   
 }
 
+/*
+*********************************************************************************************************
+*                                  First_Pack_Check_BO()
+*
+* Description :  Check if first USB bulk out package is same as padding data.
+* Argument(s) :  None.
+* Return(s)   :  true -- check ok.
+*                false -- check failed.
+*
+* Note(s)     :  None.
+*********************************************************************************************************
+*/
+__ramfunc bool First_Pack_Check_BO( unsigned int bytes_counter )
+{
+    
+    unsigned int i;
+    
+    for( i = 0; i < 16 ; i++ )   {
+        if( usb_data_padding != usbBufferBulkOut[i]) {
+            return false;
+        }
+    }
+    return true; 
+
+}
+
+/*
+*********************************************************************************************************
+*                                First_Pack_Padding_BI()
+*
+* Description :  Padding the first USB bulk in package.
+* Argument(s) :  None.
+* Return(s)   :  None.
+*
+* Note(s)     :  Must be called after reset FIFO and before start audio.
+*********************************************************************************************************
+*/
+static void First_Pack_Padding_BI( void )
+{
+    memset( (unsigned char *)I2SBuffersIn[0], usb_data_padding, USBDATAEPSIZE );
+    kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ; 
+}
+
 
 /*
 *********************************************************************************************************
@@ -203,6 +247,9 @@ static unsigned char Init_Rec_Setting( void )
     printf( "\r\nStart [%dth]Rec [%dCH - %dHz]...\r\n",counter_rec++,channels_rec,sample_rate);     
     i2s_rec_buffer_size  = sample_rate / 1000 * channels_rec  * 2 * 2; 
     SSC_Channel_Set_Rx( channels_rec ); 
+    
+    First_Pack_Padding_BI();
+    
     return 0;
 }
 
@@ -220,7 +267,7 @@ static unsigned char Init_Rec_Setting( void )
 */
 static unsigned char Audio_Start_Rec( void )
 {  
-    unsigned char err;
+    unsigned char err;  
     err = Init_Rec_Setting();
     if( err != 0 ) {
         return err;
@@ -253,8 +300,8 @@ static unsigned char Audio_Start_Rec( void )
 */
 static unsigned char Audio_Start_Play( void )
 {  
-    unsigned char err;
-    Init_I2S_Buffer();   
+    unsigned char err;  
+    Init_I2S_Buffer();
     err = Init_Play_Setting(); 
     if( err != 0 ) {
         return err;
@@ -497,7 +544,7 @@ void Debug_Info( void )
         if( Check_SysTick_State() == 0 ) { 
               return;
         }
-        printf("\rWait for USB trans start [lost %d stop][Next PID %d]...",Stop_CMD_Miss_Counter,Toggle_PID_BI);
+        printf("\rWait for USB trans start [Lost %d Stop][Next PID %d][Last Padding 0x%x]...",Stop_CMD_Miss_Counter,Toggle_PID_BI,usb_data_padding);
         return ; 
     }
     

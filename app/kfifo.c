@@ -104,7 +104,7 @@ unsigned int kfifo_get(kfifo_t *fifo, unsigned char *buffer, unsigned int len) {
 	return len;
 }
 
-unsigned int kfifo_release(kfifo_t *fifo, unsigned int len) {
+__ramfunc unsigned int kfifo_release(kfifo_t *fifo, unsigned int len) {
         //__disable_interrupt(); //PQ
 	len = min(len, fifo->in - fifo->out);	
 	fifo->out += len;
@@ -113,13 +113,13 @@ unsigned int kfifo_release(kfifo_t *fifo, unsigned int len) {
 }
 
 //no interruption for debug printf use
-unsigned int kfifo_get_free_space(kfifo_t *fifo) {
+__ramfunc unsigned int kfifo_get_free_space(kfifo_t *fifo) {
     
     return( fifo->size - fifo->in + fifo->out );     
 
 }
 
-unsigned int kfifo_get_data_size(kfifo_t *fifo) {
+__ramfunc unsigned int kfifo_get_data_size(kfifo_t *fifo) {
            
     return( fifo->in - fifo->out );     
 	
