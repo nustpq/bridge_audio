@@ -245,7 +245,7 @@ void UsbDataReceived(  unsigned int unused,
     //Play
     
     if ( ! bulkout_enable ) {
-        printf("\r\nstatus %d, bulkout_enable %d\r\n",status, bulkout_enable);
+        //printf("\r\nstatus %d, bulkout_enable %d\r\n",status, bulkout_enable);
         return ;
     }
     if ( status == USBD_STATUS_SUCCESS ) {     
@@ -254,7 +254,7 @@ void UsbDataReceived(  unsigned int unused,
             kfifo_put(&bulkout_fifo, usbBufferBulkOut, received);
             
         } else {
-            bulkout_padding_ok = First_Pack_Check_BO( received ); 
+            bulkout_padding_ok = First_Pack_Check_BO(); 
             
         }        
         
@@ -308,7 +308,7 @@ void UsbDataTransmit(  unsigned int unused,
             
     //Record    
     if ( ! bulkin_enable ) {
-        printf("\r\nstatus %d, bulkin_enable %d\r\n",status, bulkin_enable);
+        //printf("\r\nstatus %d, bulkin_enable %d\r\n",status, bulkin_enable);
         return ;
     }
     

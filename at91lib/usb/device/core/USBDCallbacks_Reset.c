@@ -44,6 +44,6 @@ extern volatile unsigned char Toggle_PID_BI ;
 void USBDCallbacks_Reset(void)
 {
     // Does nothing
-    Toggle_PID_BI = 0; //reset PID
+    //Toggle_PID_BI = 0; //reset PID
 }
 

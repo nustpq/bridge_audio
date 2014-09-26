@@ -61,7 +61,6 @@
 
 
 
-
 typedef struct {
   
   unsigned char type;//Rec: =0x00, Play: =0x01
@@ -125,7 +124,7 @@ void SSC_Record_Start(void);
 void SSC_Play_Stop(void);
 void SSC_Record_Stop(void);
 void Init_I2S_Buffer( void );
-bool First_Pack_Check_BO( unsigned int bytes_counter );
+bool First_Pack_Check_BO( void );
 
 extern void Init_Bus_Matix();
 

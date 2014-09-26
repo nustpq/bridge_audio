@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V4.5]";
+char fw_version[] = "[FW:A:V4.6]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -70,7 +70,7 @@ volatile unsigned char i2s_buffer_in_index  = 0;
 
 AUDIO_CFG  Audio_Configure[2]; //[0]: rec config. [1]: play config.
 unsigned char audio_cmd_index     = AUDIO_CMD_IDLE ; 
-unsigned char usb_data_padding  = 0; //add for usb BI/BO padding for first package
+unsigned char usb_data_padding    = 0; //add for usb BI/BO padding for first package
 
 
 kfifo_t bulkout_fifo;
@@ -103,17 +103,16 @@ extern unsigned int debug_stall_counter;
 extern kfifo_t dbguart_fifo;
 extern const Pin SSC_Sync_Pin;
 
-static unsigned int BO_free_size_max = 0;
-static unsigned int BI_free_size_min = 100; 
+static unsigned char audio_state_check    = 0; //avoid re-start issue in case of not stop previous start 
+static unsigned int BO_free_size_max      = 0;
+static unsigned int BI_free_size_min      = 100; 
 static unsigned int DBGUART_free_size_min = 100; 
-
 static unsigned int Stop_CMD_Miss_Counter = 0;
 
-unsigned int counter_play = 0;
-unsigned int counter_rec  = 0;
-unsigned int test_dump    = 0 ;
-
-unsigned int time_start_test = 0 ;
+unsigned int counter_play    = 0;
+unsigned int counter_rec     = 0;
+unsigned int test_dump       = 0;
+unsigned int time_start_test = 0;
 
 extern unsigned char Check_Toggle_State( void );
 
@@ -165,9 +164,9 @@ void Init_GPIO( void )
 * Note(s)     :  None.
 *********************************************************************************************************
 */
-__ramfunc bool First_Pack_Check_BO( unsigned int bytes_counter )
-{
-    
+static bool bo_check_sync = false;
+__ramfunc bool First_Pack_Check_BO( void )
+{    
     unsigned int i;
     
     for( i = 0; i < 16 ; i++ )   {
@@ -175,6 +174,8 @@ __ramfunc bool First_Pack_Check_BO( unsigned int bytes_counter )
             return false;
         }
     }
+    bo_check_sync = true;
+    //printf("\r\nSync\r\n");
     return true; 
 
 }
@@ -194,6 +195,7 @@ static void First_Pack_Padding_BI( void )
 {
     memset( (unsigned char *)I2SBuffersIn[0], usb_data_padding, USBDATAEPSIZE );
     kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ; 
+    kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ;//2 package incase of PID error
 }
 
 
@@ -221,6 +223,7 @@ static unsigned char Init_Play_Setting( void )
     printf( "\r\nStart [%dth]Play[%dCH - %dHz] ...\r\n",counter_play++,channels_play,sample_rate);  
     i2s_play_buffer_size = sample_rate / 1000 * channels_play * 2 * 2;  
     SSC_Channel_Set_Tx( channels_play ); 
+    
     return 0;
 }
 
@@ -270,15 +273,15 @@ static unsigned char Init_Rec_Setting( void )
 static unsigned char Audio_Start_Rec( void )
 {  
     unsigned char err;  
+    
+//   if( Toggle_PID_BI ) { //send padding package if PC Driver expect DATA1 Token          
+//         kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ;
+//    }  
     err = Init_Rec_Setting();
     if( err != 0 ) {
         return err;
     }
-    SSC_Record_Start();  
-    if( Toggle_PID_BI ) { //send padding package if PC Driver expect DATA1 Token
-         //memset((unsigned char *)I2SBuffersIn[0],0x55,i2s_rec_buffer_size);  
-         kfifo_put(&bulkin_fifo, (unsigned char *)I2SBuffersIn[0], USBDATAEPSIZE) ;
-    }
+    SSC_Record_Start(); 
     bulkin_enable  = true ;
     
     while( !PIO_Get(&SSC_Sync_Pin) ) ;
@@ -352,7 +355,9 @@ static void Audio_Stop( void )
     delay_ms(10);   
     
     printf("\r\nReset USB EP...");
-    Toggle_PID_BI =  Check_Toggle_State( );
+//    if( audio_state_check != 0 ) { //in case of error from repeat Stop CMD 
+//        Toggle_PID_BI =  Check_Toggle_State();
+//    }
     //Reset Endpoint Fifos
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
@@ -388,6 +393,7 @@ static void Audio_Stop( void )
     flag_stop         = false ;
     flag_bulkout_empt = false;
     bulkout_empt      = 0;  
+    //bulkout_padding_ok  = false ;
     
     //reset debug counters
     BO_free_size_max      = 0 ;
@@ -421,7 +427,6 @@ static void Audio_Stop( void )
 * Note(s)     : None.
 *********************************************************************************************************
 */
-static unsigned char state_check  = 0; //avoid re-start issue in case of not stop previous start 
 
 void Audio_State_Control( void )
 {    
@@ -442,47 +447,47 @@ void Audio_State_Control( void )
         switch( audio_cmd_index ) {
             
             case AUDIO_CMD_START_REC :                
-                if( state_check != 0 ) {
+                if( audio_state_check != 0 ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
-                } 
-                state_check = 1;
+                }                 
                 bulkout_trigger = true; //trigger paly&rec sync
                 err = Audio_Start_Rec();  
                 time_start_test = second_counter ;
+                audio_state_check = 1;
             break;
 
             case AUDIO_CMD_START_PLAY :                
-                if( state_check != 0 ) {
+                if( audio_state_check != 0 ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
-                } 
-                state_check = 2;     
+                }                     
                 err = Audio_Start_Play();  
                 time_start_test = second_counter ;
+                audio_state_check = 2; 
             break;
             
             case AUDIO_CMD_START_PALYREC :                
-                if( state_check != 0 ) {
+                if( audio_state_check != 0 ) {
                     Audio_Stop(); 
                     Stop_CMD_Miss_Counter++;
-                } 
-                state_check = 3;                         
+                }                                         
                 err = Audio_Start_Play();
                 if( err == 0 ) {                    
                   delay_ms(1);  //make sure play and rec enter interruption in turns 2ms              
                   err = Audio_Start_Rec(); 
                 }
                 time_start_test = second_counter ;
+                audio_state_check = 3; 
             break;
 
-            case AUDIO_CMD_STOP :   
-                state_check = 0;               
+            case AUDIO_CMD_STOP :                               
                 Audio_Stop(); 
                 printf("\r\nThis cycle test time cost: ");
                 Get_Run_Time(second_counter - time_start_test);   
                 printf("\r\n\r\n");
                 time_start_test = 0 ;
+                audio_state_check = 0; 
             break;   
         
             case AUDIO_CMD_CFG:
@@ -496,19 +501,21 @@ void Audio_State_Control( void )
                 USART_WriteBuffer( AT91C_BASE_US0,(void *)fw_version, sizeof(fw_version) );  //Version string, no ACK 
             break;         
             
-            case AUDIO_CMD_RESET:                 
-                printf("\r\nReset USB EP...");   
-                Toggle_PID_BI =  Check_Toggle_State( );
-                //Reset Endpoint Fifos
-                AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
-                AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
-                delay_ms(10);
-                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
-                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
-                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
-                printf("Done.\r\n");
-                delay_ms(10); 
-                printf("\r\nReset USB EP...");
+//            case AUDIO_CMD_RESET:                 
+//                printf("\r\nReset USB EP...");   
+//                if( audio_state_check != 0 ) { //in case of error from repeat Stop CMD 
+//                    Toggle_PID_BI =  Check_Toggle_State();
+//                }
+//                //Reset Endpoint Fifos
+//                AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
+//                AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
+//                delay_ms(10);
+//                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
+//                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF;//AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
+//                AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
+//                printf("Done.\r\n");
+//                delay_ms(10); 
+//                printf("\r\nReset USB EP...");
     
             break;  
             
@@ -553,8 +560,9 @@ void Debug_Info( void )
         if( Check_SysTick_State() == 0 ) { 
               return;
         }
-        printf("\rWait for USB trans start [Lost %d Stop][Next PID %d][Last Padding 0x%x]...",Stop_CMD_Miss_Counter,Toggle_PID_BI,usb_data_padding);
+        printf("\r");
         Get_Run_Time(second_counter);
+        printf(" [LostStop: %d][LastPadding: 0x%X]  Wait for starting...",Stop_CMD_Miss_Counter,usb_data_padding);
         return ; 
     }
     
@@ -576,7 +584,7 @@ void Debug_Info( void )
         return;
     }     
 
-    if( counter++ % 20 == 0 ) { //20*100ms = 1s 
+    if( counter++ % 20 == 0 ) { //100ms * 20 = 2s 
         printf("\r\n");        
     } 
             
@@ -590,8 +598,13 @@ void Debug_Info( void )
     //if(total_transmit >5000000 ) {  error_bulkin_full++; } //simulate bulkin fifo full error 
     //printf("\r\nPLAY %d, REC %d",counter_play++,counter_rec++); 
     //printf("\rIN[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%>%3u%]  OUT[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%<%3u%]",
-       
-      printf("\rIN[%6.6f MB, Full:%u, Empty:%u, Free:%3u%>%3u%]  OUT[%6.6f MB, Full:%u, Empty:%u, Free:%3u%<%3u%]",
+      
+    if( bo_check_sync ) {
+        bo_check_sync = false;
+        printf("\r\nReceived USB Sync package.\r\n");
+    }
+    
+    printf("\rIN[%6.6f MB, Full:%u, Empty:%u, Free:%3u%>%3u%]  OUT[%6.6f MB, Full:%u, Empty:%u, Free:%3u%<%3u%]. ",
                          
                total_transmit/1000000.0,               
                error_bulkin_full,
@@ -607,7 +620,9 @@ void Debug_Info( void )
                    
             
              ); 
-    
+     
+    Get_Run_Time(second_counter - time_start_test);
+     
 //     DBGUART_free_size = kfifo_get_free_space(&dbguart_fifo) ;
 //     DBGUART_free_size = DBGUART_free_size * 100 / DBGUART_FIFO_SIZE;  
 //     DBGUART_free_size_min = DBGUART_free_size < DBGUART_free_size_min ? DBGUART_free_size : DBGUART_free_size_min ;
@@ -618,13 +633,15 @@ void Debug_Info( void )
 
 void Get_Run_Time( unsigned int time )
 {
-    unsigned char  sec, min, hour, day;
+    unsigned char  msec, sec, min, hour;
+    unsigned int   day;
 
-    sec  = time % 60 ;
-    min  = time / 60 %60 ;
-    hour = time / 3600 %24 ; 
-    day  = time / 3600 /24 ;
-    printf("[%02d:%02d:%02d:%02d]", day, hour, min, sec ); 
+    msec = time % 10;
+    sec  = time /10 % 60 ;
+    min  = time / 600 %60 ;
+    hour = time / 36000 %24 ; 
+    day  = time / 36000 /24 ;
+    printf("[%d:%02d:%02d:%02d.%d]", day, hour, min, sec, msec ); 
    
     
 }

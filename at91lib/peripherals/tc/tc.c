@@ -149,38 +149,42 @@ unsigned char TC_FindMckDivisor(
 
 
 
+
+                                                            
+
 //------------------------------------------------------------------------------
-/// Handles interrupts coming from Timer #2.
+///  Timer #2  :  For test time record
 //------------------------------------------------------------------------------
 volatile unsigned int second_counter = 0 ;
     
 void TC2_IrqHandler( void )
-{  
-  
+{    
     unsigned int status;
+    static unsigned int timer2_counter = 0;
     status = AT91C_BASE_TC2->TC_SR;
     
     if ((status & AT91C_TC_CPCS) != 0) { 
         AT91C_BASE_TC2->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;
-        second_counter++;
-        //LED_TOGGLE_DATA ; 
-  
+        if( ++timer2_counter == 10 ) { // 10ms*10 = 100ms
+            timer2_counter = 0 ;
+            second_counter++;             
+        }
+        //LED_TOGGLE_DATA ; //test
     }
     
 }
 
-
-// Configure timer 2 for time record()
 void Timer2_Init( void )
 {
     unsigned int counter; 
     
-    counter =  32000 ; //1s time    
+    counter =  MCK / 128 / 100; //10ms time 
+    counter = (counter & 0xFFFF0000) == 0 ? counter : 0xFFFF ;    
 
     AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC2);
     AT91C_BASE_TC2->TC_CCR = AT91C_TC_CLKDIS;
     AT91C_BASE_TC2->TC_IDR = 0xFFFFFFFF;
-    AT91C_BASE_TC2->TC_CMR = AT91C_TC_CLKS_TIMER_DIV5_CLOCK //choose SLCK 
+    AT91C_BASE_TC2->TC_CMR = AT91C_TC_CLKS_TIMER_DIV4_CLOCK //choose 1/128
                              | AT91C_TC_CPCSTOP
                              | AT91C_TC_CPCDIS
                              | AT91C_TC_WAVESEL_UP_AUTO
@@ -196,13 +200,11 @@ void Timer2_Init( void )
 
 
 
+//------------------------------------------------------------------------------
+///  Timer #0  :  For delay_ms()
+//------------------------------------------------------------------------------
 void Timer0_Init( void )
 {
-    unsigned int counter; 
-    
-    counter =  MCK / 8 / 1000; //1ms time 
-    counter = (counter & 0xFFFF0000) == 0 ? counter : 0xFFFF ;
-
     AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC0);
     AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS;
     AT91C_BASE_TC0->TC_IDR = 0xFFFFFFFF;
@@ -210,8 +212,7 @@ void Timer0_Init( void )
                              | AT91C_TC_CPCSTOP
                              | AT91C_TC_CPCDIS
                              | AT91C_TC_WAVESEL_UP_AUTO
-                             | AT91C_TC_WAVE;
-    AT91C_BASE_TC0->TC_RC = counter ;    
+                             | AT91C_TC_WAVE;   
     
 }
 
@@ -251,6 +252,11 @@ void  delay_ms( unsigned int delay_ms ) //
 }
 
 
+
+
+//------------------------------------------------------------------------------
+///  Timer #1  :  For delay_us()
+//------------------------------------------------------------------------------
 void Timer1_Init( void )
 {
     
@@ -264,7 +270,6 @@ void Timer1_Init( void )
                              | AT91C_TC_WAVE;
     
 }
-
 
 
 void  __ramfunc delay_us(unsigned int delay_us)  
@@ -287,9 +292,11 @@ void  __ramfunc delay_us(unsigned int delay_us)
 
 
 
-//////////////////////////////////////////
-#define DEBUG_INFO_FRESH_INTERVAL 100  //100ms
+//------------------------------------------------------------------------------
+///  SysTick Timer  :  For debug info refresh
+//------------------------------------------------------------------------------
 
+#define DEBUG_INFO_FRESH_INTERVAL 100  //100ms
 
 // Configure sys tick timer for debug_info()
 void SysTick_Init( void )
@@ -324,6 +331,7 @@ unsigned char Check_SysTick_State( void )
     }
     
 }
+
 
 
 

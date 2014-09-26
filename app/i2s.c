@@ -254,12 +254,13 @@ void HDMA_IrqHandler(void)
 
     if( status & ( 1 << BOARD_SSC_OUT_DMA_CHANNEL) ) {   //play 
        
-        TRACE_INFO_NEW_WP("-SO-") ;              
+        //printf("-SO-") ;              
         temp = kfifo_get_data_size(&bulkout_fifo);        
         TRACE_INFO_NEW_WP("\n\r[%d, %d]",temp,error_bulkout_empt);
         
         if( (i2s_play_buffer_size<<PLAY_BUF_DLY_N) <= (temp<<1)) { //play buffer delay (2^PLAY_BUF_DLY_N) ms       
-            bulkout_trigger = true; //1st buffered enough data will trigger SSC Out           
+            bulkout_trigger = true; //1st buffered enough data will trigger SSC Out
+            //printf(" T ");
         }        
 
 //        if ( (i2s_play_buffer_size <= temp) && bulkout_trigger ) { //play until buf have enough data  
@@ -325,7 +326,7 @@ void HDMA_IrqHandler(void)
        i2s_buffer_out_index ^= 1;     
         
        if ( bulkout_enable && bulkout_start && (!flag_stop) && ((USBDATAEPSIZE<<0) <= kfifo_get_free_space(&bulkout_fifo)) ) { //
-            TRACE_INFO_NEW_WP("-LBO-") ;         
+            //printf("-LBO-") ;         
             bulkout_start = false ;
             error_bulkout_full++;
             CDCDSerialDriver_Read(   usbBufferBulkOut,
