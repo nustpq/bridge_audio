@@ -25,14 +25,16 @@
 #define USB_IN_BUFFER_SIZE   8192//16384  //2^14=16384  //USB audio data, size MUST be 2^n .
 
 #define PLAY_BUF_DLY_N       6  //delay 2^6=64 ms
+
 // A programmable priority level of 0-15 for each interrupt. A higher level corresponds to a lower 
 // priority, so level 0 is the highest interrupt priority
-//
+
 //#define PIO_PRIORITY        7
-//#define TIMER_PRIORITY      6
+
+#define TIMER_PRIORITY      6
 #define UART_PRIORITY       4
 #define USB_PRIORITY        2
-#define HDMA_PRIORITY       2 //SSC must have highest priority
+#define HDMA_PRIORITY       2 //SSC must have highest priority, but now
 
 
 #define  AUDIO_CMD_IDLE                 0x00
@@ -112,6 +114,7 @@ extern void Usb_Init(void);
 extern void Init_Buffer( void );
 extern void Audio_State_Control( void );
 
+void Get_Run_Time( unsigned int time );
 void UART_Init( void );
 void Check_UART_CMD( void );
 void USB_Init( void );

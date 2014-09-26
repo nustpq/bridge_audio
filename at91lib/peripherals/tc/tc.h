@@ -84,6 +84,8 @@ extern void Timer0_Init( void );
 
 extern void Timer1_Init( void );
 
+extern void Timer2_Init( void );
+
 extern void TC1_IrqHandler( void );
 
 extern unsigned char Check_Timer1_State( void );
@@ -92,5 +94,6 @@ extern unsigned char Check_SysTick_State( void );
 
 extern void SysTick_Init( void );
 
+extern volatile unsigned int second_counter;
 #endif //#ifndef TC_H
 

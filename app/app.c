@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V4.4]";
+char fw_version[] = "[FW:A:V4.5]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -112,6 +112,8 @@ static unsigned int Stop_CMD_Miss_Counter = 0;
 unsigned int counter_play = 0;
 unsigned int counter_rec  = 0;
 unsigned int test_dump    = 0 ;
+
+unsigned int time_start_test = 0 ;
 
 extern unsigned char Check_Toggle_State( void );
 
@@ -446,7 +448,8 @@ void Audio_State_Control( void )
                 } 
                 state_check = 1;
                 bulkout_trigger = true; //trigger paly&rec sync
-                err = Audio_Start_Rec();                
+                err = Audio_Start_Rec();  
+                time_start_test = second_counter ;
             break;
 
             case AUDIO_CMD_START_PLAY :                
@@ -455,7 +458,8 @@ void Audio_State_Control( void )
                     Stop_CMD_Miss_Counter++;
                 } 
                 state_check = 2;     
-                err = Audio_Start_Play();               
+                err = Audio_Start_Play();  
+                time_start_test = second_counter ;
             break;
             
             case AUDIO_CMD_START_PALYREC :                
@@ -469,11 +473,16 @@ void Audio_State_Control( void )
                   delay_ms(1);  //make sure play and rec enter interruption in turns 2ms              
                   err = Audio_Start_Rec(); 
                 }
+                time_start_test = second_counter ;
             break;
 
             case AUDIO_CMD_STOP :   
                 state_check = 0;               
-                Audio_Stop();          
+                Audio_Stop(); 
+                printf("\r\nThis cycle test time cost: ");
+                Get_Run_Time(second_counter - time_start_test);   
+                printf("\r\n\r\n");
+                time_start_test = 0 ;
             break;   
         
             case AUDIO_CMD_CFG:
@@ -539,12 +548,13 @@ void Debug_Info( void )
     unsigned int DBGUART_free_size ;
     
     static unsigned int counter;
-     
+  
     if( !(bulkout_enable || bulkin_enable) ) { 
         if( Check_SysTick_State() == 0 ) { 
               return;
         }
         printf("\rWait for USB trans start [Lost %d Stop][Next PID %d][Last Padding 0x%x]...",Stop_CMD_Miss_Counter,Toggle_PID_BI,usb_data_padding);
+        Get_Run_Time(second_counter);
         return ; 
     }
     
@@ -579,8 +589,9 @@ void Debug_Info( void )
 //    }
     //if(total_transmit >5000000 ) {  error_bulkin_full++; } //simulate bulkin fifo full error 
     //printf("\r\nPLAY %d, REC %d",counter_play++,counter_rec++); 
-      
-      printf("\rIN[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%>%3u%]  OUT[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%<%3u%]",
+    //printf("\rIN[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%>%3u%]  OUT[Size:%6.6f MB, Full:%u, Empty:%u, FreeSize:%3u%<%3u%]",
+       
+      printf("\rIN[%6.6f MB, Full:%u, Empty:%u, Free:%3u%>%3u%]  OUT[%6.6f MB, Full:%u, Empty:%u, Free:%3u%<%3u%]",
                          
                total_transmit/1000000.0,               
                error_bulkin_full,
@@ -605,4 +616,16 @@ void Debug_Info( void )
 }
 
 
+void Get_Run_Time( unsigned int time )
+{
+    unsigned char  sec, min, hour, day;
+
+    sec  = time % 60 ;
+    min  = time / 60 %60 ;
+    hour = time / 3600 %24 ; 
+    day  = time / 3600 /24 ;
+    printf("[%02d:%02d:%02d:%02d]", day, hour, min, sec ); 
+   
+    
+}
 

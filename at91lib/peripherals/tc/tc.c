@@ -150,57 +150,51 @@ unsigned char TC_FindMckDivisor(
 
 
 //------------------------------------------------------------------------------
-/// Handles interrupts coming from Timer #0.
+/// Handles interrupts coming from Timer #2.
 //------------------------------------------------------------------------------
-//static volatile unsigned int timer0_counter = 0 ;
-//    
-//void TC0_IrqHandler( void )
-//{  
-//  
-//    unsigned int status = AT91C_BASE_TC0->TC_SR;
-//    if ((status & AT91C_TC_CPCS) != 0) { 
-//        AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;
-//        timer0_counter++;
-//        //LED_TOGGLE_DATA ; 
-//  
-//    }
-//    
-//}
-//
-//
-//// Configure timer 0 for delay_ms()
-//void Timer0_Init( void )
-//{
-//    unsigned int counter; 
-//    
-//    counter =  MCK / 8 / 1000; //1ms time 
-//    counter = (counter & 0xFFFF0000) == 0 ? counter : 0xFFFF ;
-//
-//    AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC0);
-//    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS;
-//    AT91C_BASE_TC0->TC_IDR = 0xFFFFFFFF;
-//    AT91C_BASE_TC0->TC_CMR = AT91C_TC_CLKS_TIMER_DIV2_CLOCK //choose 1/8 
-//                             | AT91C_TC_CPCSTOP
-//                             | AT91C_TC_CPCDIS
-//                             | AT91C_TC_WAVESEL_UP_AUTO
-//                             | AT91C_TC_WAVE;
-//    AT91C_BASE_TC0->TC_RC = counter ;
-//    AT91C_BASE_TC0->TC_IER = AT91C_TC_CPCS;
-//    IRQ_ConfigureIT(AT91C_ID_TC0, TIMER_PRIORITY, TC0_IrqHandler);
-//    IRQ_EnableIT(AT91C_ID_TC0);
-//    
-//}
-//
-//
-//void  delay_ms( unsigned int delay)
-//{
-//
-//    timer0_counter = 0;
-//    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;   //start    
-//    while ( timer0_counter < delay );
-//    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS; //stop
-//
-//}
+volatile unsigned int second_counter = 0 ;
+    
+void TC2_IrqHandler( void )
+{  
+  
+    unsigned int status;
+    status = AT91C_BASE_TC2->TC_SR;
+    
+    if ((status & AT91C_TC_CPCS) != 0) { 
+        AT91C_BASE_TC2->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;
+        second_counter++;
+        //LED_TOGGLE_DATA ; 
+  
+    }
+    
+}
+
+
+// Configure timer 2 for time record()
+void Timer2_Init( void )
+{
+    unsigned int counter; 
+    
+    counter =  32000 ; //1s time    
+
+    AT91C_BASE_PMC->PMC_PCER = (1 << AT91C_ID_TC2);
+    AT91C_BASE_TC2->TC_CCR = AT91C_TC_CLKDIS;
+    AT91C_BASE_TC2->TC_IDR = 0xFFFFFFFF;
+    AT91C_BASE_TC2->TC_CMR = AT91C_TC_CLKS_TIMER_DIV5_CLOCK //choose SLCK 
+                             | AT91C_TC_CPCSTOP
+                             | AT91C_TC_CPCDIS
+                             | AT91C_TC_WAVESEL_UP_AUTO
+                             | AT91C_TC_WAVE;
+    AT91C_BASE_TC2->TC_RC = counter ;
+    AT91C_BASE_TC2->TC_IER = AT91C_TC_CPCS;
+    IRQ_ConfigureIT(AT91C_ID_TC2, TIMER_PRIORITY, TC2_IrqHandler);
+    IRQ_EnableIT(AT91C_ID_TC2);
+    AT91C_BASE_TC2->TC_CCR = AT91C_TC_CLKEN +  AT91C_TC_SWTRG ;
+    
+}
+
+
+
 
 void Timer0_Init( void )
 {
@@ -221,6 +215,15 @@ void Timer0_Init( void )
     
 }
 
+//void  delay_ms( unsigned int delay)
+//{
+//
+//    timer0_counter = 0;
+//    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKEN | AT91C_TC_SWTRG;   //start    
+//    while ( timer0_counter < delay );
+//    AT91C_BASE_TC0->TC_CCR = AT91C_TC_CLKDIS; //stop
+//
+//}
 void  delay_ms( unsigned int delay_ms ) //
 {   
     unsigned int counter_top;
@@ -261,6 +264,8 @@ void Timer1_Init( void )
                              | AT91C_TC_WAVE;
     
 }
+
+
 
 void  __ramfunc delay_us(unsigned int delay_us)  
 {   

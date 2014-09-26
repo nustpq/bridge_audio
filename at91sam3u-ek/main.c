@@ -57,6 +57,7 @@ int main( void )
     
     Timer0_Init(); 
     Timer1_Init();
+    Timer2_Init();
     SysTick_Init();
     UART_Init();
  
