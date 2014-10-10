@@ -50,7 +50,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-char fw_version[] = "[FW:A:V4.6]";
+char fw_version[] = "[FW:A:V4.7]";
 ////////////////////////////////////////////////////////////////////////////////
 
 //Buffer Level 1:  USB data stream buffer : 512 B
@@ -116,6 +116,7 @@ unsigned int time_start_test = 0;
 
 extern unsigned char Check_Toggle_State( void );
 
+
 void Init_Bus_Matix( void )
 {
      *(unsigned int*)0x400E03E4 = 0x4D415400 ; 
@@ -165,11 +166,11 @@ void Init_GPIO( void )
 *********************************************************************************************************
 */
 static bool bo_check_sync = false;
-__ramfunc bool First_Pack_Check_BO( void )
+__ramfunc bool First_Pack_Check_BO( unsigned int size )
 {    
     unsigned int i;
     
-    for( i = 0; i < 16 ; i++ )   {
+    for( i = 0; i < size ; i++ )   {
         if( usb_data_padding != usbBufferBulkOut[i]) {
             return false;
         }
@@ -362,7 +363,7 @@ static void Audio_Stop( void )
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAOUT;
     AT91C_BASE_UDPHS->UDPHS_EPTRST = 1<<CDCDSerialDriverDescriptors_DATAIN; 
     delay_ms(50);
-    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;                  
+    AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAOUT].UDPHS_EPTCLRSTA = 0xFFFF; //AT91C_UDPHS_NAK_OUT | AT91C_UDPHS_FRCESTALL;                  
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTCLRSTA  = 0xFFFF; //AT91C_UDPHS_TOGGLESQ | AT91C_UDPHS_FRCESTALL;
     AT91C_BASE_UDPHS->UDPHS_EPT[CDCDSerialDriverDescriptors_DATAIN].UDPHS_EPTSETSTA  = AT91C_UDPHS_KILL_BANK ;
     delay_ms(50);
@@ -393,7 +394,7 @@ static void Audio_Stop( void )
     flag_stop         = false ;
     flag_bulkout_empt = false;
     bulkout_empt      = 0;  
-    //bulkout_padding_ok  = false ;
+    bulkout_padding_ok  = false ;
     
     //reset debug counters
     BO_free_size_max      = 0 ;
