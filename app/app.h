@@ -124,7 +124,7 @@ void SSC_Record_Start(void);
 void SSC_Play_Stop(void);
 void SSC_Record_Stop(void);
 void Init_I2S_Buffer( void );
-bool First_Pack_Check_BO( void );
+bool First_Pack_Check_BO( unsigned int size  );
 
 extern void Init_Bus_Matix();
 
